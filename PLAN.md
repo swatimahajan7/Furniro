@@ -10,7 +10,7 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 2 (frontend shell and design system) complete, 2026-09-23 · next: Phase 3 |
+| Status | Phase 3 (catalog UI) complete, 2026-09-23 · next: Phase 4 |
 
 Related docs:
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
@@ -83,6 +83,7 @@ These are the defaults we will use. Change them here if you want something diffe
 | Muggo ("Small mug"), Pingky ("Cute bed set") and Potty ("Minimalist flower pot") cards show unrelated sofa photos | Use the matching mug, bedding and vase photos that are also in the PDF. The design's sofa photos become extra catalog products (`grey-sectional`, `nordic-sofa-set`, `cognac-leather-sofa`). |
 | Home "Show More" vs Related "Show More" | Home goes to `/shop`. Related loads 4 more related items in place. |
 | Syltherine shows `-30%`, but Rp 2.500.000 vs 3.500.000 is a 28.6 % discount | The badge is computed from the prices, so it shows **-29%**. The prices stay as designed. |
+| Shop list view and share icons are not designed | List view shows the card actions inline under the text (no hover overlay). Share links use letter marks (f, in, X) because Lucide has no brand icons. |
 | Free shipping "Order over 150 $" | Informational only. Shipping is always free, so total = subtotal. The text is shown as "Order over $150". |
 
 ---
@@ -275,12 +276,16 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** Every route renders with the correct header, banner and footer. The UI gallery matches the design tokens.
 
 ### Phase 3: Catalog UI (≈3 days)
-- [ ] Home: hero, Browse the Range, Our Products (8), inspiration slider (Embla), gallery grid.
-- [ ] Shop: toolbar, filter drawer, grid/list, show-N, sort, pagination, all synced with the URL.
-- [ ] `ProductCard` with badges and hover overlay (Share, Compare, Like are wired as stubs until Phase 5).
-- [ ] Product detail: gallery, options, qty, tabs, reviews list, related products with "Show More".
-- [ ] Loading skeletons, empty results, and a not-found product page.
+- [x] Home: hero (page h1), Browse the Range (rooms from the API), Our Products (8 featured), inspiration slider (Embla; no autoplay), #FuniroFurniture photo wall.
+- [x] Shop: toolbar, filter drawer (category, room, price in dollars, on sale, new), grid/list, show-N, sort, pagination, and header search, all synced with the URL. URL keys mirror the API (prices in cents); invalid values fall back to defaults.
+- [x] `ProductCard` with badges, strikethrough price, stretched link, and a hover/focus overlay (a top bar on touch screens; inline actions in list view). Share copies the link; Add to cart, Compare and Like show an info toast until Phases 4–5.
+- [x] Product detail: gallery, size/colour (first preselected), qty (max = min(10, stock)), low-stock and out-of-stock states, SKU/Category/Tags/Share, tabs (description + images, spec table, reviews with "Load more"), related products with "Show More".
+- [x] Loading skeletons, "no products match" (with Clear filters), page-out-of-range, error-with-retry, and a product-not-found page.
 
+**Phase 3 notes:**
+- Verified in Chromium against the dev servers with 43 checks (home, shop, filters, search, edge URLs, cards, product page, mobile), twice in a row with no console errors (apart from the browser's own log of the deliberate 404). Found and fixed along the way: description images overflowing on mobile, the gallery image overlapping the info column, "1 results" grammar, and the results text briefly describing the next page before its data arrived (it now comes from the response).
+- Header search starts a fresh search (it drops active filters). Changing page scrolls back to the results; filter and sort changes keep the scroll position.
+- Initial JS is 75 KB gzipped; Home, Shop and Product chunks are 10, 1 and 5 KB.
 **Exit criteria:** You can browse, filter, sort and paginate the whole catalog and open any product.
 
 ### Phase 4: Cart, checkout and orders (≈3 days)

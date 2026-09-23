@@ -14,9 +14,9 @@ export const queryKeys = {
     all: ['products'] as const,
     list: (params: QueryParams) => ['products', 'list', params] as const,
     detail: (slug: string) => ['products', 'detail', slug] as const,
-    related: (slug: string, limit: number, offset: number) =>
-      ['products', 'related', slug, limit, offset] as const,
-    reviews: (slug: string, page: number) => ['products', 'reviews', slug, page] as const,
+    /** Infinite queries: pages are tracked inside the query, not in the key. */
+    related: (slug: string) => ['products', 'related', slug] as const,
+    reviews: (slug: string) => ['products', 'reviews', slug] as const,
     compare: (ids: readonly number[]) => ['products', 'compare', ids] as const,
   },
   categories: ['categories'] as const,

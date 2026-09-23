@@ -1,0 +1,35 @@
+.anchor {
+  scroll-margin-top: var(--header-height);
+}
+
+.results {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.search {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-7);
+  font-size: var(--text-md);
+  background-color: var(--color-cream);
+  border-radius: var(--radius-pill);
+}
+
+.clearSearch {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--color-text-muted);
+}
+
+.clearSearch:hover {
+  color: var(--color-black);
+}
+
+.pagination {
+  margin-top: var(--space-12);
+}

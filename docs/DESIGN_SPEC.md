@@ -112,12 +112,13 @@ Icons: `lucide-react` equivalents. Use `User`, `Search`, `Heart`, `ShoppingCart`
 - Banner → toolbar → 4×4 grid → pagination → feature strip.
 - "Showing {from}–{to} of {total} results" comes from API pagination.
 - The **Filter** button opens a left drawer (undesigned). It holds Category checkboxes, Room checkboxes, a price min/max, "On sale", "New", and Apply/Reset.
-- The list view (undesigned) shows the image on the left (285 px) and the name, subtitle, price, short description and actions on the right.
+- The list view (undesigned) shows the image on the left (285 px) and the name, subtitle, rating, price and actions on the right. In list view the actions (Add to cart, Share, Compare, Like) are always visible under the text; a hover overlay there would cover the text.
 
 ### 4.3 Single product (`03-product.jpg`)
 - Cream breadcrumb bar. Left: vertical thumbnails (76×80) and the main image (423×500) on cream. Right: title, price (muted 24), rating + divider + review count, short description, Size chips, Colour swatches, qty stepper, Add To Cart, + Compare, divider, meta table (SKU, Category, Tags, Share icons).
 - Full-width divider, then tabs, then description paragraphs and 2 wide images (605×348 on cream).
 - Related Products: 4 cards + Show More.
+- Share icons: Lucide has no brand icons, so Facebook, LinkedIn and X are small black circles with "f", "in" and "X" rather than copied logos.
 
 ### 4.4 Cart drawer (`04-product-cart-drawer.jpg`)
 - Opens on Add To Cart and from the header cart icon. The heart on the PDP turns red when wishlisted.

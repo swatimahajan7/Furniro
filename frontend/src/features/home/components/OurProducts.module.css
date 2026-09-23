@@ -1,0 +1,23 @@
+.section {
+  padding-bottom: var(--space-12);
+}
+
+.title {
+  margin-bottom: var(--space-7);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--text-h2-lh);
+  color: var(--color-text);
+  text-align: center;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-7);
+}
+
+.moreButton {
+  min-width: 245px;
+  min-height: 48px;
+}

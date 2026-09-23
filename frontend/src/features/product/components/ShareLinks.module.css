@@ -1,0 +1,21 @@
+.links {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.link {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-radius: var(--radius-round);
+}
+
+.link:hover {
+  background-color: var(--color-primary);
+}

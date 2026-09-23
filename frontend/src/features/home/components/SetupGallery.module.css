@@ -1,0 +1,49 @@
+.section {
+  padding: var(--space-12) 0 var(--space-9);
+  overflow: hidden;
+  text-align: center;
+}
+
+.kicker {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--text-h2-lh);
+  color: var(--color-text);
+}
+
+/* CSS columns give a masonry wall from mixed portrait/landscape photos. */
+.wall {
+  margin-top: var(--space-4);
+  columns: 2;
+  column-gap: var(--space-4);
+}
+
+.item {
+  margin-bottom: var(--space-4);
+  break-inside: avoid;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+@media (width >= 768px) {
+  .wall {
+    columns: 3;
+  }
+}
+
+@media (width >= 1024px) {
+  .wall {
+    width: 110%;
+    margin-left: -5%;
+    columns: 5;
+  }
+}

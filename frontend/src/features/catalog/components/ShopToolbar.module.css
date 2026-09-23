@@ -1,0 +1,101 @@
+.toolbar {
+  padding: var(--space-5) 0;
+  background-color: var(--color-cream);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left,
+.right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.filter {
+  display: inline-flex;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--text-lg);
+  color: var(--color-black);
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.views {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.view {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: var(--color-text-subtle);
+}
+
+.view:hover,
+.viewActive {
+  color: var(--color-black);
+}
+
+.divider {
+  width: 2px;
+  height: 37px;
+  background-color: var(--color-text-subtle);
+}
+
+.results {
+  font-size: var(--text-md);
+  color: var(--color-black);
+}
+
+/* Label sits beside the select in this bar, not above it. */
+.control {
+  flex-direction: row;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.control label {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  white-space: nowrap;
+}
+
+.control select {
+  width: 80px;
+  padding-right: var(--space-8);
+}
+
+.sort select {
+  width: 210px;
+}
+
+@media (width < 768px) {
+  .divider {
+    display: none;
+  }
+
+  .right {
+    width: 100%;
+  }
+}

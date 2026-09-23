@@ -1,9 +1,14 @@
-import { ComingSoon, PageShell } from '@/components/layout';
+import { PageShell } from '@/components/layout';
+import { BrowseRange, Hero, InspirationSlider, OurProducts, SetupGallery } from '@/features/home';
 
 export default function HomePage() {
   return (
-    <PageShell title="Home" banner={false}>
-      <ComingSoon phase={3} what="The home page" />
+    <PageShell title="Home" banner={false} srHeading={false}>
+      <Hero />
+      <BrowseRange />
+      <OurProducts />
+      <InspirationSlider />
+      <SetupGallery />
     </PageShell>
   );
 }

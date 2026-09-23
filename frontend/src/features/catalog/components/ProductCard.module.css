@@ -1,0 +1,242 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-card);
+}
+
+/* ---- media ---- */
+.media {
+  position: relative;
+  aspect-ratio: 285 / 301;
+  overflow: hidden;
+  background-color: var(--color-cream);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noImage {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--color-text-subtle);
+}
+
+.badge {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+}
+
+/* ---- body ---- */
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5) var(--space-7);
+}
+
+.name {
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+/* Stretched link: the whole card opens the product. */
+.link::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+}
+
+.link:focus-visible {
+  outline: none;
+}
+
+.link:focus-visible::after {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: -2px;
+}
+
+.subtitle {
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+}
+
+.rating {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+  margin-top: var(--space-1);
+}
+
+.price {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.oldPrice {
+  font-size: var(--text-md);
+  color: var(--color-text-strike);
+}
+
+.stock {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-danger);
+}
+
+.soldOut .image {
+  opacity: 0.6;
+}
+
+/* ---- hover overlay ---- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-overlay);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-standard);
+
+  /* Clicks fall through to the stretched link except on the buttons. */
+  pointer-events: none;
+}
+
+.card:hover .overlay,
+.card:focus-within .overlay {
+  opacity: 1;
+}
+
+.addToCart,
+.action {
+  pointer-events: auto;
+}
+
+.addToCart {
+  min-width: 202px;
+  min-height: 48px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  justify-content: center;
+}
+
+.action {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--color-white);
+}
+
+.action:hover {
+  color: var(--color-primary);
+}
+
+/* Touch screens have no hover: show the actions as a bar over the top of the image. */
+@media (hover: none) {
+  .overlay {
+    inset: 0 0 auto;
+    gap: var(--space-2);
+    justify-content: flex-start;
+    padding: var(--space-2);
+    background-color: transparent;
+    opacity: 1;
+  }
+
+  .addToCart {
+    display: none;
+  }
+
+  .actions {
+    gap: var(--space-2);
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .action {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    background-color: var(--color-overlay);
+    border-radius: var(--radius-pill);
+  }
+}
+
+/* ---- list variant: actions sit under the text instead of in a hover overlay ---- */
+.list {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: min(285px, 40%) minmax(0, 1fr);
+}
+
+.list .media {
+  grid-row: 1 / span 2;
+  aspect-ratio: auto;
+  min-height: 240px;
+}
+
+.list .body {
+  justify-content: center;
+  padding: var(--space-7) var(--space-7) var(--space-3);
+}
+
+/* stylelint-disable-next-line no-descending-specificity -- list view deliberately replaces the hover overlay */
+.list .overlay,
+.list:hover .overlay,
+.list:focus-within .overlay {
+  position: static;
+  flex-flow: row wrap;
+  gap: var(--space-4);
+  justify-content: flex-start;
+  padding: 0 var(--space-7) var(--space-7);
+  background-color: transparent;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.list .addToCart {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 40px;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.list .action {
+  padding: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  background-color: transparent;
+}
+
+.list .action:hover {
+  color: var(--color-primary);
+}
