@@ -58,6 +58,7 @@ Font family: **Poppins** (400, 500, 600, 700). Logo wordmark: **Montserrat 700**
 | `--text-h2` | 40 / 48 / 700 | "Our Products", "50+ Beautiful rooms" |
 | `--text-h3` | 32 / 48 / 700 (Browse the Range), 600 (Billing details) | |
 | `--text-product-title` | 42 / 63 / 400 | PDP "Asgaard sofa" |
+| `--text-post-title` | 30 / 45 / 500 | Blog card titles ("Going all-in with millennial design") |
 | `--text-h4` | 24 / 29 / 600 | Card names, "Cart Totals" |
 | `--text-lg` | 20 / 30 / 500 | Price (card), tabs, feature strip titles |
 | `--text-md` | 16 / 24 / 400–500 | Body, nav, buttons |

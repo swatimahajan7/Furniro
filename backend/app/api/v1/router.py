@@ -1,6 +1,16 @@
 from fastapi import APIRouter, status
 
-from app.api.v1.routes import auth, cart, catalog, health, meta, orders, wishlist
+from app.api.v1.routes import (
+    auth,
+    blog,
+    cart,
+    catalog,
+    forms,
+    health,
+    meta,
+    orders,
+    wishlist,
+)
 from app.core.errors import ErrorResponse
 
 API_V1_PREFIX = "/api/v1"
@@ -22,3 +32,5 @@ api_router.include_router(catalog.router)
 api_router.include_router(cart.router)
 api_router.include_router(orders.router)
 api_router.include_router(wishlist.router)
+api_router.include_router(blog.router)
+api_router.include_router(forms.router)

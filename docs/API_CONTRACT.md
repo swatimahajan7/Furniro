@@ -25,7 +25,7 @@ Query: `page` (≥1, default 1) and `page_size`. Allowed sizes depend on the end
 |---|---|
 | `GET /products` | one of 8, 16, 24, 32 (default 16) |
 | `GET /products/{slug}/reviews` | 1–50 (default 10) |
-| `GET /blog/posts` (Phase 6) | default 3 |
+| `GET /blog/posts` | 1–12 (default 3) |
 
 `page` < 1 or a disallowed `page_size` returns `422 VALIDATION_ERROR`.
 ```json
@@ -49,7 +49,7 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 | 400 | `BAD_REQUEST`, `CART_EMPTY`, `COMPARE_LIMIT_EXCEEDED`, `INVALID_PRICE_RANGE` |
 | 401 | `UNAUTHENTICATED`, `INVALID_CREDENTIALS`, `TOKEN_EXPIRED` |
 | 403 | `FORBIDDEN` |
-| 404 | `NOT_FOUND`, `PRODUCT_NOT_FOUND`, `CART_NOT_FOUND`, `CART_ITEM_NOT_FOUND`, `ORDER_NOT_FOUND` |
+| 404 | `NOT_FOUND`, `PRODUCT_NOT_FOUND`, `CART_NOT_FOUND`, `CART_ITEM_NOT_FOUND`, `ORDER_NOT_FOUND`, `BLOG_POST_NOT_FOUND` |
 | 405 | `METHOD_NOT_ALLOWED` |
 | 409 | `EMAIL_ALREADY_REGISTERED`, `ALREADY_REVIEWED`, `ALREADY_SUBSCRIBED`, `INSUFFICIENT_STOCK` |
 | 422 | `VALIDATION_ERROR` (with `details[]`) |
@@ -179,13 +179,21 @@ When logged in, the order is linked to the user (it appears in `GET /orders`).
 `GET /wishlist` → `ProductSummary[]`, most recently liked first · `PUT /wishlist/{product_id}` → `204` (idempotent; unknown product → `404 PRODUCT_NOT_FOUND`) · `DELETE /wishlist/{product_id}` → `204` (idempotent, including for products that were never liked).
 
 ### 2.8 Blog
-`GET /blog/posts?page=&page_size=3&category=&q=` → `Page<{ slug, title, excerpt, cover_url, author, category {slug,name}, published_at }>`
-`GET /blog/posts/{slug}` → the post plus `content` (markdown).
-`GET /blog/categories` → `[{ slug, name, post_count }]` · `GET /blog/posts/recent?limit=5`
+`GET /blog/posts?page=&page_size=&category=&q=` → `Page<BlogPostSummary>`, newest first (ties by id).
+`BlogPostSummary = { slug, title, excerpt, cover_url, author, category {slug,name}, published_at }`.
+- `page_size` 1–12 (default 3). `category` is a slug (crafts, design, handmade, interior, wood); an unknown slug matches nothing (no error).
+- `q` (≤100) is a case-insensitive substring match on title and excerpt; `%` and `_` are matched literally. `category` and `q` combine.
+
+`GET /blog/posts/recent?limit=5` → `BlogPostSummary[]`, the newest posts (`limit` 1–10, default 5).
+
+`GET /blog/posts/{slug}` → `BlogPostSummary` plus `content`. Unknown slug → `404 BLOG_POST_NOT_FOUND`.
+`content` is a deliberately small Markdown subset: blocks separated by a blank line; a block starting `## ` is a heading; a block whose lines all start `- ` is a bullet list; anything else is a paragraph. No inline formatting, links or HTML. Clients render it as text.
+
+`GET /blog/categories` → `[{ slug, name, post_count }]` in sidebar order, including categories with 0 posts. Seed counts: Crafts 2, Design 8, Handmade 7, Interior 1, Wood 6 (24 posts).
 
 ### 2.9 Forms
-`POST /contact` `{ name (2..80), email, subject? (≤120), message (10..2000) }` → `201 { id, received_at }`
-`POST /newsletter/subscribe` `{ email }` → `201 { email, subscribed_at }`. A duplicate returns `409 ALREADY_SUBSCRIBED`.
+`POST /contact` `{ name (2..80), email, subject? (≤120), message (10..2000) }` → `201 { id, received_at }`. An empty `subject` is stored as `null`. The message is stored and its id logged; no email is sent (PLAN.md §1).
+`POST /newsletter/subscribe` `{ email }` → `201 { email, subscribed_at }`. Emails are stored lowercased; a duplicate in any letter case returns `409 ALREADY_SUBSCRIBED` (the UI treats it as "already subscribed", not as a failure).
 
 ## 3. Changelog
 | Date | Change |
@@ -196,3 +204,4 @@ When logged in, the order is linked to the user (it appears in `GET /orders`).
 | 2026-09-23 | Phase 4: cart and order endpoints implemented; `sizes`/`colors` added to ProductSummary; `CART_ITEM_NOT_FOUND`; validation, stock and lookup rules documented |
 | 2026-09-23 | Removed test-support (`/__test__/*`) and bug-toggle (`/__bugs__/*`) endpoints; tests are out of scope |
 | 2026-09-23 | Phase 5: auth, wishlist, review posting, cart merge and ownership, owner order access and `GET /orders` implemented. Guests can no longer open a user's cart by ID. Timestamps always carry `Z` (SQLite returned them without a zone before) |
+| 2026-09-23 | Phase 6: blog (posts, recent, detail, categories), contact and newsletter implemented; `BLOG_POST_NOT_FOUND`; blog `page_size` 1–12; the `content` Markdown subset documented |

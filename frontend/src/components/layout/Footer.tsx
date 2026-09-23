@@ -1,29 +1,39 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router';
 
-import { Input, useToast } from '@/components/ui';
+import { Input } from '@/components/ui';
 import { testIds } from '@/lib/testIds';
 
 import styles from './Footer.module.css';
-import { COPYRIGHT_YEAR, HELP_NAV, MAIN_NAV, STORE_ADDRESS } from './navigation';
+import { COPYRIGHT_YEAR, FOOTER_NAV, HELP_NAV, STORE_ADDRESS } from './navigation';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function Footer() {
-  const toast = useToast();
+export interface FooterProps {
+  /**
+   * Sends the sign-up (wired in AppLayout, which owns the feature). Resolves to whether the field
+   * should be cleared, plus an optional error to show under it.
+   */
+  onSubscribe: (email: string) => Promise<{ ok: boolean; fieldError?: string }>;
+  isSubscribing: boolean;
+}
+
+export function Footer({ onSubscribe, isSubscribing }: FooterProps) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string>();
 
-  // Phase 6 connects this form to POST /newsletter/subscribe.
-  const handleSubscribe = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!EMAIL_PATTERN.test(email.trim())) {
+    if (isSubscribing) return;
+    const value = email.trim();
+    if (!EMAIL_PATTERN.test(value)) {
       setError('Enter a valid email address');
       return;
     }
     setError(undefined);
-    setEmail('');
-    toast.info('Thanks! Newsletter sign-up opens soon.');
+    const result = await onSubscribe(value);
+    if (result.ok) setEmail('');
+    else if (result.fieldError) setError(result.fieldError);
   };
 
   return (
@@ -42,7 +52,7 @@ export function Footer() {
           <h2 id="footer-links" className={styles.heading}>
             Links
           </h2>
-          {MAIN_NAV.map((item) => (
+          {FOOTER_NAV.map((item) => (
             <Link
               key={item.to}
               to={item.to}
@@ -74,7 +84,7 @@ export function Footer() {
           <h2 className={styles.heading}>Newsletter</h2>
           <form
             className={styles.newsletter}
-            onSubmit={handleSubscribe}
+            onSubmit={(event) => void handleSubscribe(event)}
             noValidate
             data-testid="footer-newsletter"
           >
@@ -94,6 +104,8 @@ export function Footer() {
             <button
               type="submit"
               className={styles.subscribe}
+              aria-disabled={isSubscribing || undefined}
+              aria-busy={isSubscribing || undefined}
               data-testid="footer-newsletter-subscribe"
             >
               SUBSCRIBE

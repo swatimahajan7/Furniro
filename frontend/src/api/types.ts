@@ -35,4 +35,12 @@ export type OrderPage = Schemas['Page_OrderSummary_'];
 export type BillingIn = Schemas['BillingIn'];
 export type PaymentMethod = Schemas['PaymentMethod'];
 
+export type BlogPostSummary = Schemas['BlogPostSummary'];
+export type BlogPost = Schemas['BlogPostRead'];
+export type BlogPostPage = Schemas['Page_BlogPostSummary_'];
+export type BlogCategory = Schemas['BlogCategoryRead'];
+export type ContactCreate = Schemas['ContactCreate'];
+export type ContactReceipt = Schemas['ContactReceipt'];
+export type NewsletterSubscription = Schemas['NewsletterSubscription'];
+
 export type ErrorResponse = Schemas['ErrorResponse'];

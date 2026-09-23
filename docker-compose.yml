@@ -22,7 +22,7 @@ services:
     environment:
       APP_ENV: ${APP_ENV:-prod}
       DATABASE_URL: postgresql+psycopg://furniro:furniro@db:5432/furniro
-      JWT_SECRET: ${JWT_SECRET:-compose-local-secret-change-me}
+      JWT_SECRET: ${JWT_SECRET:-compose-local-secret-change-me-before-prod}
       CORS_ORIGINS: http://localhost:8080
       SEED_ON_STARTUP: "true"
     ports:

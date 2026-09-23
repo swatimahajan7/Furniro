@@ -52,7 +52,8 @@ frontend/
     ├── components/
     │   ├── ui/               # design-system primitives (Button, Input, Badge, Pagination, Drawer, …)
     │   └── layout/           # Header (cart count via props), Footer, PageShell, PageBanner, Breadcrumb,
-    │                         # FeatureStrip, PageLoader, ComingSoon (temporary), navigation.ts
+    │                         # FeatureStrip, PageLoader, navigation.ts (MAIN_NAV, FOOTER_NAV, HELP_NAV);
+    │                         # Footer gets the newsletter submit handler via props from AppLayout
     ├── features/             # one folder per domain
     │   ├── catalog/          # api.ts (useProducts, useCategories, useRooms, useInspirations), shopParams.ts
     │   │                     # (URL ⇄ Shop state), useShopParams, useProductActions (card/PDP actions),
@@ -74,10 +75,14 @@ frontend/
     │   │                     # (safeNext, loginPath), useSessionExpiry, components/ (LoginForm, RegisterForm,
     │   │                     # RequireAuth)
     │   ├── account/          # api.ts (useMyOrders), components/ (ProfileCard, OrderHistory)
-    │   ├── blog/             # PostCard, BlogSidebar
+    │   ├── blog/             # api.ts (useBlogPosts, useBlogPost, useBlogCategories, useRecentPosts),
+    │   │                     # blogParams.ts (URL ⇄ page/category/q), markdown.ts (content subset → blocks),
+    │   │                     # components/ (BlogLayout, PostList, PostCard, PostMeta, PostArticle,
+    │   │                     # PostContent, BlogSidebar)
     │   ├── home/             # Hero, BrowseRange, OurProducts, InspirationSlider (Embla), SetupGallery
-    │   ├── contact/
-    │   └── newsletter/
+    │   ├── contact/          # schema.ts, api.ts (useSendContactMessage), components/ (ContactForm, ContactInfo)
+    │   ├── newsletter/       # api.ts (useSubscribe: toasts; a duplicate counts as success)
+    │   └── content/          # static copy: helpTopics.ts, components/ (AboutContent, InfoArticle)
     ├── pages/                # route components that ONLY compose features + layout
     │   ├── HomePage.tsx  ShopPage.tsx  ProductPage.tsx  ComparePage.tsx  CartPage.tsx
     │   ├── CheckoutPage.tsx  OrderConfirmationPage.tsx  ContactPage.tsx  BlogPage.tsx
@@ -204,7 +209,7 @@ stable, predictable `data-testid` attributes, plus correct roles and accessible 
 ### 6.2 Naming convention
 
 - Format: `kebab-case`, structured as `<area>-<element>[-<qualifier>][-<part>]`.
-- `<area>` is the screen or component (`header`, `shop`, `product-card`, `pdp`, `cart-drawer`, `cart`, `checkout`, `order`, `compare`, `blog`, `contact`, `footer`, `login`, `register`, `review`, `account`, `wishlist`).
+- `<area>` is the screen or component (`header`, `shop`, `product-card`, `pdp`, `cart-drawer`, `cart`, `checkout`, `order`, `compare`, `blog`, `contact`, `footer`, `login`, `register`, `review`, `account`, `wishlist`, `about`, `help`).
 - Form fields: `<form>-field-<name>`, where `<name>` is the API field name converted to kebab-case (`first_name` → `checkout-field-first-name`). The field's error text is `<form>-error-<name>`.
 - State is **not** encoded in the ID. Use attributes that already exist (`aria-selected`, `aria-pressed`, `aria-expanded`, `disabled`, `aria-invalid`) or a `data-state` attribute. Examples: Like buttons use `aria-pressed`; `header-account-button` has `data-state="guest" | "logged-in"`.
 - Build dynamic IDs with the helpers in `src/lib/testIds.ts`, for example `testIds.productCard(slug).addToCart`, so spelling stays consistent.
@@ -256,6 +261,13 @@ review-error-rating  review-field-comment  review-submit  review-success  review
 compare-table  compare-column-grifo-name  compare-column-grifo-price  compare-column-grifo-add-to-cart
 compare-group-dimensions  compare-add-select  compare-view-more  compare-full  compare-empty  compare-error
 contact-field-email  contact-submit  footer-newsletter-email  footer-newsletter-subscribe
+blog-posts  blog-post-going-all-in-with-millennial-design  blog-post-<slug>-link  blog-post-<slug>-meta-category
+blog-post-<slug>-read-more  blog-pagination-page-2  blog-search-field-q  blog-search-submit  blog-category-wood
+blog-category-wood-count  blog-recent-modern-home-in-milan  blog-filter-summary  blog-clear-filters  blog-empty
+blog-page-out-of-range  blog-article  blog-article-meta  blog-article-content  blog-back  blog-article-not-found
+contact-form  contact-field-name  contact-error-message  contact-submit  contact-success  contact-send-another
+contact-info-address  footer-newsletter-email-error  footer-link-blog  about-story  about-shop-link
+help-article-returns  help-nav-privacy-policy  help-contact-link  checkout-privacy-link
 toast-success  toast-error
 ```
 

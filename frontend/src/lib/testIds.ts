@@ -68,6 +68,21 @@ export const testIds = {
   compareRow: (label: string) => `compare-row-${slugify(label)}`,
   compareGroup: (name: string) => `compare-group-${slugify(name)}`,
 
+  blogPost: (slug: string) => {
+    const base = `blog-post-${slug}`;
+    return {
+      root: base,
+      link: `${base}-link`,
+      meta: `${base}-meta`,
+      readMore: `${base}-read-more`,
+    };
+  },
+  blogCategory: (slug: string) => ({
+    link: `blog-category-${slug}`,
+    count: `blog-category-${slug}-count`,
+  }),
+  blogRecent: (slug: string) => `blog-recent-${slug}`,
+
   /** Order numbers keep their case-insensitive form: FUR-000001 → account-order-fur-000001. */
   accountOrder: (orderNumber: string) => {
     const base = `account-order-${slugify(orderNumber)}`;
