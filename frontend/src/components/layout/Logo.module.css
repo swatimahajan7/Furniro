@@ -1,0 +1,29 @@
+.logo {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.mark {
+  width: 50px;
+  height: 32px;
+}
+
+.wordmark {
+  font-family: var(--font-logo);
+  font-size: var(--text-logo);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  color: var(--color-black);
+}
+
+@media (width < 768px) {
+  .mark {
+    width: 40px;
+    height: 26px;
+  }
+
+  .wordmark {
+    font-size: var(--text-h4);
+  }
+}

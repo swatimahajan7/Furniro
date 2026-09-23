@@ -10,7 +10,7 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 1 (backend catalog) complete, 2026-09-23 · next: Phase 2 |
+| Status | Phase 2 (frontend shell and design system) complete, 2026-09-23 · next: Phase 3 |
 
 Related docs:
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
@@ -259,13 +259,19 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** Swagger UI at `/docs` lists the catalog API. `GET /products?page=1&page_size=16` returns 16 of 32 items.
 
 ### Phase 2: Frontend shell and design system (≈2–3 days)
-- [ ] Layout: `Header`, `Footer`, `PageBanner`, `FeatureStrip`, `Breadcrumb`, and a mobile nav drawer.
-- [ ] UI primitives: `Button` (primary / outline-primary / outline-dark / pill), `Input`, `Select`, `Textarea`, `Radio`, `Badge`, `Rating`, `QuantityStepper`, `Pagination`, `Tabs`, `Drawer`, `Toast`, `Spinner`, `Skeleton`, `EmptyState`.
-- [ ] Router with all routes (placeholder pages) and 404.
-- [ ] API client, generated types, TanStack Query provider, error boundary.
-- [ ] `/dev/ui` route, dev builds only: a gallery of every primitive, used as a visual reference.
-- [ ] `data-testid` support in every primitive and layout element, plus `src/lib/testIds.ts` helpers for dynamic IDs (frontend/GUIDELINES.md §6).
+- [x] `tokens.css` complete (plus `--text-logo`, `--weight-light`, `--color-banner-veil`, layout sizes and z-index layers, all added to DESIGN_SPEC §2 first).
+- [x] Layout: `Header` (sticky; active nav; account/search/wishlist/cart icons), mobile menu drawer, search drawer (→ `/shop?q=`), `Footer` (links, help, newsletter form with validation), `PageBanner`, `Breadcrumb` (banner and cream-bar variants), `FeatureStrip`, `AppLayout` (skip link, route progress bar, scroll restoration), `PageShell`, `PageLoader`.
+- [x] UI primitives: `Button`/`ButtonLink` (primary / outline-primary / outline-dark / pill / light / link; sm–lg; loading, disabled), `Input`, `Select`, `Textarea`, `Checkbox`, `RadioGroup`, `Badge`, `Rating`, `QuantityStepper`, `Pagination`, `Tabs`, `Drawer`, `Toast`, `Spinner`, `Skeleton`, `EmptyState`, `ErrorState`.
+- [x] Router (React Router 8) with every route from GUIDELINES §5 as lazy chunks, placeholder pages that show their real banner/breadcrumb, and a 404 page.
+- [x] API client (`apiFetch` with query strings, `ApiError`, `NetworkError`), generated types plus aliases, `queryKeys`, TanStack Query provider, error boundaries.
+- [x] `/dev/ui` gallery (development builds only): tokens, type scale, every primitive, overlays, states, and live API status.
+- [x] `data-testid` support in every primitive and layout element, plus `src/lib/testIds.ts` helpers for dynamic IDs (frontend/GUIDELINES.md §6).
 
+**Phase 2 notes:**
+- Verified in Chromium against the dev servers: all 19 routes render with header, footer, correct `<title>`, one `h1` and a `page-*` root; no duplicate test IDs; no console errors. 32 interactive checks passed, covering search, nav, newsletter validation, drawer focus trap/Esc/backdrop/focus return, toasts, tabs keyboard, stepper limits, pagination links, radio descriptions, and the mobile menu with no horizontal overflow at 390 px.
+- Initial JS is 116 KB gzipped (budget 200 KB), and every page is a separate chunk.
+- The footer newsletter form validates the email and shows a toast; it is connected to `POST /newsletter/subscribe` in Phase 6. The header cart icon links to `/cart` until the cart drawer arrives in Phase 4.
+- React Router is v8, not v7 as first planned. `RouterProvider` comes from `react-router/dom`, and Node ≥ 22.22 is required.
 **Exit criteria:** Every route renders with the correct header, banner and footer. The UI gallery matches the design tokens.
 
 ### Phase 3: Catalog UI (≈3 days)

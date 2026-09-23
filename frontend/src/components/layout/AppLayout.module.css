@@ -1,0 +1,45 @@
+.main {
+  min-height: 60vh;
+}
+
+.main:focus {
+  outline: none;
+}
+
+.skipLink {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-5);
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+}
+
+.skipLink:focus {
+  transform: none;
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-toast);
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-primary);
+  transform-origin: left;
+  animation: grow 1.2s var(--ease-standard) infinite;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}

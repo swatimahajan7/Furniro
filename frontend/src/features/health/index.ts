@@ -1,2 +1,1 @@
-export { useApiHealth } from './useApiHealth';
-export type { ApiHealthState } from './useApiHealth';
+export { useHealth } from './useHealth';

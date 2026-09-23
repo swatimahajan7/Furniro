@@ -4,13 +4,19 @@ import type { components } from './schema';
 type Schemas = components['schemas'];
 
 export type Health = Schemas['HealthRead'];
+export type MetaConfig = Schemas['MetaConfigRead'];
+export type Country = Schemas['CountryRead'];
 
-/** The error envelope is produced by exception handlers, so it is not part of the OpenAPI spec. */
-export interface ErrorResponse {
-  error: {
-    code: string;
-    message: string;
-    details?: { field?: string | null; message: string }[] | null;
-    request_id?: string | null;
-  };
-}
+export type ProductSummary = Schemas['ProductSummary'];
+export type ProductDetail = Schemas['ProductDetail'];
+export type ProductSort = Schemas['ProductSort'];
+export type ProductPage = Schemas['Page_ProductSummary_'];
+export type RelatedProducts = Schemas['RelatedProducts'];
+export type CompareResponse = Schemas['CompareResponse'];
+export type Review = Schemas['ReviewRead'];
+export type ReviewPage = Schemas['Page_ReviewRead_'];
+export type Category = Schemas['CategoryRead'];
+export type Room = Schemas['RoomRead'];
+export type Inspiration = Schemas['InspirationRead'];
+
+export type ErrorResponse = Schemas['ErrorResponse'];

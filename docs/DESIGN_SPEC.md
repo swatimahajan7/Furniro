@@ -43,6 +43,7 @@ known Furniro kit palette. Confirm any value in Figma when pixel accuracy matter
 | `--color-input-border` | `#9F9F9F` | Inputs, selects, outline buttons |
 | `--color-overlay` | `rgba(58,58,58,.72)` | Product card hover overlay |
 | `--color-backdrop` | `rgba(0,0,0,.2)` | Page dim behind the cart drawer |
+| `--color-banner-veil` | `rgba(255,255,255,.45)` | White wash over the blurred page-banner photo |
 | `--color-swatch-1..3` | `#816DFA` · `#000000` · `#B88E2F` | PDP colour swatches (seed values) |
 | `--color-white` / `--color-black` | `#FFFFFF` / `#000000` | |
 
@@ -51,6 +52,7 @@ Font family: **Poppins** (400, 500, 600, 700). Logo wordmark: **Montserrat 700**
 
 | Token | Size / line-height / weight | Example |
 |---|---|---|
+| `--text-logo` | 34 / — / 700 (Montserrat) | Header wordmark "Furniro" |
 | `--text-display` | 52 / 65 / 700 | "Discover Our New Collection" |
 | `--text-h1` | 48 / 72 / 500 | Page banner titles (Shop, Cart…) |
 | `--text-h2` | 40 / 48 / 700 | "Our Products", "50+ Beautiful rooms" |
@@ -68,6 +70,8 @@ Letter-spacing 3 px for "New Arrival" (uppercase eyebrow).
 - Spacing scale (px): `4 8 12 16 20 24 32 40 48 56 64 80 96`, as `--space-1` … `--space-13`.
 - Radius: `--radius-sm 5px` (size chips, qty box), `--radius-md 10px` (inputs, pagination, image boxes), `--radius-lg 15px` (outline-dark buttons), `--radius-pill 50px` (drawer buttons, badges are circles).
 - Shadow: `--shadow-drawer 0 4px 24px rgba(0,0,0,.08)`, and `--shadow-card-hover` (subtle).
+- Layout sizes: `--header-height 100px`, `--banner-height 316px`, `--drawer-width 417px`.
+- Layers: `--z-header 50`, `--z-drawer 100`, `--z-toast 200`.
 - Motion: `--duration-fast 150ms`, `--duration-base 250ms`, `--ease-standard cubic-bezier(.2,0,0,1)`. All motion is disabled under `prefers-reduced-motion`.
 
 ## 3. Components

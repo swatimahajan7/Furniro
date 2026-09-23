@@ -1,0 +1,126 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--color-white);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
+  max-width: 1440px;
+  height: var(--header-height);
+  padding: 0 var(--container-pad);
+  margin: 0 auto;
+}
+
+.nav {
+  display: none;
+}
+
+.navLink {
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  color: var(--color-black);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.navLink:hover,
+.active {
+  color: var(--color-primary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-self: end;
+}
+
+.iconButton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--color-black);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.iconButton:hover {
+  color: var(--color-primary);
+}
+
+.hideOnMobile {
+  display: none;
+}
+
+.menuButton {
+  margin-left: calc(-1 * var(--space-2));
+}
+
+/* ---- mobile menu ---- */
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mobileLink {
+  padding: var(--space-3) 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--color-black);
+}
+
+/* ---- search ---- */
+.searchForm {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-end;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.searchField {
+  flex: 1;
+}
+
+@media (width >= 768px) {
+  .hideOnMobile {
+    display: grid;
+  }
+
+  .actions {
+    gap: var(--space-5);
+  }
+}
+
+@media (width >= 1024px) {
+  .inner {
+    grid-template-columns: auto 1fr auto;
+    padding: 0 54px;
+  }
+
+  .menuButton {
+    display: none;
+  }
+
+  .nav {
+    display: flex;
+    gap: 75px;
+    justify-content: center;
+  }
+
+  .actions {
+    gap: var(--space-8);
+  }
+}
+
+@media (width < 1024px) {
+  .inner {
+    grid-template-columns: auto auto 1fr;
+  }
+}

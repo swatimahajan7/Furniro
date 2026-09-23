@@ -1,3 +1,4 @@
+import '@fontsource/poppins/latin-300.css';
 import '@fontsource/poppins/latin-400.css';
 import '@fontsource/poppins/latin-500.css';
 import '@fontsource/poppins/latin-600.css';
@@ -9,14 +10,18 @@ import '@/styles/global.css';
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { RouterProvider } from 'react-router/dom';
 
-import { PlaceholderPage } from '@/pages/PlaceholderPage';
+import { AppProviders } from '@/app/providers';
+import { router } from '@/app/router';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Missing #root element in index.html');
 
 createRoot(rootElement).render(
   <StrictMode>
-    <PlaceholderPage />
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>
   </StrictMode>,
 );
