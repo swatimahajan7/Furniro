@@ -12,8 +12,15 @@ import { MAIN_NAV } from './navigation';
 
 const ICON_SIZE = 26;
 
+export interface HeaderProps {
+  /** Units in the cart; the badge is hidden at 0 (FR-CART-04). */
+  cartCount: number;
+  /** Opens the cart drawer. */
+  onCartClick: () => void;
+}
+
 /** Sticky site header: logo · main nav · account/search/wishlist/cart (DESIGN_SPEC §3). */
-export function Header() {
+export function Header({ cartCount, onCartClick }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -82,15 +89,25 @@ export function Header() {
           >
             <Heart size={ICON_SIZE} />
           </Link>
-          {/* Phase 4: opens the cart drawer and shows the item count (header-cart-count). */}
-          <Link
-            to="/cart"
-            className={styles.iconButton}
-            aria-label="Cart"
+          <button
+            type="button"
+            className={cn(styles.iconButton, styles.cartButton)}
+            onClick={onCartClick}
+            aria-label={
+              cartCount > 0
+                ? `Open cart, ${cartCount} item${cartCount === 1 ? '' : 's'}`
+                : 'Open cart'
+            }
+            aria-haspopup="dialog"
             data-testid="header-cart-button"
           >
             <ShoppingCart size={ICON_SIZE} />
-          </Link>
+            {cartCount > 0 && (
+              <span className={styles.cartCount} aria-hidden="true" data-testid="header-cart-count">
+                {cartCount > 99 ? '99+' : cartCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 

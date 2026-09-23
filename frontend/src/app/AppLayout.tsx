@@ -1,12 +1,18 @@
 import { Outlet, ScrollRestoration, useNavigation } from 'react-router';
 
-import styles from './AppLayout.module.css';
-import { Footer } from './Footer';
-import { Header } from './Header';
+import { Footer, Header } from '@/components/layout';
+import { CartDrawer, useCart, useCartDrawer } from '@/features/cart';
 
-/** Root layout for every route: skip link, header, page, footer. */
+import styles from './AppLayout.module.css';
+
+/**
+ * Root layout for every route: skip link, header, page, footer, and the cart drawer.
+ * It lives in `app/` because it wires features (the cart) into the layout components.
+ */
 export function AppLayout() {
   const navigation = useNavigation();
+  const cart = useCart();
+  const openCart = useCartDrawer((state) => state.open);
   const isNavigating = navigation.state !== 'idle';
 
   return (
@@ -22,11 +28,12 @@ export function AppLayout() {
           data-testid="route-progress"
         />
       )}
-      <Header />
+      <Header cartCount={cart.data?.item_count ?? 0} onCartClick={openCart} />
       <main id="main-content" className={styles.main} tabIndex={-1}>
         <Outlet />
       </main>
       <Footer />
+      <CartDrawer />
       {/* Keyed by pathname so query-only changes (e.g. /shop?page=2) keep the scroll position. */}
       <ScrollRestoration getKey={(location) => location.pathname} />
     </>

@@ -48,6 +48,8 @@ class ProductSummary(Schema):
     rating_avg: float
     review_count: int
     in_stock: bool
+    sizes: list[str] = Field(description="Size options; the first is the default. Empty if none")
+    colors: list["ColorRead"] = Field(description="Colour options; the first is the default")
 
 
 class ProductImageRead(Schema):
@@ -72,8 +74,6 @@ class ProductDetail(ProductSummary):
     short_description: str
     description: list[str]
     images: list[ProductImageRead]
-    sizes: list[str]
-    colors: list[ColorRead]
     stock: int
     category: CategoryRef
     room: RoomRef | None

@@ -49,7 +49,7 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 | 400 | `BAD_REQUEST`, `CART_EMPTY`, `COMPARE_LIMIT_EXCEEDED`, `INVALID_PRICE_RANGE` |
 | 401 | `UNAUTHENTICATED`, `INVALID_CREDENTIALS`, `TOKEN_EXPIRED` |
 | 403 | `FORBIDDEN` |
-| 404 | `NOT_FOUND`, `PRODUCT_NOT_FOUND`, `CART_NOT_FOUND`, `ORDER_NOT_FOUND` |
+| 404 | `NOT_FOUND`, `PRODUCT_NOT_FOUND`, `CART_NOT_FOUND`, `CART_ITEM_NOT_FOUND`, `ORDER_NOT_FOUND` |
 | 405 | `METHOD_NOT_ALLOWED` |
 | 409 | `EMAIL_ALREADY_REGISTERED`, `ALREADY_SUBSCRIBED`, `INSUFFICIENT_STOCK` |
 | 422 | `VALIDATION_ERROR` (with `details[]`) |
@@ -94,12 +94,14 @@ ProductSummary = {
   "id": 1, "slug": "syltherine", "name": "Syltherine", "subtitle": "Stylish cafe chair",
   "price_minor": 25000, "compare_at_price_minor": 35000, "discount_percent": 29,
   "is_new": false, "image_url": "/media/products/syltherine-1.webp",
-  "rating_avg": 4.0, "review_count": 1, "in_stock": true
+  "rating_avg": 4.0, "review_count": 1, "in_stock": true,
+  "sizes": [], "colors": [{ "name": "White", "hex": "#F4F4F2" }, { "name": "Sage", "hex": "#8A9A83" }]
 }
 ```
 - `discount_percent` = `(compare_at − price) / compare_at × 100`, rounded half up; `null` when not on sale.
 - `image_url` is the first gallery image. `in_stock` is `stock > 0`.
-`GET /products/{slug}` → `ProductDetail`: ProductSummary plus `sku`, `description` (paragraphs[]), `short_description`, `images[] {url, alt, kind: gallery|description}`, `sizes[]` (for example `["L","XL","XS"]`), `colors[] {name, hex}`, `stock`, `category {slug,name}`, `room {slug,name}|null`, `tags[]`, and `specs[] {group, label, value}`.
+- `sizes` / `colors` are the product's options; the first of each is the default (product cards add to the cart with them).
+`GET /products/{slug}` → `ProductDetail`: ProductSummary plus `sku`, `description` (paragraphs[]), `short_description`, `images[] {url, alt, kind: gallery|description}`, `stock`, `category {slug,name}`, `room {slug,name}|null`, `tags[]`, and `specs[] {group, label, value}`.
 
 `GET /products/{slug}/related?limit=4&offset=0` → `{ items: ProductSummary[], has_more: bool }`. Same category, current product excluded, ordered by position. `limit` 1–16 (default 4), `offset` ≥ 0. Unknown slug → `404 PRODUCT_NOT_FOUND`.
 
@@ -126,7 +128,7 @@ ProductSummary = {
 | DELETE | `/cart` | — | `200 Cart` (emptied) |
 | POST 🔒 | `/cart/merge` | — | `200 Cart` (moves the `X-Cart-Id` items into the user's cart) |
 
-Cart resolution: if a token is present, use the user's cart. Otherwise use `X-Cart-Id`. If neither is present, return `404 CART_NOT_FOUND` (except for `POST /cart`).
+Cart resolution: `X-Cart-Id` names the cart. A missing, malformed or unknown ID returns `404 CART_NOT_FOUND` (except for `POST /cart`). From Phase 5, a token selects the user's cart instead.
 ```json
 Cart = {
   "id": "5e0c…", "items": [
@@ -138,8 +140,10 @@ Cart = {
 ```
 Rules:
 - The same `(product_id, size, color)` merges into one line, adding the quantities.
-- The quantity cap is `min(10, stock)`. Going over it returns `409 INSUFFICIENT_STOCK`.
-- `size` and `color` are required when the product defines them, and must be among the allowed values (otherwise 422).
+- The quantity cap per line is `min(10, stock)`. Going over it (including via a merge) returns `409 INSUFFICIENT_STOCK` with a message such as "Only 10 of Asgaard sofa can be added (requested 13)", and the cart is unchanged. `quantity` outside 1–10 in the body is a plain 422.
+- `size` and `color` are required when the product defines them and must be among its values; sending one for a product without that option is also an error. All three are `422 VALIDATION_ERROR` with `details[].field` = `size` / `color`.
+- `unit_price_minor` is the product's current price; `item_count` is the total number of units (the header badge); `total_minor` equals `subtotal_minor` (free shipping, no tax).
+- An unknown `product_id` → `404 PRODUCT_NOT_FOUND`; an unknown line → `404 CART_ITEM_NOT_FOUND`.
 
 ### 2.6 Orders
 `POST /orders` (token optional, `X-Cart-Id` required for guests)
@@ -149,12 +153,15 @@ Rules:
     "notes": null },
   "payment_method": "bank_transfer" | "cod" }
 ```
-→ `201 Order`. It uses the cart as it stands, snapshots names and prices, decrements stock, and empties the cart. An empty cart returns `400 CART_EMPTY`.
+→ `201 Order`. It uses the cart as it stands, snapshots names, prices and images, decrements stock, and empties the cart.
+- An empty cart → `400 CART_EMPTY`; missing/unknown `X-Cart-Id` → `404 CART_NOT_FOUND`.
+- Billing rules: `first_name`/`last_name` 1–50, `company` ≤100, `street` 1–200, `city` 1–80, `zip` 3–10 of letters/digits/space/hyphen, `phone` 7–20 of digits/space/`()-` with optional leading `+`, a valid `email`, `notes` ≤500. `country`/`province` must be a pair from `/meta/locations` (otherwise 422 on `billing.country` / `billing.province`). Field errors come back as `details[].field` = `billing.<name>`.
+- If any line now exceeds stock → `409 INSUFFICIENT_STOCK` with `details[].field` = `items.<index>`; nothing is ordered.
 
-`Order = { order_number: "FUR-000123", status: "pending", payment_method, billing, items[] {product_name, size, color, quantity, unit_price_minor, line_total_minor}, subtotal_minor, total_minor, created_at }`
+`Order = { order_number: "FUR-000123", status: "pending", payment_method, billing, items[] {product_slug, product_name, image_url, size, color, quantity, unit_price_minor, line_total_minor}, subtotal_minor, total_minor, created_at }`. `order_number` is `FUR-` plus the zero-padded order id.
 
-`GET /orders/{order_number}?email=` → Order. The owner may use a token. A guest must pass the matching `email`, otherwise `404`.
-`GET /orders` 🔒 → `Page<OrderSummary>`, newest first.
+`GET /orders/{order_number}?email=` → Order. `email` is required and compared case-insensitively; a wrong email is the same `404 ORDER_NOT_FOUND` as an unknown number, so order numbers can't be probed. (Phase 5: the owner may use a token instead.)
+`GET /orders` 🔒 → `Page<OrderSummary>`, newest first (Phase 5).
 
 ### 2.7 Wishlist 🔒
 `GET /wishlist` → `ProductSummary[]` · `PUT /wishlist/{product_id}` → `204` (idempotent) · `DELETE /wishlist/{product_id}` → `204` (idempotent).
@@ -174,4 +181,5 @@ Rules:
 | 2026-09-23 | Initial contract drafted from the design |
 | 2026-09-23 | Currency set to USD |
 | 2026-09-23 | Phase 1: catalog and meta endpoints implemented; documented validation rules, `INVALID_PRICE_RANGE`, `METHOD_NOT_ALLOWED`, discount rounding and compare semantics |
+| 2026-09-23 | Phase 4: cart and order endpoints implemented; `sizes`/`colors` added to ProductSummary; `CART_ITEM_NOT_FOUND`; validation, stock and lookup rules documented |
 | 2026-09-23 | Removed test-support (`/__test__/*`) and bug-toggle (`/__bugs__/*`) endpoints; tests are out of scope |

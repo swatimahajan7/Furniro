@@ -61,14 +61,25 @@ export function Button({
   className,
   children,
   type = 'button',
+  onClick,
   ...rest
 }: ButtonProps) {
   return (
     <button
       type={type}
       className={buttonClassName({ variant, size, fullWidth, uppercase }, className)}
-      disabled={disabled || isLoading}
+      disabled={disabled}
+      // While loading the button stays focusable (a `disabled` button drops keyboard focus, so
+      // e.g. the cart drawer could not return focus to it) but ignores clicks and submits.
+      aria-disabled={isLoading || undefined}
       aria-busy={isLoading || undefined}
+      onClick={(event) => {
+        if (isLoading) {
+          event.preventDefault();
+          return;
+        }
+        onClick?.(event);
+      }}
       {...rest}
     >
       {isLoading && <Spinner size="sm" />}

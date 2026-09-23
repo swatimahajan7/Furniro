@@ -106,8 +106,11 @@ export function ProductInfo({ product, onShowReviews }: ProductInfoProps) {
         <Button
           variant="outline-dark"
           className={styles.buyButton}
-          onClick={() => actions.addToCart(product)}
+          onClick={() =>
+            void actions.addToCart(product, { quantity, size: size || null, color: color || null })
+          }
           disabled={!product.in_stock}
+          isLoading={actions.isAdding}
           data-testid="pdp-add-to-cart"
         >
           Add To Cart

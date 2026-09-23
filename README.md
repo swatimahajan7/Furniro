@@ -4,9 +4,9 @@ A full-stack furniture e-commerce demo app (React + FastAPI) built from the Furn
 Scope is the app itself: no automated tests are included, but every UI element carries a stable
 `data-testid` so tests can be added later.
 
-> **Status:** Phases 0–3 are complete: the catalog API is live at `/docs`, and the Home, Shop and Product
-> screens are built on it. The component gallery is at http://localhost:5180/dev/ui (dev builds only).
-> Cart and checkout arrive in Phase 4.
+> **Status:** Phases 0–4 are complete: browse the catalog, add to the cart, check out as a guest and view the
+> order confirmation. Accounts, wishlist and compare arrive in Phase 5. Placing orders decrements stock; run
+> `make seed-reset` to restore the baseline.
 
 ## Documentation map
 | Doc | What it covers |

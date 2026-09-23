@@ -4,6 +4,60 @@
  */
 
 export interface paths {
+  '/api/v1/cart': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** The cart named by X-Cart-Id */
+    get: operations['get_cart_api_v1_cart_get'];
+    put?: never;
+    /** Create an empty anonymous cart */
+    post: operations['create_cart_api_v1_cart_post'];
+    /** Empty the cart */
+    delete: operations['clear_cart_api_v1_cart_delete'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/cart/items': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Add a product (merges with an identical line) */
+    post: operations['add_item_api_v1_cart_items_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/cart/items/{item_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Remove a line */
+    delete: operations['remove_item_api_v1_cart_items__item_id__delete'];
+    options?: never;
+    head?: never;
+    /** Change a line's quantity */
+    patch: operations['update_item_api_v1_cart_items__item_id__patch'];
+    trace?: never;
+  };
   '/api/v1/categories': {
     parameters: {
       query?: never;
@@ -81,6 +135,40 @@ export interface paths {
     };
     /** Countries and their provinces for the checkout form */
     get: operations['get_locations_api_v1_meta_locations_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/orders': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Place an order from the cart (guest checkout) */
+    post: operations['place_order_api_v1_orders_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/orders/{order_number}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Look up an order with the email used at checkout */
+    get: operations['get_order_api_v1_orders__order_number__get'];
     put?: never;
     post?: never;
     delete?: never;
@@ -195,6 +283,140 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /**
+     * BillingIn
+     * @description Checkout billing details (FR-CHK-01). Country/province must exist in /meta/locations.
+     */
+    BillingIn: {
+      /** City */
+      city: string;
+      /** Company */
+      company?: string | null;
+      /**
+       * Country
+       * @example LK
+       */
+      country: string;
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Notes */
+      notes?: string | null;
+      /**
+       * Phone
+       * @example +94 77 123 4567
+       */
+      phone: string;
+      /**
+       * Province
+       * @example WP
+       */
+      province: string;
+      /** Street */
+      street: string;
+      /**
+       * Zip
+       * @example 10100
+       */
+      zip: string;
+    };
+    /** BillingRead */
+    BillingRead: {
+      /** City */
+      city: string;
+      /** Company */
+      company: string | null;
+      /** Country */
+      country: string;
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Notes */
+      notes: string | null;
+      /** Phone */
+      phone: string;
+      /** Province */
+      province: string;
+      /** Street */
+      street: string;
+      /** Zip */
+      zip: string;
+    };
+    /** CartItemAdd */
+    CartItemAdd: {
+      /**
+       * Color
+       * @description Required if the product has colours
+       */
+      color?: string | null;
+      /** Product Id */
+      product_id: number;
+      /**
+       * Quantity
+       * @default 1
+       */
+      quantity: number;
+      /**
+       * Size
+       * @description Required if the product has sizes
+       */
+      size?: string | null;
+    };
+    /** CartItemRead */
+    CartItemRead: {
+      /** Color */
+      color: string | null;
+      /** Id */
+      id: number;
+      /** Line Total Minor */
+      line_total_minor: number;
+      product: components['schemas']['ProductSummary'];
+      /** Quantity */
+      quantity: number;
+      /** Size */
+      size: string | null;
+      /**
+       * Unit Price Minor
+       * @description Current product price, in cents
+       */
+      unit_price_minor: number;
+    };
+    /** CartItemUpdate */
+    CartItemUpdate: {
+      /** Quantity */
+      quantity: number;
+    };
+    /** CartRead */
+    CartRead: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Item Count
+       * @description Total units across all lines (the header badge)
+       */
+      item_count: number;
+      /** Items */
+      items: components['schemas']['CartItemRead'][];
+      /** Subtotal Minor */
+      subtotal_minor: number;
+      /**
+       * Total Minor
+       * @description Equals the subtotal: shipping is free, no tax
+       */
+      total_minor: number;
+    };
     /** CategoryRead */
     CategoryRead: {
       /** Name */
@@ -327,6 +549,54 @@ export interface components {
       /** Page Size Options */
       page_size_options: number[];
     };
+    /** OrderCreate */
+    OrderCreate: {
+      billing: components['schemas']['BillingIn'];
+      payment_method: components['schemas']['PaymentMethod'];
+    };
+    /** OrderItemRead */
+    OrderItemRead: {
+      /** Color */
+      color: string | null;
+      /** Image Url */
+      image_url: string | null;
+      /** Line Total Minor */
+      line_total_minor: number;
+      /** Product Name */
+      product_name: string;
+      /** Product Slug */
+      product_slug: string;
+      /** Quantity */
+      quantity: number;
+      /** Size */
+      size: string | null;
+      /** Unit Price Minor */
+      unit_price_minor: number;
+    };
+    /** OrderRead */
+    OrderRead: {
+      billing: components['schemas']['BillingRead'];
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Items */
+      items: components['schemas']['OrderItemRead'][];
+      /** Order Number */
+      order_number: string;
+      payment_method: components['schemas']['PaymentMethod'];
+      status: components['schemas']['OrderStatus'];
+      /** Subtotal Minor */
+      subtotal_minor: number;
+      /** Total Minor */
+      total_minor: number;
+    };
+    /**
+     * OrderStatus
+     * @enum {string}
+     */
+    OrderStatus: 'pending';
     /** Page[ProductSummary] */
     Page_ProductSummary_: {
       /** Items */
@@ -353,10 +623,18 @@ export interface components {
       /** Total Pages */
       total_pages: number;
     };
+    /**
+     * PaymentMethod
+     * @enum {string}
+     */
+    PaymentMethod: 'bank_transfer' | 'cod';
     /** ProductDetail */
     ProductDetail: {
       category: components['schemas']['CategoryRef'];
-      /** Colors */
+      /**
+       * Colors
+       * @description Colour options; the first is the default
+       */
       colors: components['schemas']['ColorRead'][];
       /**
        * Compare At Price Minor
@@ -394,7 +672,10 @@ export interface components {
       room: components['schemas']['RoomRef'] | null;
       /** Short Description */
       short_description: string;
-      /** Sizes */
+      /**
+       * Sizes
+       * @description Size options; the first is the default. Empty if none
+       */
       sizes: string[];
       /** Sku */
       sku: string;
@@ -429,6 +710,11 @@ export interface components {
     /** ProductSummary */
     ProductSummary: {
       /**
+       * Colors
+       * @description Colour options; the first is the default
+       */
+      colors: components['schemas']['ColorRead'][];
+      /**
        * Compare At Price Minor
        * @description Original price in US cents when the product is on sale
        */
@@ -457,6 +743,11 @@ export interface components {
       rating_avg: number;
       /** Review Count */
       review_count: number;
+      /**
+       * Sizes
+       * @description Size options; the first is the default. Empty if none
+       */
+      sizes: string[];
       /** Slug */
       slug: string;
       /** Subtitle */
@@ -526,6 +817,270 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  get_cart_api_v1_cart_get: {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description Cart UUID returned by POST /cart */
+        'X-Cart-Id'?: string | null;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Cart (or item) not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  create_cart_api_v1_cart_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  clear_cart_api_v1_cart_delete: {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description Cart UUID returned by POST /cart */
+        'X-Cart-Id'?: string | null;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Cart (or item) not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  add_item_api_v1_cart_items_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description Cart UUID returned by POST /cart */
+        'X-Cart-Id'?: string | null;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CartItemAdd'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Cart (or item) not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description INSUFFICIENT_STOCK */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  remove_item_api_v1_cart_items__item_id__delete: {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description Cart UUID returned by POST /cart */
+        'X-Cart-Id'?: string | null;
+      };
+      path: {
+        item_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Cart (or item) not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  update_item_api_v1_cart_items__item_id__patch: {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description Cart UUID returned by POST /cart */
+        'X-Cart-Id'?: string | null;
+      };
+      path: {
+        item_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CartItemUpdate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Cart (or item) not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description INSUFFICIENT_STOCK */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   list_categories_api_v1_categories_get: {
     parameters: {
       query?: never;
@@ -667,6 +1222,111 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['CountryRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  place_order_api_v1_orders_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        'X-Cart-Id'?: string | null;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrderCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['OrderRead'];
+        };
+      };
+      /** @description CART_EMPTY */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description CART_NOT_FOUND */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description INSUFFICIENT_STOCK */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  get_order_api_v1_orders__order_number__get: {
+    parameters: {
+      query: {
+        /** @description The billing email of the order */
+        email: string;
+      };
+      header?: never;
+      path: {
+        order_number: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['OrderRead'];
+        };
+      };
+      /** @description ORDER_NOT_FOUND */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Validation error (code VALIDATION_ERROR) */

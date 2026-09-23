@@ -1,4 +1,3 @@
-export { AppLayout } from './AppLayout';
 export { Breadcrumb, type BreadcrumbProps, type Crumb } from './Breadcrumb';
 export { ComingSoon } from './ComingSoon';
 export { FeatureStrip } from './FeatureStrip';

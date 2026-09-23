@@ -52,6 +52,27 @@
   color: var(--color-primary);
 }
 
+.cartButton {
+  position: relative;
+}
+
+.cartCount {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
 .hideOnMobile {
   display: none;
 }

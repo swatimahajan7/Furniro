@@ -128,7 +128,7 @@ Icons: `lucide-react` equivalents. Use `User`, `Search`, `Heart`, `ShoppingCart`
 - Spec table with group headings (General, Product, Dimensions, Warranty), a label column, and one column per product with vertical dividers. There is a gold "Add To Cart" button at the bottom of each column.
 
 ### 4.6 Cart (`06-cart.jpg`)
-- Table header row on cream: Product, Price, Quantity, Subtotal. Each row has an image (108 px, cream), name (muted), price (muted), a qty input box, the subtotal, and a gold trash icon.
+- Table header row on cream: Product, Price, Quantity, Subtotal. Each row has an image (108 px, cream), name (muted) with its size/colour, price (muted), a quantity control, the subtotal, and a gold trash icon. The design's plain quantity box is built as the compact `- n +` stepper (clearer, and each change is one request). Below 768 px rows become labelled cards.
 - Cart Totals box (393×390, cream): Subtotal muted, Total in gold 20/500, and a "Check Out" outline-dark button.
 
 ### 4.7 Checkout (`07-checkout.jpg`)

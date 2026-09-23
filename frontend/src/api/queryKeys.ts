@@ -19,6 +19,10 @@ export const queryKeys = {
     reviews: (slug: string) => ['products', 'reviews', slug] as const,
     compare: (ids: readonly number[]) => ['products', 'compare', ids] as const,
   },
+  cart: (cartId: string | null) => ['cart', cartId] as const,
+  orders: {
+    detail: (orderNumber: string, email: string) => ['orders', orderNumber, email] as const,
+  },
   categories: ['categories'] as const,
   rooms: ['rooms'] as const,
   inspirations: ['inspirations'] as const,
