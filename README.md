@@ -4,7 +4,8 @@ A full-stack furniture e-commerce demo app (React + FastAPI) built from the Furn
 Scope is the app itself: no automated tests are included, but every UI element carries a stable
 `data-testid` so tests can be added later.
 
-> **Status:** Phase 0 (foundation) is complete. The app currently serves a placeholder page with live API health.
+> **Status:** Phases 0–1 are complete: the catalog API (products, filters, compare, reviews, meta) is live at `/docs`.
+> The frontend still shows a placeholder page; the design-system shell is Phase 2.
 > See [PLAN.md](PLAN.md) §7 for the phased roadmap.
 
 ## Documentation map
@@ -28,6 +29,8 @@ Scope is the app itself: no automated tests are included, but every UI element c
 ```bash
 make install    # uv sync + npm ci
 make dev        # API on http://localhost:8100 (Swagger: /docs), web on http://localhost:5180
+                # (the API migrates and seeds an empty database on startup)
+make seed-reset # wipe the database and reload the deterministic seed
 make check      # everything CI runs: lint, typecheck, frontend build, API-contract drift
 make help       # all targets
 ```

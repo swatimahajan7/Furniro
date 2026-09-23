@@ -1,0 +1,4226 @@
+[
+  {
+    "id": 1,
+    "slug": "syltherine",
+    "sku": "CH001",
+    "name": "Syltherine",
+    "subtitle": "Stylish cafe chair",
+    "short_description": "A sculpted cafe chair with a moulded seat and slim steel legs, sold as a bistro-ready set with its round table.",
+    "description": [
+      "Syltherine brings the ease of a Parisian cafe to your dining corner. The moulded seat is shaped to support you through long breakfasts, and the powder-coated legs keep the silhouette light.",
+      "It pairs naturally with small round tables and stacks two-high for storage, so it works just as well in a studio flat as in a busy family kitchen."
+    ],
+    "price_minor": 25000,
+    "compare_at_price_minor": 35000,
+    "is_new": false,
+    "is_featured": true,
+    "position": 1,
+    "stock": 24,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "White",
+        "hex": "#F4F4F2"
+      },
+      {
+        "name": "Sage",
+        "hex": "#8A9A83"
+      }
+    ],
+    "category": "chairs",
+    "room": "dining",
+    "tags": [
+      "Chair",
+      "Dining",
+      "Cafe"
+    ],
+    "images": [
+      {
+        "url": "/media/products/syltherine-1.webp",
+        "alt": "Syltherine cafe chairs around a small white table",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 cafe table, 2 stools"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-SYL-01"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Powder-coated steel"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Matte white"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "110 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "60 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "60 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "9 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "46 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "40 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-02T00:00:00Z"
+  },
+  {
+    "id": 2,
+    "slug": "leviosa",
+    "sku": "CH002",
+    "name": "Leviosa",
+    "subtitle": "Stylish cafe chair",
+    "short_description": "A wraparound shell chair on tapered oak legs, as comfortable at the desk as at the dinner table.",
+    "description": [
+      "Leviosa's single-piece shell curves around your back and arms, giving the support of an armchair in the footprint of a side chair.",
+      "Solid oak legs are finished in a clear matte lacquer that resists rings and scuffs, and the shell wipes clean with a damp cloth."
+    ],
+    "price_minor": 25000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": true,
+    "position": 2,
+    "stock": 30,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "White",
+        "hex": "#F4F4F2"
+      },
+      {
+        "name": "Black",
+        "hex": "#000000"
+      }
+    ],
+    "category": "chairs",
+    "room": "dining",
+    "tags": [
+      "Chair",
+      "Dining"
+    ],
+    "images": [
+      {
+        "url": "/media/products/leviosa-1.webp",
+        "alt": "White Leviosa shell chair on oak legs",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 chair"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-LEV-02"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid oak"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Matte lacquer"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "120 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "56 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "80 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "54 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "6 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "42 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-03T00:00:00Z"
+  },
+  {
+    "id": 3,
+    "slug": "lolito",
+    "sku": "SS002",
+    "name": "Lolito",
+    "subtitle": "Luxury big sofa",
+    "short_description": "A deep-buttoned Chesterfield-style sofa with rolled arms and turned legs.",
+    "description": [
+      "Lolito reworks the classic Chesterfield with a softer, deeper seat. Hand-tufted buttons run across the back and arms, and pocket springs keep the cushions level for years.",
+      "The pearl upholstery is a stain-resistant performance weave, and the turned beech legs lift the sofa just enough to make cleaning easy."
+    ],
+    "price_minor": 70000,
+    "compare_at_price_minor": 140000,
+    "is_new": false,
+    "is_featured": true,
+    "position": 3,
+    "stock": 8,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Pearl",
+        "hex": "#E8E2DA"
+      },
+      {
+        "name": "Charcoal",
+        "hex": "#3A3A3A"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living",
+      "Chesterfield"
+    ],
+    "images": [
+      {
+        "url": "/media/products/lolito-1.webp",
+        "alt": "Lolito tufted sofa in pearl fabric",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 three-seater sofa"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-LOL-02"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid beech"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Performance polyester"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Pearl"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Pocket springs + foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Pearl weave"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "330 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "220 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "78 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "92 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "58 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "12 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "2 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "2 Years"
+      }
+    ],
+    "created_at": "2026-01-04T00:00:00Z"
+  },
+  {
+    "id": 4,
+    "slug": "respira",
+    "sku": "TB001",
+    "name": "Respira",
+    "subtitle": "Outdoor bar table and stool",
+    "short_description": "A weather-proof bar table with a matching stool, made for balconies and small patios.",
+    "description": [
+      "Respira is built from FSC-certified acacia treated with a marine-grade oil, so it can stay outside all year round.",
+      "The table folds flat in seconds and the stool tucks underneath, leaving plenty of room when the party is over."
+    ],
+    "price_minor": 5000,
+    "compare_at_price_minor": null,
+    "is_new": true,
+    "is_featured": true,
+    "position": 4,
+    "stock": 15,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Teak",
+        "hex": "#9B6B43"
+      }
+    ],
+    "category": "tables",
+    "room": null,
+    "tags": [
+      "Table",
+      "Outdoor",
+      "Bar"
+    ],
+    "images": [
+      {
+        "url": "/media/products/respira-1.webp",
+        "alt": "Living room with a teak Respira bar table",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 bar table, 1 stool"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "TB-RES-01"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Acacia wood"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Teak oil"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "60 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "Indonesia"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "105 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "14 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-03-06T00:00:00Z"
+  },
+  {
+    "id": 5,
+    "slug": "grifo",
+    "sku": "LT001",
+    "name": "Grifo",
+    "subtitle": "Night lamp",
+    "short_description": "An arched floor lamp with a linen shade that curves over the bed or reading chair.",
+    "description": [
+      "Grifo's slim arm reaches over the bedside so the light falls exactly where you read, while the weighted base keeps it steady.",
+      "A foot dimmer lets you go from reading light to night light without getting up. It takes any E27 bulb up to 60 W."
+    ],
+    "price_minor": 15000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": true,
+    "position": 5,
+    "stock": 40,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Linen",
+        "hex": "#F1ECE3"
+      },
+      {
+        "name": "Black",
+        "hex": "#000000"
+      }
+    ],
+    "category": "lighting",
+    "room": "bedroom",
+    "tags": [
+      "Lamp",
+      "Bedroom",
+      "Lighting"
+    ],
+    "images": [
+      {
+        "url": "/media/products/grifo-1.webp",
+        "alt": "Grifo arched lamp beside a bed",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 floor lamp"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "LT-GRI-01"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Steel + linen"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Matte black"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "40 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "165 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "85 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "7 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-06T00:00:00Z"
+  },
+  {
+    "id": 6,
+    "slug": "muggo",
+    "sku": "DC001",
+    "name": "Muggo",
+    "subtitle": "Small mug",
+    "short_description": "A hand-glazed stoneware mug with a two-tone finish and a comfortable wide handle.",
+    "description": [
+      "Every Muggo is glazed by hand, so the ocean-blue interior varies slightly from mug to mug.",
+      "It holds 350 ml, and it's safe in the dishwasher and microwave."
+    ],
+    "price_minor": 1500,
+    "compare_at_price_minor": null,
+    "is_new": true,
+    "is_featured": true,
+    "position": 6,
+    "stock": 120,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Ocean",
+        "hex": "#1F6F9F"
+      },
+      {
+        "name": "White",
+        "hex": "#FFFFFF"
+      }
+    ],
+    "category": "decor",
+    "room": "dining",
+    "tags": [
+      "Mug",
+      "Kitchen",
+      "Gift"
+    ],
+    "images": [
+      {
+        "url": "/media/products/muggo-1.webp",
+        "alt": "White Muggo mug with a blue interior",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 mug"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-MUG-01"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Stoneware"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Gloss glaze"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "Portugal"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "12 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "9 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "9 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "0.4 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "6 Months Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "6 Months"
+      }
+    ],
+    "created_at": "2026-03-08T00:00:00Z"
+  },
+  {
+    "id": 7,
+    "slug": "pingky",
+    "sku": "BD001",
+    "name": "Pingky",
+    "subtitle": "Cute bed set",
+    "short_description": "A soft cotton bedding set with a playful woodland print, including a duvet cover and two pillowcases.",
+    "description": [
+      "Pingky is woven from long-staple cotton percale that gets softer with every wash, printed with water-based inks.",
+      "The set includes one duvet cover with hidden buttons and two envelope pillowcases."
+    ],
+    "price_minor": 70000,
+    "compare_at_price_minor": 140000,
+    "is_new": false,
+    "is_featured": true,
+    "position": 7,
+    "stock": 12,
+    "sizes": [
+      "Single",
+      "Double",
+      "Queen"
+    ],
+    "colors": [
+      {
+        "name": "Blush",
+        "hex": "#F2B8C0"
+      }
+    ],
+    "category": "beds",
+    "room": "bedroom",
+    "tags": [
+      "Bedding",
+      "Bedroom",
+      "Kids"
+    ],
+    "images": [
+      {
+        "url": "/media/products/pingky-1.webp",
+        "alt": "Pink Pingky bedding set with an animal print",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 duvet cover, 2 pillowcases"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "BD-PIN-01"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Cotton percale"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Printed"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "200 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "1 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "200 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "1.6 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "6 Months Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "6 Months"
+      }
+    ],
+    "created_at": "2026-01-08T00:00:00Z"
+  },
+  {
+    "id": 8,
+    "slug": "potty",
+    "sku": "DC002",
+    "name": "Potty",
+    "subtitle": "Minimalist flower pot",
+    "short_description": "A stacked ceramic vase with a matte bone glaze, beautiful with or without flowers.",
+    "description": [
+      "Potty's stacked-pebble shape is wheel-thrown and then glazed in a soft matte bone that suits any palette.",
+      "It's watertight for fresh stems, and it stands 30 cm tall."
+    ],
+    "price_minor": 5000,
+    "compare_at_price_minor": null,
+    "is_new": true,
+    "is_featured": true,
+    "position": 8,
+    "stock": 55,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Bone",
+        "hex": "#EEE9E1"
+      }
+    ],
+    "category": "decor",
+    "room": "living",
+    "tags": [
+      "Vase",
+      "Decor",
+      "Minimal"
+    ],
+    "images": [
+      {
+        "url": "/media/products/potty-1.webp",
+        "alt": "Potty ceramic vase holding white flowers",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 vase"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-POT-02"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Ceramic"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Matte glaze"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "14 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "30 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "14 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "1.1 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "6 Months Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "6 Months"
+      }
+    ],
+    "created_at": "2026-03-10T00:00:00Z"
+  },
+  {
+    "id": 9,
+    "slug": "asgaard-sofa",
+    "sku": "SS001",
+    "name": "Asgaard sofa",
+    "subtitle": "Rope-woven lounge sofa",
+    "short_description": "A solid-wood lounge sofa with hand-woven rope arms and deep, removable cushions.",
+    "description": [
+      "Asgaard pairs a kiln-dried solid wood frame with arms and back panels hand-woven from soft marine rope. The result is a sofa that feels relaxed and architectural at the same time.",
+      "The deep seat cushions are filled with high-resilience foam wrapped in fibre, and every cover zips off for washing. Set it on its own or combine it with the matching armchairs for a full lounge."
+    ],
+    "price_minor": 250000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 9,
+    "stock": 18,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Lavender",
+        "hex": "#816DFA"
+      },
+      {
+        "name": "Black",
+        "hex": "#000000"
+      },
+      {
+        "name": "Gold",
+        "hex": "#B88E2F"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Chair",
+      "Home",
+      "Shop"
+    ],
+    "images": [
+      {
+        "url": "/media/products/asgaard-sofa-1.webp",
+        "alt": "Asgaard sofa with two matching armchairs",
+        "kind": "gallery"
+      },
+      {
+        "url": "/media/products/asgaard-sofa-2.webp",
+        "alt": "Asgaard lounge set with a coffee table",
+        "kind": "gallery"
+      },
+      {
+        "url": "/media/products/asgaard-sofa-3.webp",
+        "alt": "Upholstered loveseat with floral fabric",
+        "kind": "gallery"
+      },
+      {
+        "url": "/media/products/asgaard-sofa-4.webp",
+        "alt": "Beige deep-seat sofa with a round coffee table",
+        "kind": "gallery"
+      },
+      {
+        "url": "/media/products/asgaard-sofa-desc-1.webp",
+        "alt": "White modular sofa, front view",
+        "kind": "description"
+      },
+      {
+        "url": "/media/products/asgaard-sofa-desc-2.webp",
+        "alt": "White modular sofa with chaise",
+        "kind": "description"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 sectional sofa"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "TFCBLIGRBL6SRHS"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid Wood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "L-shaped"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Fabric + Cotton"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Bright Grey & Lion"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Bright Grey & Lion"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "265.32 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "167.76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "45 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "41.52 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "5.46 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-10T00:00:00Z"
+  },
+  {
+    "id": 10,
+    "slug": "outdoor-sofa-set",
+    "sku": "SS003",
+    "name": "Outdoor Sofa Set",
+    "subtitle": "1 three-seater, 2 single seaters",
+    "short_description": "A weather-ready teak lounge set with navy cushions: one three-seater and two armchairs.",
+    "description": [
+      "Built from grade-A teak and finished with UV-stable navy cushions, this set is at home on a covered terrace or a sunny living room.",
+      "Quick-dry foam and removable covers mean a summer shower is no reason to move indoors."
+    ],
+    "price_minor": 224000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 10,
+    "stock": 6,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Navy",
+        "hex": "#1E2A44"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Outdoor",
+      "Set"
+    ],
+    "images": [
+      {
+        "url": "/media/products/outdoor-sofa-set-1.webp",
+        "alt": "Teak outdoor sofa set with navy cushions",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 Three Seater, 2 Single Seater"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DTUBLIGRBL568"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid Wood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "L-shaped"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Fabric + Cotton"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Bright Grey & Lion"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Matte"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Bright Grey & Lion"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "Yes"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "300 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "265.32 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "167.76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "65 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "41.52 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "5.46 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1.2 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty of the product is limited to manufacturing defects only."
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "3 Months"
+      }
+    ],
+    "created_at": "2026-01-11T00:00:00Z"
+  },
+  {
+    "id": 11,
+    "slug": "casaliving-wood",
+    "sku": "SS004",
+    "name": "Casaliving Wood",
+    "subtitle": "Grey sofa with oak legs",
+    "short_description": "A tailored three-seater in stone-grey weave on solid oak legs, with jewel-tone cushions included.",
+    "description": [
+      "Casaliving Wood has clean, tailored lines and a firm-but-forgiving seat that keeps its shape for years.",
+      "It comes with three scatter cushions in teal, grey and magenta, so the sofa looks styled from day one."
+    ],
+    "price_minor": 270000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 11,
+    "stock": 9,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Stone Grey",
+        "hex": "#9A9A96"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living",
+      "Oak"
+    ],
+    "images": [
+      {
+        "url": "/media/products/casaliving-wood-1.webp",
+        "alt": "Grey Casaliving sofa with colourful cushions",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 three-seater sofa, 3 cushions"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-CAS-04"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid oak"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Polyester weave"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Stone Grey"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam + fibre"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural oak"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "300 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "210 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "84 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "90 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "52 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "14 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "2 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "2 Years"
+      }
+    ],
+    "created_at": "2026-01-12T00:00:00Z"
+  },
+  {
+    "id": 12,
+    "slug": "vesterby",
+    "sku": "SS005",
+    "name": "Vesterby",
+    "subtitle": "L-shaped sectional sofa",
+    "short_description": "A modular L-shaped sectional with a reversible chaise, sized for family movie nights.",
+    "description": [
+      "A modular L-shaped sectional with a reversible chaise, sized for family movie nights. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 185000,
+    "compare_at_price_minor": 230000,
+    "is_new": false,
+    "is_featured": false,
+    "position": 12,
+    "stock": 7,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Charcoal Grey",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/grey-sectional-1.webp",
+        "alt": "Grey Vesterby sectional in a bright room",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 l-shaped sectional sofa"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-VES-05"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "L-shaped"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Linen-look fabric"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Charcoal Grey"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Pocket springs + foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Charcoal Grey"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "285 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "82 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "160 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "74 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-13T00:00:00Z"
+  },
+  {
+    "id": 13,
+    "slug": "nordhavn",
+    "sku": "SS006",
+    "name": "Nordhavn",
+    "subtitle": "Sofa and coffee table set",
+    "short_description": "A light-grey Scandinavian sofa bundled with a glass-topped coffee table.",
+    "description": [
+      "A light-grey Scandinavian sofa bundled with a glass-topped coffee table. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 160000,
+    "compare_at_price_minor": null,
+    "is_new": true,
+    "is_featured": false,
+    "position": 13,
+    "stock": 10,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Light Grey",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/nordic-sofa-set-1.webp",
+        "alt": "Nordhavn grey sofa with a glass coffee table",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 sofa and coffee table set"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-NOR-06"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Woven polyester"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Light Grey"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Light Grey"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "215 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "80 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "88 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "49 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-03-15T00:00:00Z"
+  },
+  {
+    "id": 14,
+    "slug": "brandy",
+    "sku": "SS007",
+    "name": "Brandy",
+    "subtitle": "Leather two-seater sofa",
+    "short_description": "A mid-century two-seater in full-grain cognac leather that ages beautifully.",
+    "description": [
+      "A mid-century two-seater in full-grain cognac leather that ages beautifully. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 195000,
+    "compare_at_price_minor": 260000,
+    "is_new": false,
+    "is_featured": false,
+    "position": 14,
+    "stock": 5,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Cognac",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/cognac-leather-sofa-1.webp",
+        "alt": "Brandy cognac leather sofa in sunlight",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 leather two-seater sofa"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-BRA-07"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Full-grain leather"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Cognac"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam + feather"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Cognac"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "180 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "86 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "44 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-15T00:00:00Z"
+  },
+  {
+    "id": 15,
+    "slug": "florentine",
+    "sku": "SS008",
+    "name": "Florentine",
+    "subtitle": "Floral fabric loveseat",
+    "short_description": "A compact loveseat in a botanical jacquard, with a solid walnut base.",
+    "description": [
+      "A compact loveseat in a botanical jacquard, with a solid walnut base. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 89000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 15,
+    "stock": 11,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Floral Ivory",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/asgaard-sofa-3.webp",
+        "alt": "Florentine loveseat with floral upholstery",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 floral fabric loveseat"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-FLO-08"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Jacquard cotton"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Floral Ivory"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Floral Ivory"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "150 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "82 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "80 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "31 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-16T00:00:00Z"
+  },
+  {
+    "id": 16,
+    "slug": "cumulo",
+    "sku": "SS009",
+    "name": "Cumulo",
+    "subtitle": "Deep-seat sofa with coffee table",
+    "short_description": "A cloud-soft deep-seat sofa in oat bouclé, shown with its round walnut coffee table.",
+    "description": [
+      "A cloud-soft deep-seat sofa in oat bouclé, shown with its round walnut coffee table. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 210000,
+    "compare_at_price_minor": 280000,
+    "is_new": false,
+    "is_featured": false,
+    "position": 16,
+    "stock": 4,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Oat",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/asgaard-sofa-4.webp",
+        "alt": "Cumulo beige deep-seat sofa",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 deep-seat sofa with coffee table"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-CUM-09"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Bouclé"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Oat"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Feather + foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Oat"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "240 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "72 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "105 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "61 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-17T00:00:00Z"
+  },
+  {
+    "id": 17,
+    "slug": "asgaard-lounge-set",
+    "sku": "SS010",
+    "name": "Asgaard Lounge Set",
+    "subtitle": "Sofa, armchairs and coffee table",
+    "short_description": "The complete Asgaard lounge: sofa, two armchairs and a solid-wood coffee table.",
+    "description": [
+      "The complete Asgaard lounge: sofa, two armchairs and a solid-wood coffee table. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 390000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 17,
+    "stock": 3,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Slate",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/asgaard-sofa-2.webp",
+        "alt": "Asgaard lounge set around a coffee table",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 sofa, armchairs and coffee table"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-ASG-10"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Set"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Fabric + Cotton"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Slate"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Slate"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "265 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "168 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "96 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-18T00:00:00Z"
+  },
+  {
+    "id": 18,
+    "slug": "lindholm",
+    "sku": "SS011",
+    "name": "Lindholm",
+    "subtitle": "Linen slipcover sofa",
+    "short_description": "A relaxed three-seater with a washable linen slipcover.",
+    "description": [
+      "A relaxed three-seater with a washable linen slipcover. Every piece is assembled by hand in our partner workshop and inspected before it leaves.",
+      "Covers are removable for cleaning, and the frame is built from kiln-dried hardwood for long life."
+    ],
+    "price_minor": 130000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 18,
+    "stock": 13,
+    "sizes": [
+      "L",
+      "XL",
+      "XS"
+    ],
+    "colors": [
+      {
+        "name": "Sand",
+        "hex": "#A39E93"
+      }
+    ],
+    "category": "sofas",
+    "room": "living",
+    "tags": [
+      "Sofa",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/rooms/living.webp",
+        "alt": "Lindholm linen sofa with throws and cushions",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 linen slipcover sofa"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "SS-LIN-11"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Kiln-dried hardwood"
+      },
+      {
+        "group": "General",
+        "label": "Configuration",
+        "value": "Straight"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Washed linen"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Sand"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Fibre"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Sand"
+      },
+      {
+        "group": "Product",
+        "label": "Adjustable Headrest",
+        "value": "No"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "280 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "205 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "85 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "95 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "46 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "44 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Leg Height",
+        "value": "10 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-19T00:00:00Z"
+  },
+  {
+    "id": 19,
+    "slug": "winsley",
+    "sku": "CH003",
+    "name": "Winsley",
+    "subtitle": "Velvet wingback chair",
+    "short_description": "A navy velvet wingback with a high back and solid oak legs.",
+    "description": [
+      "A navy velvet wingback with a high back and solid oak legs. It is sized to fit smaller rooms without giving up comfort.",
+      "Glides on every leg protect your floors, and the frame is joined with mortise-and-tenon joints."
+    ],
+    "price_minor": 42000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 19,
+    "stock": 14,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Navy",
+        "hex": "#B8A58B"
+      }
+    ],
+    "category": "chairs",
+    "room": "living",
+    "tags": [
+      "Chair",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/wingback-chair-1.webp",
+        "alt": "Navy velvet Winsley wingback chair",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 velvet wingback chair"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-WIN-03"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid wood"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Navy Velvet"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Navy Velvet"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Navy Velvet"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "120 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "95 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "12 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-20T00:00:00Z"
+  },
+  {
+    "id": 20,
+    "slug": "mostarda",
+    "sku": "CH004",
+    "name": "Mostarda",
+    "subtitle": "Mustard lounge armchair",
+    "short_description": "A curved lounge armchair in mustard velvet that brightens any corner.",
+    "description": [
+      "A curved lounge armchair in mustard velvet that brightens any corner. It is sized to fit smaller rooms without giving up comfort.",
+      "Glides on every leg protect your floors, and the frame is joined with mortise-and-tenon joints."
+    ],
+    "price_minor": 38000,
+    "compare_at_price_minor": 47500,
+    "is_new": false,
+    "is_featured": false,
+    "position": 20,
+    "stock": 9,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Mustard",
+        "hex": "#B8A58B"
+      }
+    ],
+    "category": "chairs",
+    "room": "living",
+    "tags": [
+      "Chair",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/products/mustard-armchair-1.webp",
+        "alt": "Mustard Mostarda armchair in a bright room",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 mustard lounge armchair"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-MOS-04"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid wood"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Mustard Velvet"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Mustard Velvet"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Mustard Velvet"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "120 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "95 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "12 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-21T00:00:00Z"
+  },
+  {
+    "id": 21,
+    "slug": "bolla",
+    "sku": "CH005",
+    "name": "Bolla",
+    "subtitle": "Set of two birch stools",
+    "short_description": "Two stackable birch stools that double as side tables.",
+    "description": [
+      "Two stackable birch stools that double as side tables. It is sized to fit smaller rooms without giving up comfort.",
+      "Glides on every leg protect your floors, and the frame is joined with mortise-and-tenon joints."
+    ],
+    "price_minor": 14000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 21,
+    "stock": 26,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Natural",
+        "hex": "#B8A58B"
+      }
+    ],
+    "category": "chairs",
+    "room": "dining",
+    "tags": [
+      "Chair",
+      "Dining"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-04.webp",
+        "alt": "Two Bolla birch stools with a vase and camera",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 set of two birch stools"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-BOL-05"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid wood"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "120 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "95 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "12 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-22T00:00:00Z"
+  },
+  {
+    "id": 22,
+    "slug": "panca",
+    "sku": "CH006",
+    "name": "Panca",
+    "subtitle": "Upholstered bed bench",
+    "short_description": "A tufted end-of-bed bench in ivory boucle with a solid ash frame.",
+    "description": [
+      "A tufted end-of-bed bench in ivory boucle with a solid ash frame. It is sized to fit smaller rooms without giving up comfort.",
+      "Glides on every leg protect your floors, and the frame is joined with mortise-and-tenon joints."
+    ],
+    "price_minor": 54000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 22,
+    "stock": 7,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Ivory",
+        "hex": "#B8A58B"
+      }
+    ],
+    "category": "chairs",
+    "room": "bedroom",
+    "tags": [
+      "Chair",
+      "Bedroom"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-06.webp",
+        "alt": "Panca tufted bench at the foot of a bed",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 upholstered bed bench"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-PAN-06"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid wood"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Ivory Boucle"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Ivory Boucle"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Ivory Boucle"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "120 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "95 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "12 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-23T00:00:00Z"
+  },
+  {
+    "id": 23,
+    "slug": "vecchio",
+    "sku": "CH007",
+    "name": "Vecchio",
+    "subtitle": "Vintage leather armchair",
+    "short_description": "A vintage-inspired armchair in aniline leather on a bentwood frame.",
+    "description": [
+      "A vintage-inspired armchair in aniline leather on a bentwood frame. It is sized to fit smaller rooms without giving up comfort.",
+      "Glides on every leg protect your floors, and the frame is joined with mortise-and-tenon joints."
+    ],
+    "price_minor": 61000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 23,
+    "stock": 4,
+    "sizes": [],
+    "colors": [
+      {
+        "name": "Tan",
+        "hex": "#B8A58B"
+      }
+    ],
+    "category": "chairs",
+    "room": "bedroom",
+    "tags": [
+      "Chair",
+      "Bedroom"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-03.webp",
+        "alt": "Vecchio brown leather armchair next to a bed",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 vintage leather armchair"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "CH-VEC-07"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid wood"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Material",
+        "value": "Tan Leather"
+      },
+      {
+        "group": "General",
+        "label": "Upholstery Color",
+        "value": "Tan Leather"
+      },
+      {
+        "group": "Product",
+        "label": "Filling Material",
+        "value": "Foam"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Tan Leather"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "120 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "70 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "95 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "12 KG"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Seat Height",
+        "value": "45 cm"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-24T00:00:00Z"
+  },
+  {
+    "id": 24,
+    "slug": "eikeland",
+    "sku": "BD002",
+    "name": "Eikeland",
+    "subtitle": "Oak platform bed",
+    "short_description": "A low platform bed in solid oak with a slatted base; no box spring needed.",
+    "description": [
+      "A low platform bed in solid oak with a slatted base; no box spring needed. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 120000,
+    "compare_at_price_minor": null,
+    "is_new": true,
+    "is_featured": false,
+    "position": 24,
+    "stock": 6,
+    "sizes": [
+      "Double",
+      "Queen",
+      "King"
+    ],
+    "colors": [],
+    "category": "beds",
+    "room": "bedroom",
+    "tags": [
+      "Bed",
+      "Bedroom"
+    ],
+    "images": [
+      {
+        "url": "/media/products/oak-platform-bed-1.webp",
+        "alt": "Eikeland oak platform bed in a white bedroom",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 oak platform bed"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "BD-EIK-02"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid oak"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "150 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "200 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "35 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "215 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "48 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-03-26T00:00:00Z"
+  },
+  {
+    "id": 25,
+    "slug": "tavola",
+    "sku": "TB002",
+    "name": "Tavola",
+    "subtitle": "Farmhouse dining table",
+    "short_description": "A six-seat farmhouse table in reclaimed pine with a hand-waxed top.",
+    "description": [
+      "A six-seat farmhouse table in reclaimed pine with a hand-waxed top. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 98000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 25,
+    "stock": 5,
+    "sizes": [],
+    "colors": [],
+    "category": "tables",
+    "room": "dining",
+    "tags": [
+      "Table",
+      "Dining"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-09.webp",
+        "alt": "Tavola farmhouse table set for lunch",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 farmhouse dining table"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "TB-TAV-02"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Reclaimed pine"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "150 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "180 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "76 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "90 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "42 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-26T00:00:00Z"
+  },
+  {
+    "id": 26,
+    "slug": "aurora",
+    "sku": "TB003",
+    "name": "Aurora",
+    "subtitle": "Dining table with four chairs",
+    "short_description": "A round-cornered dining table with four upholstered chairs.",
+    "description": [
+      "A round-cornered dining table with four upholstered chairs. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 145000,
+    "compare_at_price_minor": 170000,
+    "is_new": false,
+    "is_featured": false,
+    "position": 26,
+    "stock": 4,
+    "sizes": [],
+    "colors": [],
+    "category": "tables",
+    "room": "dining",
+    "tags": [
+      "Table",
+      "Dining"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-05.webp",
+        "alt": "Aurora dining set under a pendant lamp",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 dining table with four chairs"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "TB-AUR-03"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Ash veneer"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "150 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "160 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "90 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "55 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-27T00:00:00Z"
+  },
+  {
+    "id": 27,
+    "slug": "scrittoio",
+    "sku": "TB004",
+    "name": "Scrittoio",
+    "subtitle": "Compact writing desk",
+    "short_description": "A slim writing desk with a cable tray, sized for a hallway or bedroom corner.",
+    "description": [
+      "A slim writing desk with a cable tray, sized for a hallway or bedroom corner. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 46000,
+    "compare_at_price_minor": null,
+    "is_new": true,
+    "is_featured": false,
+    "position": 27,
+    "stock": 12,
+    "sizes": [],
+    "colors": [],
+    "category": "tables",
+    "room": "living",
+    "tags": [
+      "Table",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-02.webp",
+        "alt": "Scrittoio desk with a laptop and radio",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 compact writing desk"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "TB-SCR-04"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Oak veneer"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Maximum Load Capacity",
+        "value": "150 KG"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "110 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "75 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "50 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "19 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-03-29T00:00:00Z"
+  },
+  {
+    "id": 28,
+    "slug": "paravento",
+    "sku": "DC003",
+    "name": "Paravento",
+    "subtitle": "Folding rattan room divider",
+    "short_description": "A three-panel rattan screen that divides a room without blocking the light.",
+    "description": [
+      "A three-panel rattan screen that divides a room without blocking the light. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 32000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 28,
+    "stock": 8,
+    "sizes": [],
+    "colors": [],
+    "category": "decor",
+    "room": "bedroom",
+    "tags": [
+      "Decor",
+      "Bedroom"
+    ],
+    "images": [
+      {
+        "url": "/media/rooms/bedroom.webp",
+        "alt": "Paravento rattan screen behind cushions",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 folding rattan room divider"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-PAR-03"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Rattan + teak"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "150 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "170 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "3 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "11 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-29T00:00:00Z"
+  },
+  {
+    "id": 29,
+    "slug": "nuvola",
+    "sku": "DC004",
+    "name": "Nuvola",
+    "subtitle": "Chunky knit throw",
+    "short_description": "An oversized chunky-knit throw in undyed wool.",
+    "description": [
+      "An oversized chunky-knit throw in undyed wool. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 8500,
+    "compare_at_price_minor": 11000,
+    "is_new": false,
+    "is_featured": false,
+    "position": 29,
+    "stock": 34,
+    "sizes": [],
+    "colors": [],
+    "category": "decor",
+    "room": "living",
+    "tags": [
+      "Decor",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/rooms/dining.webp",
+        "alt": "Nuvola knitted throw draped on a table",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 chunky knit throw"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-NUV-04"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Merino wool"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "130 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "2 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "170 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "2.2 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-30T00:00:00Z"
+  },
+  {
+    "id": 30,
+    "slug": "scala",
+    "sku": "DC005",
+    "name": "Scala",
+    "subtitle": "Ladder bookshelf",
+    "short_description": "A five-tier leaning ladder shelf in black steel and oak.",
+    "description": [
+      "A five-tier leaning ladder shelf in black steel and oak. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 29000,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 30,
+    "stock": 10,
+    "sizes": [],
+    "colors": [],
+    "category": "decor",
+    "room": "living",
+    "tags": [
+      "Decor",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-01.webp",
+        "alt": "Scala ladder shelf with plants and books",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 ladder bookshelf"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-SCA-05"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Steel + oak"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "60 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "180 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "35 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "14 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-01-31T00:00:00Z"
+  },
+  {
+    "id": 31,
+    "slug": "cornice",
+    "sku": "DC006",
+    "name": "Cornice",
+    "subtitle": "Oak picture frame",
+    "short_description": "A deep-set oak frame with a museum-grade mat, for 30 x 40 cm prints.",
+    "description": [
+      "A deep-set oak frame with a museum-grade mat, for 30 x 40 cm prints. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 4500,
+    "compare_at_price_minor": null,
+    "is_new": false,
+    "is_featured": false,
+    "position": 31,
+    "stock": 0,
+    "sizes": [],
+    "colors": [],
+    "category": "decor",
+    "room": "living",
+    "tags": [
+      "Decor",
+      "Living"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-07.webp",
+        "alt": "Cornice oak frame with a pampas vase",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 oak picture frame"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-COR-06"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Solid oak"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "40 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "50 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "3 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "1.4 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-02-01T00:00:00Z"
+  },
+  {
+    "id": 32,
+    "slug": "mensola",
+    "sku": "DC007",
+    "name": "Mensola",
+    "subtitle": "Wall-mounted kitchen shelf",
+    "short_description": "A floating oak shelf with a steel rail for hanging utensils.",
+    "description": [
+      "A floating oak shelf with a steel rail for hanging utensils. Designed in-house and made in small batches.",
+      "Wipe clean with a soft, dry cloth, and keep it out of direct sunlight to protect the finish."
+    ],
+    "price_minor": 12000,
+    "compare_at_price_minor": 15000,
+    "is_new": false,
+    "is_featured": false,
+    "position": 32,
+    "stock": 16,
+    "sizes": [],
+    "colors": [],
+    "category": "decor",
+    "room": "dining",
+    "tags": [
+      "Decor",
+      "Dining"
+    ],
+    "images": [
+      {
+        "url": "/media/gallery/funiro-08.webp",
+        "alt": "Mensola shelf with plants above a stove",
+        "kind": "gallery"
+      }
+    ],
+    "specs": [
+      {
+        "group": "General",
+        "label": "Sales Package",
+        "value": "1 wall-mounted kitchen shelf"
+      },
+      {
+        "group": "General",
+        "label": "Model Number",
+        "value": "DC-MEN-07"
+      },
+      {
+        "group": "General",
+        "label": "Secondary Material",
+        "value": "Oak + steel"
+      },
+      {
+        "group": "Product",
+        "label": "Finish Type",
+        "value": "Natural"
+      },
+      {
+        "group": "Product",
+        "label": "Origin of Manufacture",
+        "value": "India"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Width",
+        "value": "90 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Height",
+        "value": "20 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Depth",
+        "value": "22 cm"
+      },
+      {
+        "group": "Dimensions",
+        "label": "Weight",
+        "value": "5 KG"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Summary",
+        "value": "1 Year Manufacturing Warranty"
+      },
+      {
+        "group": "Warranty",
+        "label": "Warranty Service Type",
+        "value": "For Warranty Claims or Any Product Related Issues Please mail at support@furniro.test"
+      },
+      {
+        "group": "Warranty",
+        "label": "Covered in Warranty",
+        "value": "Warranty Against Manufacturing Defect"
+      },
+      {
+        "group": "Warranty",
+        "label": "Not Covered in Warranty",
+        "value": "The Warranty Does Not Cover Damages Due To Usage Of The Product Beyond Its Intended Use And Wear & Tear In The Natural Course Of Product Usage."
+      },
+      {
+        "group": "Warranty",
+        "label": "Domestic Warranty",
+        "value": "1 Year"
+      }
+    ],
+    "created_at": "2026-02-02T00:00:00Z"
+  }
+]

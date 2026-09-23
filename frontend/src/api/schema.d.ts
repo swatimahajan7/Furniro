@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+  '/api/v1/categories': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Categories with product counts */
+    get: operations['list_categories_api_v1_categories_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/health': {
     parameters: {
       query?: never;
@@ -21,10 +38,252 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/inspirations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Home page room-inspiration slides */
+    get: operations['list_inspirations_api_v1_inspirations_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/meta/config': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Store configuration */
+    get: operations['get_config_api_v1_meta_config_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/meta/locations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Countries and their provinces for the checkout form */
+    get: operations['get_locations_api_v1_meta_locations_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/products': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List products with filters, sorting and pagination */
+    get: operations['list_products_api_v1_products_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/products/compare': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Compare up to 3 products side by side */
+    get: operations['compare_products_api_v1_products_compare_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/products/{slug}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Product detail */
+    get: operations['get_product_api_v1_products__slug__get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/products/{slug}/related': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Products in the same category */
+    get: operations['list_related_api_v1_products__slug__related_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/products/{slug}/reviews': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Product reviews, newest first */
+    get: operations['list_reviews_api_v1_products__slug__reviews_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/rooms': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Rooms (Browse The Range) */
+    get: operations['list_rooms_api_v1_rooms_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** CategoryRead */
+    CategoryRead: {
+      /** Name */
+      name: string;
+      /** Product Count */
+      product_count: number;
+      /** Slug */
+      slug: string;
+    };
+    /** CategoryRef */
+    CategoryRef: {
+      /** Name */
+      name: string;
+      /** Slug */
+      slug: string;
+    };
+    /** ColorRead */
+    ColorRead: {
+      /** Hex */
+      hex: string;
+      /** Name */
+      name: string;
+    };
+    /** CompareGroup */
+    CompareGroup: {
+      /** Name */
+      name: string;
+      /** Rows */
+      rows: components['schemas']['CompareRow'][];
+    };
+    /** CompareResponse */
+    CompareResponse: {
+      /** Groups */
+      groups: components['schemas']['CompareGroup'][];
+      /** Products */
+      products: components['schemas']['ProductSummary'][];
+    };
+    /** CompareRow */
+    CompareRow: {
+      /** Label */
+      label: string;
+      /**
+       * Values
+       * @description One value per product, in request order
+       */
+      values: (string | null)[];
+    };
+    /** CountryRead */
+    CountryRead: {
+      /** Code */
+      code: string;
+      /** Name */
+      name: string;
+      /** Provinces */
+      provinces: components['schemas']['ProvinceRead'][];
+    };
+    /** CurrencyRead */
+    CurrencyRead: {
+      /** Code */
+      code: string;
+      /** Locale */
+      locale: string;
+      /** Minor Units */
+      minor_units: number;
+      /** Symbol */
+      symbol: string;
+    };
+    /** ErrorBody */
+    ErrorBody: {
+      /** Code */
+      code: string;
+      /** Details */
+      details?: components['schemas']['ErrorDetail'][] | null;
+      /** Message */
+      message: string;
+      /** Request Id */
+      request_id?: string | null;
+    };
+    /** ErrorDetail */
+    ErrorDetail: {
+      /** Field */
+      field?: string | null;
+      /** Message */
+      message: string;
+    };
+    /** ErrorResponse */
+    ErrorResponse: {
+      error: components['schemas']['ErrorBody'];
+    };
     /** HealthRead */
     HealthRead: {
       /**
@@ -40,6 +299,224 @@ export interface components {
       /** Version */
       version: string;
     };
+    /** InspirationRead */
+    InspirationRead: {
+      /** Id */
+      id: number;
+      /** Image Url */
+      image_url: string;
+      /**
+       * Index
+       * @example 01
+       */
+      index: string;
+      /** Link */
+      link: string;
+      /** Room */
+      room: string;
+      /** Title */
+      title: string;
+    };
+    /** MetaConfigRead */
+    MetaConfigRead: {
+      /** Compare Limit */
+      compare_limit: number;
+      currency: components['schemas']['CurrencyRead'];
+      /** Free Shipping Threshold Minor */
+      free_shipping_threshold_minor: number | null;
+      /** Page Size Options */
+      page_size_options: number[];
+    };
+    /** Page[ProductSummary] */
+    Page_ProductSummary_: {
+      /** Items */
+      items: components['schemas']['ProductSummary'][];
+      /** Page */
+      page: number;
+      /** Page Size */
+      page_size: number;
+      /** Total */
+      total: number;
+      /** Total Pages */
+      total_pages: number;
+    };
+    /** Page[ReviewRead] */
+    Page_ReviewRead_: {
+      /** Items */
+      items: components['schemas']['ReviewRead'][];
+      /** Page */
+      page: number;
+      /** Page Size */
+      page_size: number;
+      /** Total */
+      total: number;
+      /** Total Pages */
+      total_pages: number;
+    };
+    /** ProductDetail */
+    ProductDetail: {
+      category: components['schemas']['CategoryRef'];
+      /** Colors */
+      colors: components['schemas']['ColorRead'][];
+      /**
+       * Compare At Price Minor
+       * @description Original price in US cents when the product is on sale
+       */
+      compare_at_price_minor: number | null;
+      /** Description */
+      description: string[];
+      /**
+       * Discount Percent
+       * @description Whole-number discount, rounded half up
+       */
+      discount_percent: number | null;
+      /** Id */
+      id: number;
+      /** Image Url */
+      image_url: string | null;
+      /** Images */
+      images: components['schemas']['ProductImageRead'][];
+      /** In Stock */
+      in_stock: boolean;
+      /** Is New */
+      is_new: boolean;
+      /** Name */
+      name: string;
+      /**
+       * Price Minor
+       * @description Price in US cents
+       */
+      price_minor: number;
+      /** Rating Avg */
+      rating_avg: number;
+      /** Review Count */
+      review_count: number;
+      room: components['schemas']['RoomRef'] | null;
+      /** Short Description */
+      short_description: string;
+      /** Sizes */
+      sizes: string[];
+      /** Sku */
+      sku: string;
+      /** Slug */
+      slug: string;
+      /** Specs */
+      specs: components['schemas']['SpecRead'][];
+      /** Stock */
+      stock: number;
+      /** Subtitle */
+      subtitle: string;
+      /** Tags */
+      tags: string[];
+    };
+    /** ProductImageRead */
+    ProductImageRead: {
+      /** Alt */
+      alt: string;
+      /**
+       * Kind
+       * @enum {string}
+       */
+      kind: 'gallery' | 'description';
+      /** Url */
+      url: string;
+    };
+    /**
+     * ProductSort
+     * @enum {string}
+     */
+    ProductSort: 'default' | 'price_asc' | 'price_desc' | 'newest' | 'name_asc';
+    /** ProductSummary */
+    ProductSummary: {
+      /**
+       * Compare At Price Minor
+       * @description Original price in US cents when the product is on sale
+       */
+      compare_at_price_minor: number | null;
+      /**
+       * Discount Percent
+       * @description Whole-number discount, rounded half up
+       */
+      discount_percent: number | null;
+      /** Id */
+      id: number;
+      /** Image Url */
+      image_url: string | null;
+      /** In Stock */
+      in_stock: boolean;
+      /** Is New */
+      is_new: boolean;
+      /** Name */
+      name: string;
+      /**
+       * Price Minor
+       * @description Price in US cents
+       */
+      price_minor: number;
+      /** Rating Avg */
+      rating_avg: number;
+      /** Review Count */
+      review_count: number;
+      /** Slug */
+      slug: string;
+      /** Subtitle */
+      subtitle: string;
+    };
+    /** ProvinceRead */
+    ProvinceRead: {
+      /** Code */
+      code: string;
+      /** Name */
+      name: string;
+    };
+    /** RelatedProducts */
+    RelatedProducts: {
+      /** Has More */
+      has_more: boolean;
+      /** Items */
+      items: components['schemas']['ProductSummary'][];
+    };
+    /** ReviewRead */
+    ReviewRead: {
+      /** Author Name */
+      author_name: string;
+      /** Comment */
+      comment: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Id */
+      id: number;
+      /** Rating */
+      rating: number;
+    };
+    /** RoomRead */
+    RoomRead: {
+      /** Image Url */
+      image_url: string;
+      /** Name */
+      name: string;
+      /** Slug */
+      slug: string;
+    };
+    /** RoomRef */
+    RoomRef: {
+      /** Name */
+      name: string;
+      /** Slug */
+      slug: string;
+    };
+    /** SpecRead */
+    SpecRead: {
+      /** Group */
+      group: string;
+      /** Label */
+      label: string;
+      /** Value */
+      value: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -49,6 +526,35 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  list_categories_api_v1_categories_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CategoryRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   get_health_api_v1_health_get: {
     parameters: {
       query?: never;
@@ -67,6 +573,15 @@ export interface operations {
           'application/json': components['schemas']['HealthRead'];
         };
       };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Service Unavailable */
       503: {
         headers: {
@@ -74,6 +589,359 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['HealthRead'];
+        };
+      };
+    };
+  };
+  list_inspirations_api_v1_inspirations_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['InspirationRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  get_config_api_v1_meta_config_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['MetaConfigRead'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  get_locations_api_v1_meta_locations_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CountryRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  list_products_api_v1_products_get: {
+    parameters: {
+      query?: {
+        /** @description Case-insensitive match on name and subtitle */
+        q?: string | null;
+        /** @description Category slug; repeat for several, e.g. ?category=sofas */
+        category?: string[];
+        /** @description Room slug (dining, living, bedroom); repeatable */
+        room?: string[];
+        /** @description Inclusive, in US cents */
+        min_price?: number | null;
+        /** @description Inclusive, in US cents */
+        max_price?: number | null;
+        /** @description Only products with a discount */
+        on_sale?: boolean | null;
+        /** @description Only products marked New */
+        is_new?: boolean | null;
+        /** @description Only home-page products */
+        featured?: boolean | null;
+        sort?: components['schemas']['ProductSort'];
+        /** @description 1-based page number */
+        page?: number;
+        /** @description Items per page */
+        page_size?: 8 | 16 | 24 | 32;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Page_ProductSummary_'];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  compare_products_api_v1_products_compare_get: {
+    parameters: {
+      query: {
+        /** @description Comma-separated product IDs, at most 3 */
+        ids: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CompareResponse'];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  get_product_api_v1_products__slug__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductDetail'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  list_related_api_v1_products__slug__related_get: {
+    parameters: {
+      query?: {
+        limit?: number;
+        offset?: number;
+      };
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RelatedProducts'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  list_reviews_api_v1_products__slug__reviews_get: {
+    parameters: {
+      query?: {
+        /** @description 1-based page number */
+        page?: number;
+        page_size?: number;
+      };
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Page_ReviewRead_'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  list_rooms_api_v1_rooms_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RoomRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
     };

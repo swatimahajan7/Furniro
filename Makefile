@@ -10,8 +10,8 @@ NPM      := cd $(FRONTEND) && npm run
 API_PORT ?= 8100
 WEB_PORT ?= 5180
 
-.PHONY: help install dev dev-backend dev-frontend lint format typecheck build check openapi \
-        contract assets assets-extract assets-build up down clean
+.PHONY: help install dev dev-backend dev-frontend migrate seed seed-reset lint format typecheck \
+        build check openapi contract assets assets-extract assets-build up down clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[33m%-16s\033[0m %s\n", $$1, $$2}'
@@ -29,6 +29,16 @@ dev-backend: ## Run the API with auto-reload (default :8100, Swagger at /docs)
 
 dev-frontend: ## Run the Vite dev server (default :5180; proxies /api and /media)
 	cd $(FRONTEND) && WEB_PORT=$(WEB_PORT) VITE_API_PROXY_TARGET=http://localhost:$(API_PORT) npm run dev
+
+# ------------------------------------------------------------------ database
+migrate: ## Apply Alembic migrations (DATABASE_URL, default backend/furniro.db)
+	$(UV) alembic upgrade head
+
+seed: ## Migrate, then load the baseline seed if the database is empty
+	$(UV) python -m app.seed
+
+seed-reset: ## Migrate, wipe every table and reload the baseline seed
+	$(UV) python -m app.seed --reset
 
 # ------------------------------------------------------------------ quality
 lint: ## Lint + format-check both sides
@@ -56,9 +66,17 @@ openapi: ## Re-export backend/openapi.json and regenerate frontend API types
 	$(UV) python -m app.scripts.export_openapi > openapi.json
 	$(NPM) gen:api
 
-contract: openapi ## Fail if the committed OpenAPI spec or FE types are out of date
-	@git diff --exit-code -- $(BACKEND)/openapi.json $(FRONTEND)/src/api/schema.d.ts \
-		|| (echo "API contract drift: commit the regenerated files above." && exit 1)
+contract: ## Fail if backend/openapi.json or the FE types are stale (run `make openapi` to fix)
+	@tmp=$$(mktemp -d) && trap 'rm -rf "$$tmp"' EXIT && \
+	(cd $(BACKEND) && uv run python -m app.scripts.export_openapi) > "$$tmp/openapi.json" && \
+	(cd $(FRONTEND) && npx openapi-typescript "$$tmp/openapi.json" -o "$$tmp/schema.d.ts" >/dev/null 2>&1 && \
+		npx prettier --stdin-filepath src/api/schema.d.ts < "$$tmp/schema.d.ts" > "$$tmp/schema.fmt.d.ts") && \
+	if diff -q "$$tmp/openapi.json" $(BACKEND)/openapi.json >/dev/null && \
+	   diff -q "$$tmp/schema.fmt.d.ts" $(FRONTEND)/src/api/schema.d.ts >/dev/null; then \
+		echo "API contract up to date"; \
+	else \
+		echo "API contract drift: run 'make openapi' and commit backend/openapi.json + frontend/src/api/schema.d.ts"; exit 1; \
+	fi
 
 # ------------------------------------------------------------------ design assets
 assets: assets-extract assets-build ## Extract images from the design PDF into backend/media (~5 min)

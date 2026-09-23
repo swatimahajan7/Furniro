@@ -19,7 +19,15 @@ served at `/api/v1/openapi.json`. When they disagree, fix the code or this doc i
 | `X-Request-Id` | both | Echoed back, or generated if absent. Include it in bug reports. |
 
 ### 1.2 Pagination (list endpoints)
-Query: `page` (≥1, default 1), `page_size` (one of 8, 16, 24, 32; default 16; blog default 3).
+Query: `page` (≥1, default 1) and `page_size`. Allowed sizes depend on the endpoint:
+
+| Endpoint | `page_size` |
+|---|---|
+| `GET /products` | one of 8, 16, 24, 32 (default 16) |
+| `GET /products/{slug}/reviews` | 1–50 (default 10) |
+| `GET /blog/posts` (Phase 6) | default 3 |
+
+`page` < 1 or a disallowed `page_size` returns `422 VALIDATION_ERROR`.
 ```json
 { "items": [ ... ], "page": 1, "page_size": 16, "total": 32, "total_pages": 2 }
 ```
@@ -38,10 +46,11 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 ```
 | HTTP | `code` examples |
 |---|---|
-| 400 | `BAD_REQUEST`, `CART_EMPTY`, `COMPARE_LIMIT_EXCEEDED` |
+| 400 | `BAD_REQUEST`, `CART_EMPTY`, `COMPARE_LIMIT_EXCEEDED`, `INVALID_PRICE_RANGE` |
 | 401 | `UNAUTHENTICATED`, `INVALID_CREDENTIALS`, `TOKEN_EXPIRED` |
 | 403 | `FORBIDDEN` |
 | 404 | `NOT_FOUND`, `PRODUCT_NOT_FOUND`, `CART_NOT_FOUND`, `ORDER_NOT_FOUND` |
+| 405 | `METHOD_NOT_ALLOWED` |
 | 409 | `EMAIL_ALREADY_REGISTERED`, `ALREADY_SUBSCRIBED`, `INSUFFICIENT_STOCK` |
 | 422 | `VALIDATION_ERROR` (with `details[]`) |
 | 500 | `INTERNAL_ERROR` (no internals leaked) |
@@ -56,7 +65,7 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 { "currency": { "code": "USD", "symbol": "$", "minor_units": 2, "locale": "en-US" },
   "page_size_options": [8, 16, 24, 32], "compare_limit": 3, "free_shipping_threshold_minor": null }
 ```
-`GET /meta/locations` → `[{ "code": "LK", "name": "Sri Lanka", "provinces": [{ "code": "WP", "name": "Western Province" }, …] }, …]`
+`GET /meta/locations` → `[{ "code": "LK", "name": "Sri Lanka", "provinces": [{ "code": "WP", "name": "Western Province" }, …] }, …]`. Countries, in order: Sri Lanka (9 provinces, the design's default), India (29), United States (50 states + DC). Served from `app/seed/data/locations.json`.
 
 ### 2.2 Auth
 | Method | Path | Body | 2xx response |
@@ -71,34 +80,39 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 `GET /products` query parameters:
 | Param | Type | Notes |
 |---|---|---|
-| `q` | string | Case-insensitive match on name and subtitle |
-| `category` | slug, repeatable | `?category=sofas&category=chairs` |
+| `q` | string (≤100) | Case-insensitive substring match on name and subtitle. `%` and `_` are matched literally |
+| `category` | slug, repeatable | `?category=sofas&category=chairs`. Slugs: sofas, chairs, tables, beds, lighting, decor. Unknown slugs match nothing (no error) |
 | `room` | slug, repeatable | dining, living, bedroom |
-| `min_price`, `max_price` | int (minor) | Inclusive |
-| `on_sale`, `is_new`, `featured` | bool | |
-| `sort` | enum | `default` (position), `price_asc`, `price_desc`, `newest`, `name_asc` |
+| `min_price`, `max_price` | int ≥ 0 (cents) | Inclusive. `min_price > max_price` returns `400 INVALID_PRICE_RANGE` |
+| `on_sale`, `is_new`, `featured` | bool | `true` keeps only matching products, `false` excludes them, omitted means no filter. `featured=true` returns the 8 home-page products |
+| `sort` | enum | `default` (position), `price_asc`, `price_desc`, `newest`, `name_asc`. Ties are broken by `id`, so pages never overlap |
 | `page`, `page_size` | int | See §1.2 |
 
 → `Page<ProductSummary>`
 ```json
 ProductSummary = {
   "id": 1, "slug": "syltherine", "name": "Syltherine", "subtitle": "Stylish cafe chair",
-  "price_minor": 25000, "compare_at_price_minor": 35000, "discount_percent": 30,
+  "price_minor": 25000, "compare_at_price_minor": 35000, "discount_percent": 29,
   "is_new": false, "image_url": "/media/products/syltherine-1.webp",
-  "rating_avg": 4.5, "review_count": 3, "in_stock": true
+  "rating_avg": 4.0, "review_count": 1, "in_stock": true
 }
 ```
+- `discount_percent` = `(compare_at − price) / compare_at × 100`, rounded half up; `null` when not on sale.
+- `image_url` is the first gallery image. `in_stock` is `stock > 0`.
 `GET /products/{slug}` → `ProductDetail`: ProductSummary plus `sku`, `description` (paragraphs[]), `short_description`, `images[] {url, alt, kind: gallery|description}`, `sizes[]` (for example `["L","XL","XS"]`), `colors[] {name, hex}`, `stock`, `category {slug,name}`, `room {slug,name}|null`, `tags[]`, and `specs[] {group, label, value}`.
 
-`GET /products/{slug}/related?limit=4&offset=0` → `{ items: ProductSummary[], has_more: bool }`
+`GET /products/{slug}/related?limit=4&offset=0` → `{ items: ProductSummary[], has_more: bool }`. Same category, current product excluded, ordered by position. `limit` 1–16 (default 4), `offset` ≥ 0. Unknown slug → `404 PRODUCT_NOT_FOUND`.
 
-`GET /products/compare?ids=1,2,3` → `{ products: ProductSummary[], groups: [{ name: "General", rows: [{ label, values: [v1, v2, v3|null] }] }] }`. More than 3 IDs returns `400 COMPARE_LIMIT_EXCEEDED`.
+`GET /products/compare?ids=1,2,3` → `{ products: ProductSummary[], groups: [{ name: "General", rows: [{ label, values: [v1, v2, v3|null] }] }] }`.
+- `ids` must match `^\d+(,\d+)*$` (otherwise 422). Duplicates are ignored, and request order is kept.
+- More than 3 distinct IDs → `400 COMPARE_LIMIT_EXCEEDED`. Any unknown ID → `404 PRODUCT_NOT_FOUND`.
+- Groups are always in the order General, Product, Dimensions, Warranty (empty groups are omitted). A `null` value means that product has no such spec (the UI shows "—").
 
 `GET /categories` → `[{ slug, name, product_count }]` · `GET /rooms` → `[{ slug, name, image_url }]`
-`GET /inspirations` → `[{ id, index: "01", room: "Bed Room", title: "Inner Peace", image_url, link }]`
+`GET /inspirations` → `[{ id, index: "01", room: "Bed Room", title: "Inner Peace", image_url, link }]`, where `link` is an in-app path such as `/shop?room=bedroom`.
 
 ### 2.4 Reviews
-`GET /products/{slug}/reviews?page=` → `Page<{ id, author_name, rating, comment, created_at }>`
+`GET /products/{slug}/reviews?page=&page_size=` → `Page<{ id, author_name, rating, comment, created_at }>`, newest first.
 `POST /products/{slug}/reviews` 🔒 `{ rating: 1..5, comment: 10..1000 chars }` → `201 Review`. One review per user per product, otherwise `409 ALREADY_REVIEWED`.
 
 ### 2.5 Cart
@@ -159,4 +173,5 @@ Rules:
 |---|---|
 | 2026-09-23 | Initial contract drafted from the design |
 | 2026-09-23 | Currency set to USD |
+| 2026-09-23 | Phase 1: catalog and meta endpoints implemented; documented validation rules, `INVALID_PRICE_RANGE`, `METHOD_NOT_ALLOWED`, discount rounding and compare semantics |
 | 2026-09-23 | Removed test-support (`/__test__/*`) and bug-toggle (`/__bugs__/*`) endpoints; tests are out of scope |
