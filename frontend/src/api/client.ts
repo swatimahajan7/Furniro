@@ -6,7 +6,7 @@ import type { ErrorResponse } from './types';
 export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
-  readonly details: ErrorResponse['error']['details'];
+  readonly details: NonNullable<ErrorResponse['error']['details']>;
   readonly requestId: string | null;
 
   constructor(
@@ -20,9 +20,39 @@ export class ApiError extends Error {
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
-    this.details = details;
+    this.details = details ?? [];
     this.requestId = requestId;
   }
+}
+
+/** Network failure (no response at all), so UIs can say "check your connection". */
+export class NetworkError extends Error {
+  constructor(cause: unknown) {
+    super('Network request failed', { cause });
+    this.name = 'NetworkError';
+  }
+}
+
+export type QueryValue = string | number | boolean | null | undefined;
+export type QueryParams = Record<string, QueryValue | readonly QueryValue[]>;
+
+export interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
+  /** Appended as a query string; arrays become repeated keys (?category=a&category=b). */
+  query?: QueryParams;
+  /** Serialised as JSON. */
+  body?: unknown;
+}
+
+export function buildQueryString(query: QueryParams = {}): string {
+  const params = new URLSearchParams();
+  for (const [key, raw] of Object.entries(query)) {
+    const values: readonly QueryValue[] = Array.isArray(raw) ? raw : [raw as QueryValue];
+    for (const value of values) {
+      if (value !== undefined && value !== null && value !== '') params.append(key, String(value));
+    }
+  }
+  const text = params.toString();
+  return text ? `?${text}` : '';
 }
 
 function isErrorResponse(body: unknown): body is ErrorResponse {
@@ -30,21 +60,34 @@ function isErrorResponse(body: unknown): body is ErrorResponse {
 }
 
 /**
- * Minimal fetch wrapper. Phase 2 extends it with auth/cart headers and query serialisation
- * (frontend/GUIDELINES.md §4).
+ * The single way the app talks to the API. Phases 4–5 add the X-Cart-Id and Authorization
+ * headers here (frontend/GUIDELINES.md §4). Components call feature hooks, never this directly.
  */
-export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${env.apiBaseUrl}${path}`, {
-    ...init,
-    headers: { Accept: 'application/json', ...init.headers },
-  });
+export async function apiFetch<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
+  const { query, body, headers, ...init } = options;
+  const requestHeaders = new Headers(headers);
+  requestHeaders.set('Accept', 'application/json');
+  if (body !== undefined) requestHeaders.set('Content-Type', 'application/json');
 
-  const body: unknown = await response.json().catch(() => null);
+  let response: Response;
+  try {
+    response = await fetch(`${env.apiBaseUrl}${path}${buildQueryString(query)}`, {
+      ...init,
+      headers: requestHeaders,
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') throw error;
+    throw new NetworkError(error);
+  }
+
+  if (response.status === 204) return undefined as T;
+  const payload: unknown = await response.json().catch(() => null);
 
   if (!response.ok) {
     const requestId = response.headers.get('X-Request-Id');
-    if (isErrorResponse(body)) {
-      const { code, message, details } = body.error;
+    if (isErrorResponse(payload)) {
+      const { code, message, details } = payload.error;
       throw new ApiError(response.status, code, message, details ?? null, requestId);
     }
     throw new ApiError(
@@ -56,5 +99,6 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
     );
   }
 
-  return body as T;
+  // Trust boundary: the response shape is guaranteed by the OpenAPI contract (AD-2).
+  return payload as T;
 }

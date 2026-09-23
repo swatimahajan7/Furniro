@@ -1,0 +1,72 @@
+.region {
+  position: fixed;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: min(380px, calc(100vw - 2 * var(--space-6)));
+}
+
+.toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border-left: 4px solid var(--color-text-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-drawer);
+  animation: rise var(--duration-base) var(--ease-standard);
+}
+
+.success {
+  border-left-color: var(--color-success);
+}
+
+.success svg:first-child {
+  color: var(--color-success);
+}
+
+.error {
+  border-left-color: var(--color-danger);
+}
+
+.error svg:first-child {
+  color: var(--color-danger);
+}
+
+.info {
+  border-left-color: var(--color-primary);
+}
+
+.info svg:first-child {
+  color: var(--color-primary);
+}
+
+.message {
+  line-height: var(--text-sm-lh);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--color-text-subtle);
+}
+
+.close:hover {
+  color: var(--color-black);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

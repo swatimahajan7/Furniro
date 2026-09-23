@@ -1,0 +1,25 @@
+.rating {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.star {
+  position: relative;
+  display: inline-flex;
+}
+
+.filled {
+  color: var(--color-rating);
+  fill: var(--color-rating);
+}
+
+.empty {
+  color: var(--color-border);
+  fill: transparent;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+}

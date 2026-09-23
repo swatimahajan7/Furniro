@@ -1,0 +1,27 @@
+.state {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.icon {
+  color: var(--color-primary);
+}
+
+.title {
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.message {
+  max-width: 520px;
+  color: var(--color-text-muted);
+}
+
+.action {
+  margin-top: var(--space-4);
+}

@@ -3,7 +3,7 @@
 These are the rules, structure and strategies for `frontend/`. Read them before writing code.
 If a rule blocks you, change the rule here in the same PR and explain why.
 
-Stack: **React 19 · TypeScript (strict) · Vite · React Router 7 · TanStack Query 5 · Zustand ·
+Stack: **React 19 · TypeScript (strict) · Vite · React Router 8 · TanStack Query 5 · Zustand ·
 React Hook Form + Zod · CSS Modules + CSS variables · lucide-react · Embla Carousel ·
 ESLint · stylelint · Prettier**
 
@@ -32,7 +32,8 @@ frontend/
 └── src/
     ├── main.tsx              # createRoot + <AppProviders><RouterProvider/></AppProviders>
     ├── app/
-    │   ├── router.tsx        # all routes, lazy pages, errorElement
+    │   ├── router.tsx        # all routes (route.lazy per page), error boundaries, /dev/ui in dev only
+    │   ├── AppErrorBoundary.tsx  # last-resort boundary outside the router
     │   ├── providers.tsx     # QueryClientProvider, ToastProvider, ErrorBoundary
     │   └── queryClient.ts    # defaults: staleTime 60s, retry 1 (0 for 4xx)
     ├── styles/
@@ -46,7 +47,8 @@ frontend/
     │   └── queryKeys.ts      # central query-key factory
     ├── components/
     │   ├── ui/               # design-system primitives (Button, Input, Badge, Pagination, Drawer, …)
-    │   └── layout/           # Header, Footer, PageBanner, FeatureStrip, Breadcrumb, AppLayout
+    │   └── layout/           # AppLayout, Header, Footer, PageShell, PageBanner, Breadcrumb, FeatureStrip,
+    │                         # PageLoader, ComingSoon (temporary), navigation.ts (nav/help links)
     ├── features/             # one folder per domain
     │   ├── catalog/          # api.ts (hooks), components/ (ProductCard, ProductGrid, ShopToolbar, FilterDrawer)
     │   ├── product/          # Gallery, OptionPicker, ProductTabs, ReviewList, ReviewForm, RelatedProducts
@@ -65,7 +67,7 @@ frontend/
     │   ├── BlogPostPage.tsx  AboutPage.tsx  LoginPage.tsx  RegisterPage.tsx
     │   └── AccountPage.tsx  WishlistPage.tsx  HelpPage.tsx  NotFoundPage.tsx
     ├── hooks/                # cross-feature hooks (useMediaQuery, useDisclosure, useQueryParams)
-    ├── lib/                  # pure utils: formatPrice, formatDate, cn, storage (safe localStorage), testIds.ts (testid builders, §6)
+    ├── lib/                  # pure utils: format.ts (formatPrice, formatDate), cn, env, testIds.ts (§6), storage (later)
 ```
 
 ### Import rules
@@ -82,7 +84,7 @@ frontend/
 - `strict: true` and `noUncheckedIndexedAccess: true`. No `any` (use `unknown` and narrow). `as` casts are allowed only at trust boundaries, with a comment.
 - API types come **only** from `api/schema.d.ts`, through aliases in `api/types.ts`. Never hand-write an interface that mirrors a backend response.
 - Wire fields are `snake_case`, and we keep them that way. There is no case-conversion layer.
-- Money arrives as integer cents (`*_minor`). Only `lib/formatPrice(minor)` turns it into text, using `Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })`, which gives `$2,500.00`. Never divide by 100 anywhere else.
+- Money arrives as integer cents (`*_minor`). Only `formatPrice(minor)` in `lib/format.ts` turns it into text, using `Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })`, which gives `$2,500.00`. Never divide by 100 anywhere else.
 
 ### 2.2 Components
 
@@ -160,7 +162,11 @@ Rules:
 | `/account`, `/wishlist`              | …                      | Wrapped in `<RequireAuth>`                                                                       |
 | `*`                                  | NotFoundPage           |                                                                                                  |
 
-- Every page is lazy-loaded, the router has an `errorElement`, and scroll resets to top on navigation (except for query-only changes on `/shop`).
+- Every page is lazy-loaded with the route's `lazy` property (its own chunk). The 404 page is the exception, since the error page renders it too.
+- Import `RouterProvider` from `react-router/dom` and everything else from `react-router` (v8 has no `react-router-dom`).
+- Error handling: a pathless route with `errorElement` wraps all pages, so a failing page shows its error inside the header/footer layout. The root route's `errorElement` only catches layout failures.
+- `ScrollRestoration` is keyed by pathname: navigating to a new page scrolls to top, but query-only changes (`/shop?page=2`) keep the scroll position.
+- Every page renders through `PageShell`, which sets `<title>` (React 19 hoists it into `<head>`), the banner `h1` (or a screen-reader-only `h1` when there is no banner), and the `page-<name>` root test ID.
 - Set page titles per route in the form `"Shop | Furniro"`.
 
 ## 6. Test IDs (`data-testid`)
@@ -208,6 +214,8 @@ toast-success  toast-error
 ```
 
 ### 6.3 Rules
+
+- **For future test authors:** after a navigation, the URL changes a moment before React commits the new page (navigations run as transitions). Wait for the new page's `page-<name>` root or another element of that page, not only for the URL.
 
 - Test IDs are a **public contract**. Keep them in production builds (never strip them), and do not rename one without a reason recorded in the PR.
 - Never use a test ID for styling or for app logic. Styles use CSS Module classes; logic uses props and state.

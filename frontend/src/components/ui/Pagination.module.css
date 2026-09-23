@@ -1,0 +1,45 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-7);
+  justify-content: center;
+}
+
+.item {
+  display: grid;
+  place-items: center;
+  min-width: 60px;
+  height: 60px;
+  font-size: var(--text-lg);
+  color: var(--color-black);
+  background-color: var(--color-cream);
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.item:hover {
+  background-color: var(--color-hero-card);
+}
+
+.wide {
+  padding: 0 var(--space-7);
+  font-weight: var(--weight-light);
+}
+
+.active,
+.active:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+@media (width < 768px) {
+  .pagination {
+    gap: var(--space-3);
+  }
+
+  .item {
+    min-width: 44px;
+    height: 44px;
+    font-size: var(--text-md);
+  }
+}

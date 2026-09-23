@@ -22,6 +22,7 @@
   --color-input-border: #9f9f9f;
   --color-overlay: rgb(58 58 58 / 72%);
   --color-backdrop: rgb(0 0 0 / 20%);
+  --color-banner-veil: rgb(255 255 255 / 45%);
   --color-white: #fff;
   --color-black: #000;
   --color-success: #2ec1ac;
@@ -32,6 +33,7 @@
   --font-body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-logo: 'Montserrat', 'Poppins', system-ui, sans-serif;
 
+  --text-logo: 34px;
   --text-display: 52px;
   --text-display-lh: 65px;
   --text-h1: 48px;
@@ -52,6 +54,7 @@
   --text-xs: 12px;
   --text-xs-lh: 18px;
 
+  --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
@@ -76,6 +79,14 @@
   --container-max: 1236px;
   --container-pad: 16px;
   --header-height: 100px;
+
+  --banner-height: 316px;
+  --drawer-width: 417px;
+
+  /* ---- Layers ---- */
+  --z-header: 50;
+  --z-drawer: 100;
+  --z-toast: 200;
 
   /* ---- Radius ---- */
   --radius-sm: 5px;

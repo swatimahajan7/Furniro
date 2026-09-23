@@ -4,8 +4,9 @@ A full-stack furniture e-commerce demo app (React + FastAPI) built from the Furn
 Scope is the app itself: no automated tests are included, but every UI element carries a stable
 `data-testid` so tests can be added later.
 
-> **Status:** Phases 0–1 are complete: the catalog API (products, filters, compare, reviews, meta) is live at `/docs`.
-> The frontend still shows a placeholder page; the design-system shell is Phase 2.
+> **Status:** Phases 0–2 are complete: the catalog API is live at `/docs`, and the frontend has the full shell
+> (header, footer, banners, every route) plus the design system. Browse the component gallery at
+> http://localhost:5180/dev/ui (dev builds only). The screens themselves arrive from Phase 3.
 > See [PLAN.md](PLAN.md) §7 for the phased roadmap.
 
 ## Documentation map

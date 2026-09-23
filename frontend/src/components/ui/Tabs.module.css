@@ -1,0 +1,41 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-9);
+  justify-content: center;
+}
+
+.tab {
+  padding: var(--space-1) 0;
+  font-size: var(--text-h4);
+  color: var(--color-text-subtle);
+  border-bottom: 2px solid transparent;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.selected {
+  font-weight: var(--weight-medium);
+  color: var(--color-black);
+}
+
+.panel {
+  padding-top: var(--space-8);
+}
+
+.panel:focus-visible {
+  outline-offset: var(--space-2);
+}
+
+@media (width < 768px) {
+  .list {
+    gap: var(--space-5);
+  }
+
+  .tab {
+    font-size: var(--text-md);
+  }
+}
