@@ -1,0 +1,46 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "selector-class-pattern": [
+      "^[a-z][a-zA-Z0-9]*$",
+      { "message": "CSS Module class names are camelCase (GUIDELINES §2.3)" }
+    ],
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "/color$/",
+        "color",
+        "fill",
+        "stroke",
+        "font-size",
+        "font-family",
+        "box-shadow",
+        "border-radius"
+      ],
+      {
+        "ignoreValues": [
+          "currentcolor",
+          "transparent",
+          "inherit",
+          "initial",
+          "unset",
+          "none",
+          "0",
+          "50%",
+          "100%"
+        ],
+        "disableFix": true,
+        "message": "Use a design token (var(--…)) from src/styles/tokens.css for ${property}"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/styles/tokens.css", "src/styles/reset.css"],
+      "rules": {
+        "scale-unlimited/declaration-strict-value": null,
+        "custom-property-empty-line-before": null
+      }
+    }
+  ]
+}

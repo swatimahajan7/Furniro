@@ -1,0 +1,46 @@
+# Design source: 158 MB, over GitHub's 100 MB file limit.
+# The renders in docs/design/screens/ and the extracted assets in backend/media/ are committed instead.
+Furniro_Web_Design_UI_KIT.pdf
+*.zip
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+
+# Env files (commit only the .env.example files)
+.env
+.env.*
+!.env.example
+
+# Python / backend
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+backend/*.db
+backend/*.sqlite3
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/coverage/
+*.tsbuildinfo
+npm-debug.log*
+
+# Playwright
+e2e/test-results/
+e2e/playwright-report/
+e2e/.auth/
+
+# Temporary PDF extraction output (see scripts/extract_design_assets.py)
+.design-extract/

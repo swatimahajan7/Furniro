@@ -1,0 +1,60 @@
+{
+  "_comment": "Extracted-image key (see .design-extract/contact-sheet-*.jpg) → backend/media/<target>.webp. Built by `make assets`. Skipped: p1-0 (raster logo; we use frontend/public/logo-mark.svg), p1-26 (unused), p1-84/p1-86 (mask layers), p1-92 (blur shadow).",
+  "assets": {
+    "p1-2": "banners/hero-home",
+    "p2-114": "banners/page-banner",
+
+    "p1-6": "rooms/dining",
+    "p1-12": "rooms/living",
+    "p1-16": "rooms/bedroom",
+
+    "p1-82": "inspirations/inner-peace",
+    "p1-88": "inspirations/morning-light",
+    "p1-90": "inspirations/quiet-corner",
+    "p1-4": "inspirations/soft-pastels",
+
+    "p1-94": "gallery/funiro-01",
+    "p1-96": "gallery/funiro-02",
+    "p1-110": "gallery/funiro-03",
+    "p1-100": "gallery/funiro-04",
+    "p1-98": "gallery/funiro-05",
+    "p1-106": "gallery/funiro-06",
+    "p1-102": "gallery/funiro-07",
+    "p1-104": "gallery/funiro-08",
+    "p1-108": "gallery/funiro-09",
+
+    "p1-32": "products/syltherine-1",
+    "p1-30": "products/leviosa-1",
+    "p1-28": "products/lolito-1",
+    "p1-60": "products/respira-1",
+    "p1-24": "products/grifo-1",
+    "p1-22": "products/muggo-1",
+    "p1-20": "products/pingky-1",
+    "p1-18": "products/potty-1",
+
+    "p3-302": "products/asgaard-sofa-1",
+    "p3-296": "products/asgaard-sofa-2",
+    "p3-298": "products/asgaard-sofa-3",
+    "p3-300": "products/asgaard-sofa-4",
+    "p3-304": "products/asgaard-sofa-desc-1",
+    "p3-306": "products/asgaard-sofa-desc-2",
+    "p3-294": "products/outdoor-sofa-set-1",
+    "p4-414": "products/casaliving-wood-1",
+
+    "p1-74": "products/grey-sectional-1",
+    "p1-78": "products/nordic-sofa-set-1",
+    "p1-80": "products/cognac-leather-sofa-1",
+    "p1-8": "products/wingback-chair-1",
+    "p1-10": "products/mustard-armchair-1",
+    "p1-14": "products/oak-platform-bed-1",
+
+    "p9-452": "blog/laptop-wood-desk",
+    "p9-454": "blog/planner-hands",
+    "p9-456": "blog/journal-coffee",
+    "p9-458": "blog/notebook-pen",
+    "p9-460": "blog/read-more-tiles",
+    "p9-462": "blog/laptop-cafe",
+    "p9-464": "blog/laptop-plant",
+    "p9-466": "blog/cafe-table"
+  }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47 31" fill="none" stroke="#B88E2F" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+  <!-- Furniro "double peak" mark, traced from the UI kit PDF (approximate). -->
+  <path d="M1.8 29.5 16.5 3.2l3.1 5.6L8 29.5"/>
+  <path d="M45.2 29.5 30.5 3.2l-3.1 5.6L39 29.5"/>
+  <path d="M23.5 17 18.2 29.5h10.6z"/>
+</svg>

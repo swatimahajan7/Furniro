@@ -1,0 +1,49 @@
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--text-md-lh);
+  color: var(--color-text-body);
+  background: var(--color-white);
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + 2 * var(--container-pad));
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Determinism for E2E runs and users who prefer less motion (GUIDELINES §6.2). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-e2e] *,
+html[data-e2e] *::before,
+html[data-e2e] *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}

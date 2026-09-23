@@ -1,0 +1,61 @@
+[project]
+name = "furniro-api"
+version = "0.1.0"
+description = "Furniro demo e-commerce API (FastAPI)"
+readme = "GUIDELINES.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.141.1",
+    "psycopg[binary]>=3.3.6",
+    "pydantic-settings>=2.15.0",
+    "sqlalchemy>=2.0.54",
+    "uvicorn[standard]>=0.53.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.13.1",
+    "mypy>=2.3.1",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.8",
+]
+
+[tool.uv]
+package = false
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "N", "S", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["app"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --cov=app --cov-report=term-missing:skip-covered --cov-fail-under=85"
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+omit = ["app/scripts/*"]

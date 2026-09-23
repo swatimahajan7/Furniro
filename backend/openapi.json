@@ -1,0 +1,75 @@
+{
+  "components": {
+    "schemas": {
+      "HealthRead": {
+        "properties": {
+          "db": {
+            "enum": [
+              "ok",
+              "error"
+            ],
+            "title": "Db",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "degraded"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "version",
+          "db"
+        ],
+        "title": "HealthRead",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Furniro API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "get_health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthRead"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "summary": "Service and database health",
+        "tags": [
+          "meta"
+        ]
+      }
+    }
+  }
+}

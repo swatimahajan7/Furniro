@@ -1,0 +1,101 @@
+/*
+ * Furniro design tokens: the ONLY place raw colour/type/spacing values may appear.
+ * Source: docs/DESIGN_SPEC.md §1–2. Add a token there first, then here.
+ */
+:root {
+  /* ---- Colour ---- */
+  --color-primary: #b88e2f;
+  --color-primary-hover: #a07a25;
+  --color-hero-card: #fff3e3;
+  --color-cream: #f9f1e7;
+  --color-cream-light: #fcf8f3;
+  --color-card: #f4f5f7;
+  --color-text: #3a3a3a;
+  --color-text-body: #333;
+  --color-text-muted: #898989;
+  --color-text-subtle: #9f9f9f;
+  --color-text-strike: #b0b0b0;
+  --color-sale: #e97171;
+  --color-new: #2ec1ac;
+  --color-rating: #ffc700;
+  --color-border: #d9d9d9;
+  --color-input-border: #9f9f9f;
+  --color-overlay: rgb(58 58 58 / 72%);
+  --color-backdrop: rgb(0 0 0 / 20%);
+  --color-white: #fff;
+  --color-black: #000;
+  --color-success: #2ec1ac;
+  --color-danger: #e97171;
+  --color-focus-ring: #b88e2f;
+
+  /* ---- Typography ---- */
+  --font-body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-logo: 'Montserrat', 'Poppins', system-ui, sans-serif;
+
+  --text-display: 52px;
+  --text-display-lh: 65px;
+  --text-h1: 48px;
+  --text-h1-lh: 72px;
+  --text-h2: 40px;
+  --text-h2-lh: 48px;
+  --text-h3: 32px;
+  --text-h3-lh: 48px;
+  --text-product-title: 42px;
+  --text-h4: 24px;
+  --text-h4-lh: 29px;
+  --text-lg: 20px;
+  --text-lg-lh: 30px;
+  --text-md: 16px;
+  --text-md-lh: 24px;
+  --text-sm: 14px;
+  --text-sm-lh: 21px;
+  --text-xs: 12px;
+  --text-xs-lh: 18px;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- Spacing (px scale 4 … 96) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 56px;
+  --space-11: 64px;
+  --space-12: 80px;
+  --space-13: 96px;
+
+  /* ---- Layout ---- */
+  --container-max: 1236px;
+  --container-pad: 16px;
+  --header-height: 100px;
+
+  /* ---- Radius ---- */
+  --radius-sm: 5px;
+  --radius-md: 10px;
+  --radius-lg: 15px;
+  --radius-pill: 50px;
+  --radius-round: 50%;
+
+  /* ---- Elevation ---- */
+  --shadow-drawer: 0 4px 24px rgb(0 0 0 / 8%);
+  --shadow-card-hover: 0 8px 24px rgb(0 0 0 / 6%);
+
+  /* ---- Motion ---- */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (width >= 768px) {
+  :root {
+    --container-pad: 24px;
+  }
+}
