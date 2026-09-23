@@ -1,0 +1,50 @@
+.collection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.collection > li {
+  display: flex;
+}
+
+.collection > li > * {
+  flex: 1;
+}
+
+.refreshing {
+  opacity: 0.6;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (width >= 480px) {
+  .gridView {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 768px) {
+  .collection {
+    gap: var(--space-7);
+  }
+
+  .gridView {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (width >= 1024px) {
+  .gridView {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .listView {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -50,15 +50,19 @@ frontend/
     │   └── layout/           # AppLayout, Header, Footer, PageShell, PageBanner, Breadcrumb, FeatureStrip,
     │                         # PageLoader, ComingSoon (temporary), navigation.ts (nav/help links)
     ├── features/             # one folder per domain
-    │   ├── catalog/          # api.ts (hooks), components/ (ProductCard, ProductGrid, ShopToolbar, FilterDrawer)
-    │   ├── product/          # Gallery, OptionPicker, ProductTabs, ReviewList, ReviewForm, RelatedProducts
+    │   ├── catalog/          # api.ts (useProducts, useCategories, useRooms, useInspirations), shopParams.ts
+    │   │                     # (URL ⇄ Shop state), useShopParams, useProductActions (card/PDP actions),
+    │   │                     # components/ (ProductCard, ProductGrid, ShopToolbar, FilterDrawer)
+    │   ├── product/          # api.ts (useProduct, useRelatedProducts, useReviews), components/ (ProductDetailView,
+    │   │                     # ProductGallery, ProductInfo, OptionPicker, ShareLinks, ProductTabs, SpecTable,
+    │   │                     # ReviewList, RelatedProducts, ProductDetailSkeleton; ReviewForm in Phase 5)
     │   ├── cart/             # api.ts, cartStore.ts (cart id), CartDrawer, CartTable, CartTotals
     │   ├── checkout/         # CheckoutForm, schema.ts (zod), OrderSummary, PaymentMethods
     │   ├── compare/          # compareStore.ts (persisted), CompareTable, AddProductSelect
     │   ├── wishlist/
     │   ├── auth/             # authStore.ts, LoginForm, RegisterForm, RequireAuth
     │   ├── blog/             # PostCard, BlogSidebar
-    │   ├── home/             # Hero, BrowseRange, InspirationSlider, SetupGallery
+    │   ├── home/             # Hero, BrowseRange, OurProducts, InspirationSlider (Embla), SetupGallery
     │   ├── contact/
     │   └── newsletter/
     ├── pages/                # route components that ONLY compose features + layout
@@ -192,12 +196,20 @@ stable, predictable `data-testid` attributes, plus correct roles and accessible 
 Examples:
 
 ```
-page-home  page-shop  page-product  page-cart  page-checkout  page-compare  page-blog  page-contact
+page-home  page-shop  page-product  page-product-not-found  page-cart  page-checkout  page-compare  page-blog
+home-hero  home-buy-now  home-browse-range  home-room-living  home-products  home-show-more
+home-inspirations  inspiration-slide-1  inspiration-link-1  inspiration-prev  inspiration-next  inspiration-dot-1
+home-explore-more  home-gallery
 header-logo  header-nav-shop  header-account-button  header-search-button  header-wishlist-button
 header-cart-button  header-cart-count
 shop-filter-button  shop-view-grid  shop-view-list  shop-results-text  shop-page-size-select  shop-sort-select
 pagination-page-2  pagination-next
-product-card-syltherine  product-card-syltherine-price  product-card-syltherine-badge
+shop-toolbar  shop-filter-count  shop-view-grid  shop-products  shop-pagination-page-2  shop-pagination-next
+shop-search-summary  shop-search-clear  shop-empty  shop-clear-filters  shop-page-out-of-range  shop-error
+filter-drawer  filter-category-sofas  filter-room-dining  filter-field-min-price  filter-error-min-price
+filter-on-sale  filter-is-new  filter-apply  filter-reset
+product-card-syltherine  product-card-syltherine-link  product-card-syltherine-name  product-card-syltherine-old-price
+product-card-syltherine-price  product-card-syltherine-badge
 product-card-syltherine-add-to-cart  product-card-syltherine-share  product-card-syltherine-compare
 product-card-syltherine-like
 pdp-title  pdp-price  pdp-thumbnail-2  pdp-size-l  pdp-color-black  pdp-qty-decrement  pdp-qty-value
@@ -209,6 +221,10 @@ cart-checkout-button  cart-empty
 checkout-field-first-name  checkout-error-first-name  checkout-field-country  checkout-payment-cod
 checkout-summary-total  checkout-place-order
 compare-column-asgaard-sofa  compare-column-asgaard-sofa-remove  compare-add-select  compare-row-weight
+pdp-main-image  pdp-rating  pdp-review-count  pdp-short-description  pdp-stock  pdp-sku  pdp-category  pdp-tags
+pdp-share-facebook  pdp-share-linkedin  pdp-share-x  pdp-tabs-tab-info  pdp-tabs-panel-reviews  pdp-specs
+pdp-spec-weight  pdp-reviews  pdp-review-3  pdp-reviews-more  pdp-reviews-empty  pdp-related  pdp-related-show-more
+pdp-not-found  pdp-loading
 contact-field-email  contact-submit  footer-newsletter-email  footer-newsletter-subscribe
 toast-success  toast-error
 ```

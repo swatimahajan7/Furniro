@@ -1,0 +1,43 @@
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.paragraph {
+  max-width: 1026px;
+  margin: 0 auto;
+  font-size: var(--text-md);
+  line-height: var(--text-md-lh);
+  color: var(--color-text-subtle);
+  text-align: justify;
+}
+
+.images {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+  margin-top: var(--space-4);
+}
+
+.imageBox {
+  display: grid;
+  min-width: 0;
+  place-items: center;
+  aspect-ratio: 605 / 348;
+  padding: var(--space-5);
+  background-color: var(--color-cream);
+  border-radius: var(--radius-md);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (width >= 768px) {
+  .images {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
