@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "slug": "sofas",
+      "name": "Sofas",
+      "position": 1
+    },
+    {
+      "id": 2,
+      "slug": "chairs",
+      "name": "Chairs",
+      "position": 2
+    },
+    {
+      "id": 3,
+      "slug": "tables",
+      "name": "Tables",
+      "position": 3
+    },
+    {
+      "id": 4,
+      "slug": "beds",
+      "name": "Beds",
+      "position": 4
+    },
+    {
+      "id": 5,
+      "slug": "lighting",
+      "name": "Lighting",
+      "position": 5
+    },
+    {
+      "id": 6,
+      "slug": "decor",
+      "name": "Decor",
+      "position": 6
+    }
+  ],
+  "rooms": [
+    {
+      "id": 1,
+      "slug": "dining",
+      "name": "Dining",
+      "image_url": "/media/rooms/dining.webp",
+      "position": 1
+    },
+    {
+      "id": 2,
+      "slug": "living",
+      "name": "Living",
+      "image_url": "/media/rooms/living.webp",
+      "position": 2
+    },
+    {
+      "id": 3,
+      "slug": "bedroom",
+      "name": "Bedroom",
+      "image_url": "/media/rooms/bedroom.webp",
+      "position": 3
+    }
+  ]
+}

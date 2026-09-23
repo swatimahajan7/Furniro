@@ -10,7 +10,7 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 0 (foundation) complete, 2026-09-23 · next: Phase 1 |
+| Status | Phase 1 (backend catalog) complete, 2026-09-23 · next: Phase 2 |
 
 Related docs:
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
@@ -82,6 +82,7 @@ These are the defaults we will use. Change them here if you want something diffe
 | Checkout lists "Direct Bank Transfer" twice | Two options: **Direct Bank Transfer** and **Cash On Delivery**. The helper text appears under the selected option. |
 | Muggo ("Small mug"), Pingky ("Cute bed set") and Potty ("Minimalist flower pot") cards show unrelated sofa photos | Use the matching mug, bedding and vase photos that are also in the PDF. The design's sofa photos become extra catalog products (`grey-sectional`, `nordic-sofa-set`, `cognac-leather-sofa`). |
 | Home "Show More" vs Related "Show More" | Home goes to `/shop`. Related loads 4 more related items in place. |
+| Syltherine shows `-30%`, but Rp 2.500.000 vs 3.500.000 is a 28.6 % discount | The badge is computed from the prices, so it shows **-29%**. The prices stay as designed. |
 | Free shipping "Order over 150 $" | Informational only. Shipping is always free, so total = subtotal. The text is shown as "Order over $150". |
 
 ---
@@ -193,7 +194,8 @@ Seed dataset (deterministic, in `backend/app/seed/data/*.json`):
 - **32 products**, so the "Showing 1–16 of 32" and 2-page shop match the design. Page 3 appears when the page size is 8.
 - 6 categories and 3 rooms.
 - Every product has 1–4 images and a full spec set for comparison.
-- 0–5 reviews per product. The Asgaard sofa has exactly 5, with an average rating of 4.7.
+- 0–5 reviews per product (80 in total). The Asgaard sofa has exactly 5 (matching the PDP's "5 Customer Review"), with ratings 5, 5, 5, 4, 4 for an average of **4.6**. The design's 4.7 is impossible with five whole-star ratings.
+- One product (`cornice`) is out of stock, so the out-of-stock state can be seen.
 - 24 blog posts across 5 categories, matching the design's sidebar counts (Crafts 2, Design 8, Handmade 7, Interior 1, Wood 6).
 - 4 inspiration rooms.
 - 2 users: `demo@furniro.test` / `Demo@1234` and `empty@furniro.test` / `Demo@1234` (no orders).
@@ -243,11 +245,16 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** `make dev` starts both apps. `/api/v1/health` returns 200. The FE shows a placeholder page. CI is green.
 
 ### Phase 1: Backend core and catalog (≈2–3 days)
-- [ ] DB session, base model, Alembic baseline migration.
-- [ ] Models: category, room, tag, product, product_image, product_spec, review, inspiration.
-- [ ] Deterministic seed command: `python -m app.seed --reset`.
-- [ ] Catalog endpoints with filtering, sorting and pagination (boundaries handled: page 0 → 422, page beyond the last → empty list, invalid sort → 422).
-- [ ] `/meta/config` and `/meta/locations`.
+- [x] DB session, base model, Alembic baseline migration (`migrations/versions/…_catalog_baseline.py`), and a startup hook that migrates and seeds an empty database when `SEED_ON_STARTUP=true`.
+- [x] Models: category, room, tag, product, product_image, product_spec, review, inspiration.
+- [x] Deterministic seed: JSON in `app/seed/data/` (32 products, 80 reviews, 4 inspirations, locations), with `make seed` / `make seed-reset` (`python -m app.seed [--reset]`).
+- [x] Catalog endpoints with filtering, sorting and pagination (boundaries handled: page 0 → 422, page beyond the last → empty list, invalid sort → 422, disallowed page size → 422, min > max price → 400).
+- [x] `/meta/config` and `/meta/locations`.
+
+**Phase 1 notes:**
+- Verified by hand with 35 API checks (every endpoint, filter, sort and boundary) on **SQLite and PostgreSQL 16**, with identical responses. The PostgreSQL ID sequences are moved past the seed IDs after seeding.
+- `make contract` now compares freshly generated files with the working tree, so it passes locally before a commit and still fails on drift in CI.
+- Reviews have no `user_id` yet; it is added with auth in Phase 5.
 
 **Exit criteria:** Swagger UI at `/docs` lists the catalog API. `GET /products?page=1&page_size=16` returns 16 of 32 items.
 

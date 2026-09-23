@@ -1,6 +1,272 @@
 {
   "components": {
     "schemas": {
+      "CategoryRead": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "product_count": {
+            "title": "Product Count",
+            "type": "integer"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "product_count"
+        ],
+        "title": "CategoryRead",
+        "type": "object"
+      },
+      "CategoryRef": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name"
+        ],
+        "title": "CategoryRef",
+        "type": "object"
+      },
+      "ColorRead": {
+        "properties": {
+          "hex": {
+            "title": "Hex",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "hex"
+        ],
+        "title": "ColorRead",
+        "type": "object"
+      },
+      "CompareGroup": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/CompareRow"
+            },
+            "title": "Rows",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "rows"
+        ],
+        "title": "CompareGroup",
+        "type": "object"
+      },
+      "CompareResponse": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/CompareGroup"
+            },
+            "title": "Groups",
+            "type": "array"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/ProductSummary"
+            },
+            "title": "Products",
+            "type": "array"
+          }
+        },
+        "required": [
+          "products",
+          "groups"
+        ],
+        "title": "CompareResponse",
+        "type": "object"
+      },
+      "CompareRow": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "values": {
+            "description": "One value per product, in request order",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "label",
+          "values"
+        ],
+        "title": "CompareRow",
+        "type": "object"
+      },
+      "CountryRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "provinces": {
+            "items": {
+              "$ref": "#/components/schemas/ProvinceRead"
+            },
+            "title": "Provinces",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "provinces"
+        ],
+        "title": "CountryRead",
+        "type": "object"
+      },
+      "CurrencyRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "minor_units": {
+            "title": "Minor Units",
+            "type": "integer"
+          },
+          "symbol": {
+            "title": "Symbol",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "symbol",
+          "minor_units",
+          "locale"
+        ],
+        "title": "CurrencyRead",
+        "type": "object"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ErrorDetail"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody",
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "properties": {
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "title": "ErrorDetail",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      },
       "HealthRead": {
         "properties": {
           "db": {
@@ -31,6 +297,593 @@
         ],
         "title": "HealthRead",
         "type": "object"
+      },
+      "InspirationRead": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "image_url": {
+            "title": "Image Url",
+            "type": "string"
+          },
+          "index": {
+            "examples": [
+              "01"
+            ],
+            "title": "Index",
+            "type": "string"
+          },
+          "link": {
+            "title": "Link",
+            "type": "string"
+          },
+          "room": {
+            "title": "Room",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "index",
+          "room",
+          "title",
+          "image_url",
+          "link"
+        ],
+        "title": "InspirationRead",
+        "type": "object"
+      },
+      "MetaConfigRead": {
+        "properties": {
+          "compare_limit": {
+            "title": "Compare Limit",
+            "type": "integer"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/CurrencyRead"
+          },
+          "free_shipping_threshold_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Free Shipping Threshold Minor"
+          },
+          "page_size_options": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Page Size Options",
+            "type": "array"
+          }
+        },
+        "required": [
+          "currency",
+          "page_size_options",
+          "compare_limit",
+          "free_shipping_threshold_minor"
+        ],
+        "title": "MetaConfigRead",
+        "type": "object"
+      },
+      "Page_ProductSummary_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProductSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "total_pages": {
+            "title": "Total Pages",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "page_size",
+          "total",
+          "total_pages"
+        ],
+        "title": "Page[ProductSummary]",
+        "type": "object"
+      },
+      "Page_ReviewRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "total_pages": {
+            "title": "Total Pages",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "page_size",
+          "total",
+          "total_pages"
+        ],
+        "title": "Page[ReviewRead]",
+        "type": "object"
+      },
+      "ProductDetail": {
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/CategoryRef"
+          },
+          "colors": {
+            "items": {
+              "$ref": "#/components/schemas/ColorRead"
+            },
+            "title": "Colors",
+            "type": "array"
+          },
+          "compare_at_price_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Original price in US cents when the product is on sale",
+            "title": "Compare At Price Minor"
+          },
+          "description": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Description",
+            "type": "array"
+          },
+          "discount_percent": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whole-number discount, rounded half up",
+            "title": "Discount Percent"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/ProductImageRead"
+            },
+            "title": "Images",
+            "type": "array"
+          },
+          "in_stock": {
+            "title": "In Stock",
+            "type": "boolean"
+          },
+          "is_new": {
+            "title": "Is New",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "price_minor": {
+            "description": "Price in US cents",
+            "title": "Price Minor",
+            "type": "integer"
+          },
+          "rating_avg": {
+            "title": "Rating Avg",
+            "type": "number"
+          },
+          "review_count": {
+            "title": "Review Count",
+            "type": "integer"
+          },
+          "room": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RoomRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "short_description": {
+            "title": "Short Description",
+            "type": "string"
+          },
+          "sizes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Sizes",
+            "type": "array"
+          },
+          "sku": {
+            "title": "Sku",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "specs": {
+            "items": {
+              "$ref": "#/components/schemas/SpecRead"
+            },
+            "title": "Specs",
+            "type": "array"
+          },
+          "stock": {
+            "title": "Stock",
+            "type": "integer"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "subtitle",
+          "price_minor",
+          "compare_at_price_minor",
+          "discount_percent",
+          "is_new",
+          "image_url",
+          "rating_avg",
+          "review_count",
+          "in_stock",
+          "sku",
+          "short_description",
+          "description",
+          "images",
+          "sizes",
+          "colors",
+          "stock",
+          "category",
+          "room",
+          "tags",
+          "specs"
+        ],
+        "title": "ProductDetail",
+        "type": "object"
+      },
+      "ProductImageRead": {
+        "properties": {
+          "alt": {
+            "title": "Alt",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "gallery",
+              "description"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "alt",
+          "kind"
+        ],
+        "title": "ProductImageRead",
+        "type": "object"
+      },
+      "ProductSort": {
+        "enum": [
+          "default",
+          "price_asc",
+          "price_desc",
+          "newest",
+          "name_asc"
+        ],
+        "title": "ProductSort",
+        "type": "string"
+      },
+      "ProductSummary": {
+        "properties": {
+          "compare_at_price_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Original price in US cents when the product is on sale",
+            "title": "Compare At Price Minor"
+          },
+          "discount_percent": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Whole-number discount, rounded half up",
+            "title": "Discount Percent"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
+          "in_stock": {
+            "title": "In Stock",
+            "type": "boolean"
+          },
+          "is_new": {
+            "title": "Is New",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "price_minor": {
+            "description": "Price in US cents",
+            "title": "Price Minor",
+            "type": "integer"
+          },
+          "rating_avg": {
+            "title": "Rating Avg",
+            "type": "number"
+          },
+          "review_count": {
+            "title": "Review Count",
+            "type": "integer"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "subtitle": {
+            "title": "Subtitle",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "subtitle",
+          "price_minor",
+          "compare_at_price_minor",
+          "discount_percent",
+          "is_new",
+          "image_url",
+          "rating_avg",
+          "review_count",
+          "in_stock"
+        ],
+        "title": "ProductSummary",
+        "type": "object"
+      },
+      "ProvinceRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ],
+        "title": "ProvinceRead",
+        "type": "object"
+      },
+      "RelatedProducts": {
+        "properties": {
+          "has_more": {
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProductSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items",
+          "has_more"
+        ],
+        "title": "RelatedProducts",
+        "type": "object"
+      },
+      "ReviewRead": {
+        "properties": {
+          "author_name": {
+            "title": "Author Name",
+            "type": "string"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "rating": {
+            "title": "Rating",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "author_name",
+          "rating",
+          "comment",
+          "created_at"
+        ],
+        "title": "ReviewRead",
+        "type": "object"
+      },
+      "RoomRead": {
+        "properties": {
+          "image_url": {
+            "title": "Image Url",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "image_url"
+        ],
+        "title": "RoomRead",
+        "type": "object"
+      },
+      "RoomRef": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name"
+        ],
+        "title": "RoomRef",
+        "type": "object"
+      },
+      "SpecRead": {
+        "properties": {
+          "group": {
+            "title": "Group",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "group",
+          "label",
+          "value"
+        ],
+        "title": "SpecRead",
+        "type": "object"
       }
     }
   },
@@ -40,6 +893,41 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/categories": {
+      "get": {
+        "operationId": "list_categories_api_v1_categories_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryRead"
+                  },
+                  "title": "Response List Categories Api V1 Categories Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Categories with product counts",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
     "/api/v1/health": {
       "get": {
         "operationId": "get_health_api_v1_health_get",
@@ -53,6 +941,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
           },
           "503": {
             "content": {
@@ -68,6 +966,650 @@
         "summary": "Service and database health",
         "tags": [
           "meta"
+        ]
+      }
+    },
+    "/api/v1/inspirations": {
+      "get": {
+        "operationId": "list_inspirations_api_v1_inspirations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InspirationRead"
+                  },
+                  "title": "Response List Inspirations Api V1 Inspirations Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Home page room-inspiration slides",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/v1/meta/config": {
+      "get": {
+        "operationId": "get_config_api_v1_meta_config_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaConfigRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Store configuration",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/api/v1/meta/locations": {
+      "get": {
+        "operationId": "get_locations_api_v1_meta_locations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CountryRead"
+                  },
+                  "title": "Response Get Locations Api V1 Meta Locations Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Countries and their provinces for the checkout form",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "operationId": "list_products_api_v1_products_get",
+        "parameters": [
+          {
+            "description": "Case-insensitive match on name and subtitle",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Case-insensitive match on name and subtitle",
+              "title": "Q"
+            }
+          },
+          {
+            "description": "Category slug; repeat for several, e.g. ?category=sofas",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "default": [],
+              "description": "Category slug; repeat for several, e.g. ?category=sofas",
+              "items": {
+                "type": "string"
+              },
+              "title": "Category",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Room slug (dining, living, bedroom); repeatable",
+            "in": "query",
+            "name": "room",
+            "required": false,
+            "schema": {
+              "default": [],
+              "description": "Room slug (dining, living, bedroom); repeatable",
+              "items": {
+                "type": "string"
+              },
+              "title": "Room",
+              "type": "array"
+            }
+          },
+          {
+            "description": "Inclusive, in US cents",
+            "in": "query",
+            "name": "min_price",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Inclusive, in US cents",
+              "title": "Min Price"
+            }
+          },
+          {
+            "description": "Inclusive, in US cents",
+            "in": "query",
+            "name": "max_price",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Inclusive, in US cents",
+              "title": "Max Price"
+            }
+          },
+          {
+            "description": "Only products with a discount",
+            "in": "query",
+            "name": "on_sale",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only products with a discount",
+              "title": "On Sale"
+            }
+          },
+          {
+            "description": "Only products marked New",
+            "in": "query",
+            "name": "is_new",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only products marked New",
+              "title": "Is New"
+            }
+          },
+          {
+            "description": "Only home-page products",
+            "in": "query",
+            "name": "featured",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only home-page products",
+              "title": "Featured"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ProductSort",
+              "default": "default"
+            }
+          },
+          {
+            "description": "1-based page number",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "description": "1-based page number",
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Items per page",
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 16,
+              "description": "Items per page",
+              "enum": [
+                8,
+                16,
+                24,
+                32
+              ],
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_ProductSummary_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "List products with filters, sorting and pagination",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/v1/products/compare": {
+      "get": {
+        "operationId": "compare_products_api_v1_products_compare_get",
+        "parameters": [
+          {
+            "description": "Comma-separated product IDs, at most 3",
+            "in": "query",
+            "name": "ids",
+            "required": true,
+            "schema": {
+              "description": "Comma-separated product IDs, at most 3",
+              "examples": [
+                "9,10"
+              ],
+              "pattern": "^\\d+(,\\d+)*$",
+              "title": "Ids",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompareResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Compare up to 3 products side by side",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/v1/products/{slug}": {
+      "get": {
+        "operationId": "get_product_api_v1_products__slug__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "examples": [
+                "asgaard-sofa"
+              ],
+              "maxLength": 120,
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Product detail",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/v1/products/{slug}/related": {
+      "get": {
+        "operationId": "list_related_api_v1_products__slug__related_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "examples": [
+                "asgaard-sofa"
+              ],
+              "maxLength": 120,
+              "title": "Slug",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 4,
+              "maximum": 16,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelatedProducts"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Products in the same category",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/v1/products/{slug}/reviews": {
+      "get": {
+        "operationId": "list_reviews_api_v1_products__slug__reviews_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "examples": [
+                "asgaard-sofa"
+              ],
+              "maxLength": 120,
+              "title": "Slug",
+              "type": "string"
+            }
+          },
+          {
+            "description": "1-based page number",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "description": "1-based page number",
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_ReviewRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Product reviews, newest first",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/api/v1/rooms": {
+      "get": {
+        "operationId": "list_rooms_api_v1_rooms_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RoomRead"
+                  },
+                  "title": "Response List Rooms Api V1 Rooms Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Rooms (Browse The Range)",
+        "tags": [
+          "catalog"
         ]
       }
     }

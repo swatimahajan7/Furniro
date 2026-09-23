@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "index_label": "01",
+    "room": "Bed Room",
+    "title": "Inner Peace",
+    "image_url": "/media/inspirations/inner-peace.webp",
+    "link": "/shop?room=bedroom",
+    "position": 1
+  },
+  {
+    "id": 2,
+    "index_label": "02",
+    "room": "Dining Room",
+    "title": "Morning Light",
+    "image_url": "/media/inspirations/morning-light.webp",
+    "link": "/shop?room=dining",
+    "position": 2
+  },
+  {
+    "id": 3,
+    "index_label": "03",
+    "room": "Hallway",
+    "title": "Quiet Corner",
+    "image_url": "/media/inspirations/quiet-corner.webp",
+    "link": "/shop?category=decor",
+    "position": 3
+  },
+  {
+    "id": 4,
+    "index_label": "04",
+    "room": "Living Room",
+    "title": "Soft Pastels",
+    "image_url": "/media/inspirations/soft-pastels.webp",
+    "link": "/shop?room=living",
+    "position": 4
+  }
+]
