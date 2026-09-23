@@ -6,7 +6,7 @@ served at `/api/v1/openapi.json`. When they disagree, fix the code or this doc i
 - Base URL: `http://localhost:8100/api/v1` in local dev (`make dev`); the SPA calls it same-origin as `/api/v1`
 - Content type: `application/json; charset=utf-8`
 - Field names are `snake_case` on the wire. The frontend uses the generated types as-is and does not remap to camelCase.
-- Time values are ISO-8601 UTC strings, for example `2026-09-23T10:00:00Z`.
+- Time values are ISO-8601 UTC strings with a `Z`, for example `2026-09-23T10:00:00Z` (on SQLite as well as PostgreSQL).
 - Money is an integer in **minor units, i.e. US cents** (`price_minor: 250000` = $2,500.00). Currency info comes from `GET /meta/config`.
 
 ## 1. Conventions
@@ -51,7 +51,7 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 | 403 | `FORBIDDEN` |
 | 404 | `NOT_FOUND`, `PRODUCT_NOT_FOUND`, `CART_NOT_FOUND`, `CART_ITEM_NOT_FOUND`, `ORDER_NOT_FOUND` |
 | 405 | `METHOD_NOT_ALLOWED` |
-| 409 | `EMAIL_ALREADY_REGISTERED`, `ALREADY_SUBSCRIBED`, `INSUFFICIENT_STOCK` |
+| 409 | `EMAIL_ALREADY_REGISTERED`, `ALREADY_REVIEWED`, `ALREADY_SUBSCRIBED`, `INSUFFICIENT_STOCK` |
 | 422 | `VALIDATION_ERROR` (with `details[]`) |
 | 500 | `INTERNAL_ERROR` (no internals leaked) |
 
@@ -74,7 +74,13 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 | POST | `/auth/login` | `{ email, password }` | `200 { access_token, token_type, user }` |
 | GET 🔒 | `/auth/me` | — | `200 User` |
 
-`User = { id, email, first_name, last_name, created_at }`. Password rules: at least 8 characters, with at least 1 letter and 1 digit.
+`User = { id, email, first_name, last_name, created_at }`.
+- Password: 8–72 characters, with at least 1 letter and 1 digit (422 on `password` otherwise). Names are 1–50 characters.
+- Emails are stored lowercased, so logins and the duplicate check are case-insensitive. A duplicate → `409 EMAIL_ALREADY_REGISTERED`.
+- A wrong password and an unknown email give the same `401 INVALID_CREDENTIALS`, so accounts can't be probed.
+- The token is a JWT (HS256) valid for `JWT_EXPIRES_MINUTES` (24 h). A 🔒 route without a token, or with a bad one, → `401 UNAUTHENTICATED`; an expired one → `401 TOKEN_EXPIRED`. On routes where the token is optional (cart, orders), a *bad* token is still a 401, never silently ignored.
+- Logging out is client-side (tokens are stateless).
+- Seeded accounts: `demo@furniro.test` / `Demo@1234` (2 past orders, 3 liked products) and `empty@furniro.test` / `Demo@1234` (nothing yet).
 
 ### 2.3 Catalog
 `GET /products` query parameters:
@@ -115,20 +121,23 @@ ProductSummary = {
 
 ### 2.4 Reviews
 `GET /products/{slug}/reviews?page=&page_size=` → `Page<{ id, author_name, rating, comment, created_at }>`, newest first.
-`POST /products/{slug}/reviews` 🔒 `{ rating: 1..5, comment: 10..1000 chars }` → `201 Review`. One review per user per product, otherwise `409 ALREADY_REVIEWED`.
+`POST /products/{slug}/reviews` 🔒 `{ rating: 1..5, comment: 10..1000 chars }` → `201 Review`. One review per user per product, otherwise `409 ALREADY_REVIEWED`. `author_name` is "First L." (e.g. "Dina P."). The product's `rating_avg` (1 decimal) and `review_count` update at once. Unknown slug → `404 PRODUCT_NOT_FOUND`.
 
 ### 2.5 Cart
 | Method | Path | Body | Response |
 |---|---|---|---|
-| POST | `/cart` | — | `201 Cart` (new anonymous cart, returns `id`) |
+| POST | `/cart` | — | `201 Cart`: a new guest cart, or with a token the user's cart (created on first use) |
 | GET | `/cart` | — | `200 Cart` |
 | POST | `/cart/items` | `{ product_id, quantity, size?, color? }` | `200 Cart` |
 | PATCH | `/cart/items/{item_id}` | `{ quantity }` (1..10) | `200 Cart` |
 | DELETE | `/cart/items/{item_id}` | — | `200 Cart` |
 | DELETE | `/cart` | — | `200 Cart` (emptied) |
-| POST 🔒 | `/cart/merge` | — | `200 Cart` (moves the `X-Cart-Id` items into the user's cart) |
+| POST 🔒 | `/cart/merge` | — | `200 Cart`: moves the `X-Cart-Id` guest cart's lines into the user's cart and deletes the guest cart |
 
-Cart resolution: `X-Cart-Id` names the cart. A missing, malformed or unknown ID returns `404 CART_NOT_FOUND` (except for `POST /cart`). From Phase 5, a token selects the user's cart instead.
+Cart resolution:
+- With a token, every cart route acts on the **user's own cart** (one per user, created on first use) and `X-Cart-Id` is ignored.
+- Without a token, `X-Cart-Id` names a guest cart. A missing, malformed or unknown ID returns `404 CART_NOT_FOUND` (except for `POST /cart`). A user's cart is never reachable by ID alone, so after logout its ID is a plain 404.
+- Merge (on login): matching lines add up but are **clamped** to `min(10, stock)` instead of failing, and out-of-stock lines are dropped, because logging in should never error over quantities. A missing or unknown guest cart is ignored, so calling merge twice is harmless.
 ```json
 Cart = {
   "id": "5e0c…", "items": [
@@ -160,11 +169,14 @@ Rules:
 
 `Order = { order_number: "FUR-000123", status: "pending", payment_method, billing, items[] {product_slug, product_name, image_url, size, color, quantity, unit_price_minor, line_total_minor}, subtotal_minor, total_minor, created_at }`. `order_number` is `FUR-` plus the zero-padded order id.
 
-`GET /orders/{order_number}?email=` → Order. `email` is required and compared case-insensitively; a wrong email is the same `404 ORDER_NOT_FOUND` as an unknown number, so order numbers can't be probed. (Phase 5: the owner may use a token instead.)
-`GET /orders` 🔒 → `Page<OrderSummary>`, newest first (Phase 5).
+When logged in, the order is linked to the user (it appears in `GET /orders`).
+
+`GET /orders/{order_number}?email=` → Order. The owner may use their token with no `email`. Anyone else must pass the checkout `email` (compared case-insensitively). A wrong email, or someone else's order without one, is the same `404 ORDER_NOT_FOUND` as an unknown number, so order numbers can't be probed.
+
+`GET /orders?page=&page_size=` 🔒 → `Page<OrderSummary>`, newest first. `page_size` 1–50 (default 10). `OrderSummary = { order_number, status, payment_method, item_count, total_minor, created_at }`, where `item_count` is the total number of units.
 
 ### 2.7 Wishlist 🔒
-`GET /wishlist` → `ProductSummary[]` · `PUT /wishlist/{product_id}` → `204` (idempotent) · `DELETE /wishlist/{product_id}` → `204` (idempotent).
+`GET /wishlist` → `ProductSummary[]`, most recently liked first · `PUT /wishlist/{product_id}` → `204` (idempotent; unknown product → `404 PRODUCT_NOT_FOUND`) · `DELETE /wishlist/{product_id}` → `204` (idempotent, including for products that were never liked).
 
 ### 2.8 Blog
 `GET /blog/posts?page=&page_size=3&category=&q=` → `Page<{ slug, title, excerpt, cover_url, author, category {slug,name}, published_at }>`
@@ -183,3 +195,4 @@ Rules:
 | 2026-09-23 | Phase 1: catalog and meta endpoints implemented; documented validation rules, `INVALID_PRICE_RANGE`, `METHOD_NOT_ALLOWED`, discount rounding and compare semantics |
 | 2026-09-23 | Phase 4: cart and order endpoints implemented; `sizes`/`colors` added to ProductSummary; `CART_ITEM_NOT_FOUND`; validation, stock and lookup rules documented |
 | 2026-09-23 | Removed test-support (`/__test__/*`) and bug-toggle (`/__bugs__/*`) endpoints; tests are out of scope |
+| 2026-09-23 | Phase 5: auth, wishlist, review posting, cart merge and ownership, owner order access and `GET /orders` implemented. Guests can no longer open a user's cart by ID. Timestamps always carry `Z` (SQLite returned them without a zone before) |

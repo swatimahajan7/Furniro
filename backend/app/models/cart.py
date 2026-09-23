@@ -13,14 +13,16 @@ MAX_LINE_QUANTITY = 10
 
 
 class Cart(TimestampMixin, Base):
-    """An anonymous server-side cart, addressed by the `X-Cart-Id` header (UUID).
-
-    `user_id` arrives with auth in Phase 5 (cart merge on login).
+    """A server-side cart. Guests address it with the `X-Cart-Id` header (UUID); a logged-in
+    user has at most one cart, found through `user_id` (guest carts merge into it on login).
     """
 
     __tablename__ = "carts"
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), unique=True
+    )
 
     items: Mapped[list["CartItem"]] = relationship(
         back_populates="cart", cascade="all, delete-orphan", order_by="CartItem.id"

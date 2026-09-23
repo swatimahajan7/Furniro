@@ -60,16 +60,23 @@ function isErrorResponse(body: unknown): body is ErrorResponse {
   return typeof body === 'object' && body !== null && 'error' in body;
 }
 
+/** Codes that mean the stored token is no longer usable (not "wrong password"). */
+const SESSION_ENDED = new Set(['UNAUTHENTICATED', 'TOKEN_EXPIRED']);
+
 /**
- * The single way the app talks to the API. Attaches `X-Cart-Id` from the session store (the
- * Authorization header joins it in Phase 5). Components call feature hooks, never this directly.
+ * The single way the app talks to the API. Attaches `Authorization` and `X-Cart-Id` from the
+ * session store; explicit headers win. A 401 on a request that carried the stored token ends
+ * the session (GUIDELINES §4). Components call feature hooks, never this directly.
  */
 export async function apiFetch<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
   const { query, body, headers, ...init } = options;
   const requestHeaders = new Headers(headers);
   requestHeaders.set('Accept', 'application/json');
-  const { cartId } = useSession.getState();
+  const { cartId, token } = useSession.getState();
   if (cartId && !requestHeaders.has('X-Cart-Id')) requestHeaders.set('X-Cart-Id', cartId);
+  if (token && !requestHeaders.has('Authorization')) {
+    requestHeaders.set('Authorization', `Bearer ${token}`);
+  }
   if (body !== undefined) requestHeaders.set('Content-Type', 'application/json');
 
   let response: Response;
@@ -91,6 +98,12 @@ export async function apiFetch<T>(path: string, options: ApiRequestOptions = {})
     const requestId = response.headers.get('X-Request-Id');
     if (isErrorResponse(payload)) {
       const { code, message, details } = payload.error;
+      const sentStoredToken =
+        token !== null && requestHeaders.get('Authorization') === `Bearer ${token}`;
+      if (response.status === 401 && sentStoredToken && SESSION_ENDED.has(code)) {
+        // Only if nobody logged in again while this request was in flight.
+        if (useSession.getState().token === token) useSession.getState().logOut('expired');
+      }
       throw new ApiError(response.status, code, message, details ?? null, requestId);
     }
     throw new ApiError(

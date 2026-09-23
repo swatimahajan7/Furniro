@@ -12,7 +12,7 @@ def order_number_for(order_id: int) -> str:
 
 
 class Order(TimestampMixin, Base):
-    """A placed order. `user_id` (orders linked to accounts) arrives with auth in Phase 5."""
+    """A placed order. `user_id` is set when a logged-in customer checks out."""
 
     __tablename__ = "orders"
     __table_args__ = (
@@ -23,6 +23,9 @@ class Order(TimestampMixin, Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     # Nullable only between INSERT and the flush that assigns it from the id.
     order_number: Mapped[str | None] = mapped_column(String(20), unique=True)
+    user_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
     email: Mapped[str] = mapped_column(String(254), index=True)
     status: Mapped[str] = mapped_column(String(20), default="pending")
     payment_method: Mapped[str] = mapped_column(String(20))

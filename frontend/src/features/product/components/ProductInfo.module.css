@@ -113,3 +113,29 @@
     min-width: 140px;
   }
 }
+
+.like {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  color: var(--color-black);
+  border: 1px solid var(--color-black);
+  border-radius: var(--radius-lg);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.like:hover {
+  color: var(--color-sale);
+}
+
+/* Wishlisted: the heart turns red (DESIGN_SPEC §4.4). */
+.liked {
+  color: var(--color-sale);
+  border-color: var(--color-sale);
+}
+
+.liked svg {
+  fill: var(--color-sale);
+}

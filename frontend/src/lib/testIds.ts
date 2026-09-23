@@ -58,7 +58,26 @@ export const testIds = {
 
   compareColumn: (slug: string) => ({
     root: `compare-column-${slug}`,
+    name: `compare-column-${slug}-name`,
+    price: `compare-column-${slug}-price`,
+    rating: `compare-column-${slug}-rating`,
     remove: `compare-column-${slug}-remove`,
     addToCart: `compare-column-${slug}-add-to-cart`,
   }),
+  /** Spec labels are free text: "Seat Height" → compare-row-seat-height. */
+  compareRow: (label: string) => `compare-row-${slugify(label)}`,
+  compareGroup: (name: string) => `compare-group-${slugify(name)}`,
+
+  /** Order numbers keep their case-insensitive form: FUR-000001 → account-order-fur-000001. */
+  accountOrder: (orderNumber: string) => {
+    const base = `account-order-${slugify(orderNumber)}`;
+    return { root: base, link: `${base}-link`, total: `${base}-total`, status: `${base}-status` };
+  },
 } as const;
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}

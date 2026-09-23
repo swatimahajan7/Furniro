@@ -4,6 +4,57 @@
  */
 
 export interface paths {
+  '/api/v1/auth/login': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Log in with email and password */
+    post: operations['login_api_v1_auth_login_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/auth/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** The logged-in user */
+    get: operations['me_api_v1_auth_me_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/auth/register': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create an account and log in */
+    post: operations['register_api_v1_auth_register_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/cart': {
     parameters: {
       query?: never;
@@ -14,7 +65,7 @@ export interface paths {
     /** The cart named by X-Cart-Id */
     get: operations['get_cart_api_v1_cart_get'];
     put?: never;
-    /** Create an empty anonymous cart */
+    /** Create a guest cart (logged in: returns your cart) */
     post: operations['create_cart_api_v1_cart_post'];
     /** Empty the cart */
     delete: operations['clear_cart_api_v1_cart_delete'];
@@ -56,6 +107,23 @@ export interface paths {
     head?: never;
     /** Change a line's quantity */
     patch: operations['update_item_api_v1_cart_items__item_id__patch'];
+    trace?: never;
+  };
+  '/api/v1/cart/merge': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** After login: move the X-Cart-Id guest cart into your cart */
+    post: operations['merge_cart_api_v1_cart_merge_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
   '/api/v1/categories': {
@@ -150,9 +218,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    /** My orders, newest first */
+    get: operations['list_orders_api_v1_orders_get'];
     put?: never;
-    /** Place an order from the cart (guest checkout) */
+    /** Place an order from the cart (guest or logged in) */
     post: operations['place_order_api_v1_orders_post'];
     delete?: never;
     options?: never;
@@ -167,7 +236,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Look up an order with the email used at checkout */
+    /** An order: yours when logged in, otherwise with the checkout email */
     get: operations['get_order_api_v1_orders__order_number__get'];
     put?: never;
     post?: never;
@@ -255,7 +324,8 @@ export interface paths {
     /** Product reviews, newest first */
     get: operations['list_reviews_api_v1_products__slug__reviews_get'];
     put?: never;
-    post?: never;
+    /** Review a product (logged in; once per product) */
+    post: operations['create_review_api_v1_products__slug__reviews_post'];
     delete?: never;
     options?: never;
     head?: never;
@@ -274,6 +344,41 @@ export interface paths {
     put?: never;
     post?: never;
     delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/wishlist': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** My liked products, newest first */
+    get: operations['list_wishlist_api_v1_wishlist_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/wishlist/{product_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Like a product (idempotent) */
+    put: operations['add_to_wishlist_api_v1_wishlist__product_id__put'];
+    post?: never;
+    /** Unlike a product (idempotent) */
+    delete: operations['remove_from_wishlist_api_v1_wishlist__product_id__delete'];
     options?: never;
     head?: never;
     patch?: never;
@@ -539,6 +644,16 @@ export interface components {
       /** Title */
       title: string;
     };
+    /** LoginIn */
+    LoginIn: {
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+      /** Password */
+      password: string;
+    };
     /** MetaConfigRead */
     MetaConfigRead: {
       /** Compare Limit */
@@ -597,6 +712,41 @@ export interface components {
      * @enum {string}
      */
     OrderStatus: 'pending';
+    /**
+     * OrderSummary
+     * @description One row of "My orders".
+     */
+    OrderSummary: {
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /**
+       * Item Count
+       * @description Total units
+       */
+      item_count: number;
+      /** Order Number */
+      order_number: string;
+      payment_method: components['schemas']['PaymentMethod'];
+      status: components['schemas']['OrderStatus'];
+      /** Total Minor */
+      total_minor: number;
+    };
+    /** Page[OrderSummary] */
+    Page_OrderSummary_: {
+      /** Items */
+      items: components['schemas']['OrderSummary'][];
+      /** Page */
+      page: number;
+      /** Page Size */
+      page_size: number;
+      /** Total */
+      total: number;
+      /** Total Pages */
+      total_pages: number;
+    };
     /** Page[ProductSummary] */
     Page_ProductSummary_: {
       /** Items */
@@ -760,12 +910,36 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** RegisterIn */
+    RegisterIn: {
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /**
+       * Password
+       * @description At least 8 characters with at least one letter and one digit
+       */
+      password: string;
+    };
     /** RelatedProducts */
     RelatedProducts: {
       /** Has More */
       has_more: boolean;
       /** Items */
       items: components['schemas']['ProductSummary'][];
+    };
+    /** ReviewCreate */
+    ReviewCreate: {
+      /** Comment */
+      comment: string;
+      /** Rating */
+      rating: number;
     };
     /** ReviewRead */
     ReviewRead: {
@@ -808,6 +982,34 @@ export interface components {
       /** Value */
       value: string;
     };
+    /** TokenRead */
+    TokenRead: {
+      /** Access Token */
+      access_token: string;
+      /**
+       * Token Type
+       * @default bearer
+       * @constant
+       */
+      token_type: 'bearer';
+      user: components['schemas']['UserRead'];
+    };
+    /** UserRead */
+    UserRead: {
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Id */
+      id: number;
+      /** Last Name */
+      last_name: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -817,6 +1019,128 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  login_api_v1_auth_login_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['LoginIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TokenRead'];
+        };
+      };
+      /** @description INVALID_CREDENTIALS */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  me_api_v1_auth_me_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserRead'];
+        };
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  register_api_v1_auth_register_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RegisterIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TokenRead'];
+        };
+      };
+      /** @description EMAIL_ALREADY_REGISTERED */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   get_cart_api_v1_cart_get: {
     parameters: {
       query?: never;
@@ -1081,6 +1405,47 @@ export interface operations {
       };
     };
   };
+  merge_cart_api_v1_cart_merge_post: {
+    parameters: {
+      query?: never;
+      header?: {
+        /** @description Cart UUID returned by POST /cart */
+        'X-Cart-Id'?: string | null;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CartRead'];
+        };
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   list_categories_api_v1_categories_get: {
     parameters: {
       query?: never;
@@ -1235,6 +1600,47 @@ export interface operations {
       };
     };
   };
+  list_orders_api_v1_orders_get: {
+    parameters: {
+      query?: {
+        page?: number;
+        page_size?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Page_OrderSummary_'];
+        };
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   place_order_api_v1_orders_post: {
     parameters: {
       query?: never;
@@ -1299,9 +1705,9 @@ export interface operations {
   };
   get_order_api_v1_orders__order_number__get: {
     parameters: {
-      query: {
-        /** @description The billing email of the order */
-        email: string;
+      query?: {
+        /** @description The billing email; not needed for your own orders when logged in */
+        email?: string | null;
       };
       header?: never;
       path: {
@@ -1577,6 +1983,68 @@ export interface operations {
       };
     };
   };
+  create_review_api_v1_products__slug__reviews_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReviewCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReviewRead'];
+        };
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description ALREADY_REVIEWED */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   list_rooms_api_v1_rooms_get: {
     parameters: {
       query?: never;
@@ -1593,6 +2061,129 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['RoomRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  list_wishlist_api_v1_wishlist_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductSummary'][];
+        };
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  add_to_wishlist_api_v1_wishlist__product_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        product_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description PRODUCT_NOT_FOUND */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  remove_from_wishlist_api_v1_wishlist__product_id__delete: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        product_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Not logged in */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Validation error (code VALIDATION_ERROR) */

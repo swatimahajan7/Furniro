@@ -8,14 +8,16 @@ from sqlalchemy import ColumnElement, Select, func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.core.errors import (
+    ALREADY_REVIEWED,
     COMPARE_LIMIT_EXCEEDED,
     INVALID_PRICE_RANGE,
     PRODUCT_NOT_FOUND,
     BadRequestError,
+    ConflictError,
     NotFoundError,
 )
 from app.core.pagination import offset_for
-from app.models import Category, Inspiration, Product, Review, Room
+from app.models import Category, Inspiration, Product, Review, Room, User
 from app.schemas.catalog import (
     CompareGroup,
     CompareResponse,
@@ -232,3 +234,31 @@ def list_reviews(
         .limit(page_size)
     ).all()
     return list(items), total
+
+
+def create_review(session: Session, slug: str, user: User, *, rating: int, comment: str) -> Review:
+    """One review per user per product; keeps the product's rating_avg/review_count current."""
+    product = get_product(session, slug)
+    already = session.scalar(
+        select(Review.id).where(Review.product_id == product.id, Review.user_id == user.id)
+    )
+    if already is not None:
+        raise ConflictError("You have already reviewed this product", code=ALREADY_REVIEWED)
+    review = Review(
+        product_id=product.id,
+        user_id=user.id,
+        author_name=f"{user.first_name} {user.last_name[:1]}.",
+        rating=rating,
+        comment=comment,
+    )
+    session.add(review)
+    session.flush()
+    count, total = session.execute(
+        select(func.count(Review.id), func.coalesce(func.sum(Review.rating), 0)).where(
+            Review.product_id == product.id
+        )
+    ).one()
+    product.review_count = count
+    product.rating_avg = round(total / count, 1) if count else 0.0
+    session.commit()
+    return review

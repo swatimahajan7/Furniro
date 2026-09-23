@@ -4,9 +4,9 @@ A full-stack furniture e-commerce demo app (React + FastAPI) built from the Furn
 Scope is the app itself: no automated tests are included, but every UI element carries a stable
 `data-testid` so tests can be added later.
 
-> **Status:** Phases 0–4 are complete: browse the catalog, add to the cart, check out as a guest and view the
-> order confirmation. Accounts, wishlist and compare arrive in Phase 5. Placing orders decrements stock; run
-> `make seed-reset` to restore the baseline.
+> **Status:** Phases 0–5 are complete: browse the catalog, add to the cart, check out (as a guest or logged in),
+> register and log in, like products, compare up to 3 products, review products and see your orders. Blog, contact
+> and newsletter arrive in Phase 6. Placing orders decrements stock; run `make seed-reset` to restore the baseline.
 
 ## Documentation map
 | Doc | What it covers |
@@ -54,4 +54,5 @@ Keep a copy in the repo root.
 `frontend/.npmrc` uses `registry.yarnpkg.com`, a public mirror of the npm registry, because `registry.npmjs.org`
 is unreachable on the primary dev network. Packages and checksums are identical.
 
-Planned demo accounts (Phase 5): `demo@furniro.test` / `Demo@1234` and `empty@furniro.test` / `Demo@1234`.
+Demo accounts: `demo@furniro.test` / `Demo@1234` (2 past orders, 3 liked products) and `empty@furniro.test` /
+`Demo@1234` (no orders). `make seed-reset` restores both.

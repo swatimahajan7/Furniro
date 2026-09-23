@@ -1,19 +1,22 @@
 import { Outlet, ScrollRestoration, useNavigation } from 'react-router';
 
 import { Footer, Header } from '@/components/layout';
+import { useCurrentUser, useSessionExpiry } from '@/features/auth';
 import { CartDrawer, useCart, useCartDrawer } from '@/features/cart';
 
 import styles from './AppLayout.module.css';
 
 /**
  * Root layout for every route: skip link, header, page, footer, and the cart drawer.
- * It lives in `app/` because it wires features (the cart) into the layout components.
+ * It lives in `app/` because it wires features (cart, auth) into the layout components.
  */
 export function AppLayout() {
   const navigation = useNavigation();
   const cart = useCart();
   const openCart = useCartDrawer((state) => state.open);
   const isNavigating = navigation.state !== 'idle';
+  const user = useCurrentUser();
+  useSessionExpiry();
 
   return (
     <>
@@ -28,7 +31,11 @@ export function AppLayout() {
           data-testid="route-progress"
         />
       )}
-      <Header cartCount={cart.data?.item_count ?? 0} onCartClick={openCart} />
+      <Header
+        cartCount={cart.data?.item_count ?? 0}
+        onCartClick={openCart}
+        userName={user?.first_name ?? null}
+      />
       <main id="main-content" className={styles.main} tabIndex={-1}>
         <Outlet />
       </main>

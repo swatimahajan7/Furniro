@@ -1,0 +1,27 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-9);
+  align-items: start;
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+@media (width >= 1024px) {
+  .page {
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.heading {
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  line-height: var(--text-h4-lh);
+  color: var(--color-black);
+}

@@ -61,6 +61,17 @@ class OrderItemRead(Schema):
     line_total_minor: int
 
 
+class OrderSummary(Schema):
+    """One row of "My orders"."""
+
+    order_number: str
+    status: OrderStatus
+    payment_method: PaymentMethod
+    item_count: int = Field(description="Total units")
+    total_minor: int
+    created_at: datetime
+
+
 class OrderRead(Schema):
     order_number: str
     status: OrderStatus

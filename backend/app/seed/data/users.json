@@ -1,0 +1,99 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "demo@furniro.test",
+      "password_hash": "$2b$12$T/H/Pw5J0C6MsmppOcQ4duOrjkmZDQPojEyz1.a9lGOr/QRD0qkeG",
+      "first_name": "Dina",
+      "last_name": "Perera",
+      "created_at": "2026-03-01T09:00:00Z"
+    },
+    {
+      "id": 2,
+      "email": "empty@furniro.test",
+      "password_hash": "$2b$12$ui/V3eFZC7EzZTq5PW/0VunSD/vUIw8MK2OI4/SjJ0sIukJ76TlKG",
+      "first_name": "Evan",
+      "last_name": "Empty",
+      "created_at": "2026-03-02T09:00:00Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "payment_method": "bank_transfer",
+      "billing": {
+        "first_name": "Dina",
+        "last_name": "Perera",
+        "company": null,
+        "country": "LK",
+        "street": "12 Galle Road",
+        "city": "Colombo",
+        "province": "WP",
+        "zip": "00300",
+        "phone": "+94 77 123 4567",
+        "email": "demo@furniro.test",
+        "notes": null
+      },
+      "items": [
+        {
+          "product": "asgaard-sofa",
+          "size": "L",
+          "color": "Black",
+          "quantity": 1
+        },
+        {
+          "product": "grifo",
+          "size": null,
+          "color": "Linen",
+          "quantity": 2
+        }
+      ],
+      "created_at": "2026-05-14T10:30:00Z"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "payment_method": "cod",
+      "billing": {
+        "first_name": "Dina",
+        "last_name": "Perera",
+        "company": null,
+        "country": "LK",
+        "street": "12 Galle Road",
+        "city": "Colombo",
+        "province": "WP",
+        "zip": "00300",
+        "phone": "+94 77 123 4567",
+        "email": "demo@furniro.test",
+        "notes": "Please call before delivery."
+      },
+      "items": [
+        {
+          "product": "muggo",
+          "size": null,
+          "color": "Ocean",
+          "quantity": 4
+        }
+      ],
+      "created_at": "2026-08-02T15:45:00Z"
+    }
+  ],
+  "wishlist": [
+    {
+      "user_id": 1,
+      "product": "asgaard-sofa",
+      "created_at": "2026-06-01T08:00:00Z"
+    },
+    {
+      "user_id": 1,
+      "product": "pingky",
+      "created_at": "2026-06-03T08:00:00Z"
+    },
+    {
+      "user_id": 1,
+      "product": "respira",
+      "created_at": "2026-06-05T08:00:00Z"
+    }
+  ]
+}

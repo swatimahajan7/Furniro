@@ -1,0 +1,29 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-9);
+  align-items: center;
+  padding-top: var(--space-11);
+  padding-bottom: var(--space-12);
+}
+
+.page > * {
+  width: 100%;
+}
+
+.full {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.emptyPicker {
+  width: 100%;
+  max-width: 320px;
+}

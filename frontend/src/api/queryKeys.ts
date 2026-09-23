@@ -20,9 +20,14 @@ export const queryKeys = {
     compare: (ids: readonly number[]) => ['products', 'compare', ids] as const,
   },
   cart: (cartId: string | null) => ['cart', cartId] as const,
+  /** User-scoped keys carry the user id, so logging in or out never shows someone else's data. */
   orders: {
-    detail: (orderNumber: string, email: string) => ['orders', orderNumber, email] as const,
+    all: ['orders'] as const,
+    detail: (orderNumber: string, email: string, userId: number | null) =>
+      ['orders', 'detail', orderNumber, email, userId] as const,
+    mine: (userId: number | null, page: number) => ['orders', 'mine', userId, page] as const,
   },
+  wishlist: (userId: number | null) => ['wishlist', userId] as const,
   categories: ['categories'] as const,
   rooms: ['rooms'] as const,
   inspirations: ['inspirations'] as const,

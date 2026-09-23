@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import type { ProductSummary } from '@/api/types';
 import { Badge, Button, Rating } from '@/components/ui';
+import { useIsLiked } from '@/features/wishlist';
 import { cn } from '@/lib/cn';
 import { formatPrice } from '@/lib/format';
 import { testIds } from '@/lib/testIds';
@@ -23,6 +24,7 @@ export interface ProductCardProps {
 export function ProductCard({ product, variant = 'grid' }: ProductCardProps) {
   const ids = testIds.productCard(product.slug);
   const actions = useProductActions();
+  const isLiked = useIsLiked(product.id);
   const onSale = product.discount_percent !== null && product.compare_at_price_minor !== null;
 
   return (
@@ -93,7 +95,7 @@ export function ProductCard({ product, variant = 'grid' }: ProductCardProps) {
           className={styles.addToCart}
           onClick={() => void actions.addToCart(product)}
           disabled={!product.in_stock}
-          isLoading={actions.isAdding}
+          isLoading={actions.addingId === product.id}
           aria-label={`Add ${product.name} to cart`}
           data-testid={ids.addToCart}
         >
@@ -120,12 +122,13 @@ export function ProductCard({ product, variant = 'grid' }: ProductCardProps) {
           </button>
           <button
             type="button"
-            className={styles.action}
+            className={cn(styles.action, isLiked && styles.liked)}
             onClick={() => actions.like(product)}
             aria-label={`Like ${product.name}`}
+            aria-pressed={isLiked}
             data-testid={ids.like}
           >
-            <Heart size={16} aria-hidden="true" /> Like
+            <Heart size={16} aria-hidden="true" /> {isLiked ? 'Liked' : 'Like'}
           </button>
         </div>
       </div>

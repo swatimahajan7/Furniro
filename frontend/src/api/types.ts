@@ -15,15 +15,23 @@ export type RelatedProducts = Schemas['RelatedProducts'];
 export type CompareResponse = Schemas['CompareResponse'];
 export type Review = Schemas['ReviewRead'];
 export type ReviewPage = Schemas['Page_ReviewRead_'];
+export type ReviewCreate = Schemas['ReviewCreate'];
 export type Category = Schemas['CategoryRead'];
 export type Room = Schemas['RoomRead'];
 export type Inspiration = Schemas['InspirationRead'];
+
+export type User = Schemas['UserRead'];
+export type AuthToken = Schemas['TokenRead'];
+export type RegisterIn = Schemas['RegisterIn'];
+export type LoginIn = Schemas['LoginIn'];
 
 export type Cart = Schemas['CartRead'];
 export type CartItem = Schemas['CartItemRead'];
 export type CartItemAdd = Schemas['CartItemAdd'];
 export type Order = Schemas['OrderRead'];
 export type OrderItem = Schemas['OrderItemRead'];
+export type OrderSummary = Schemas['OrderSummary'];
+export type OrderPage = Schemas['Page_OrderSummary_'];
 export type BillingIn = Schemas['BillingIn'];
 export type PaymentMethod = Schemas['PaymentMethod'];
 

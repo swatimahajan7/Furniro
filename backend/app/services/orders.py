@@ -2,7 +2,7 @@
 
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.core.errors import (
@@ -15,9 +15,10 @@ from app.core.errors import (
     NotFoundError,
     UnprocessableError,
 )
-from app.models import Order, OrderItem, Product
+from app.core.pagination import offset_for
+from app.models import Order, OrderItem, Product, User
 from app.models.order import order_number_for
-from app.schemas.order import BillingIn, OrderRead, PaymentMethod
+from app.schemas.order import BillingIn, OrderRead, OrderSummary, PaymentMethod
 from app.services import cart as cart_service
 from app.services.meta import get_locations
 
@@ -42,7 +43,12 @@ def _check_location(billing: BillingIn) -> None:
 
 
 def place_order(
-    session: Session, cart_id: uuid.UUID, *, billing: BillingIn, payment_method: PaymentMethod
+    session: Session,
+    cart_id: uuid.UUID,
+    *,
+    billing: BillingIn,
+    payment_method: PaymentMethod,
+    user: User | None = None,
 ) -> Order:
     cart = cart_service.get_cart(session, cart_id)
     if not cart.items:
@@ -70,6 +76,7 @@ def place_order(
         )
 
     order = Order(
+        user_id=user.id if user else None,
         email=billing.email.lower(),
         payment_method=payment_method.value,
         billing=billing.model_dump(mode="json"),
@@ -104,17 +111,52 @@ def place_order(
     return order
 
 
-def get_order(session: Session, order_number: str, *, email: str) -> Order:
-    """Guests look an order up with the email used at checkout. A wrong email is a 404 too,
-    so order numbers cannot be probed."""
+def get_order(
+    session: Session, order_number: str, *, email: str | None, user: User | None = None
+) -> Order:
+    """The owner (logged in) sees their order directly; anyone else needs the checkout email.
+    A wrong email is a 404 too, so order numbers cannot be probed."""
     order = session.scalar(
         select(Order)
         .where(Order.order_number == order_number.upper())
         .options(selectinload(Order.items))
     )
-    if order is None or order.email != email.strip().lower():
+    is_owner = order is not None and user is not None and order.user_id == user.id
+    email_matches = order is not None and email is not None and order.email == email.strip().lower()
+    if order is None or not (is_owner or email_matches):
         raise NotFoundError(f"Order {order_number} not found", code=ORDER_NOT_FOUND)
     return order
+
+
+def list_orders(
+    session: Session, user: User, *, page: int, page_size: int
+) -> tuple[list[OrderSummary], int]:
+    """The user's orders, newest first."""
+    total = (
+        session.scalar(select(func.count()).select_from(Order).where(Order.user_id == user.id)) or 0
+    )
+    orders = session.scalars(
+        select(Order)
+        .where(Order.user_id == user.id)
+        .order_by(Order.created_at.desc(), Order.id.desc())
+        .offset(offset_for(page, page_size))
+        .limit(page_size)
+        .options(selectinload(Order.items))
+    ).all()
+    summaries = [
+        OrderSummary.model_validate(
+            {
+                "order_number": order.order_number,
+                "status": order.status,
+                "payment_method": order.payment_method,
+                "item_count": sum(item.quantity for item in order.items),
+                "total_minor": order.total_minor,
+                "created_at": order.created_at,
+            }
+        )
+        for order in orders
+    ]
+    return summaries, total
 
 
 def to_read(order: Order) -> OrderRead:

@@ -2,7 +2,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Path, Query, status
 
-from app.api.deps import DbSession
+from app.api.deps import CurrentUser, DbSession
 from app.core.errors import ErrorResponse
 from app.core.pagination import DEFAULT_PRODUCT_PAGE_SIZE, Page, ProductPageSize
 from app.schemas.catalog import (
@@ -13,6 +13,7 @@ from app.schemas.catalog import (
     ProductSort,
     ProductSummary,
     RelatedProducts,
+    ReviewCreate,
     ReviewRead,
     RoomRead,
 )
@@ -149,6 +150,22 @@ def list_reviews(
         page_size=page_size,
         total=total,
     )
+
+
+@router.post(
+    "/products/{slug}/reviews",
+    response_model=ReviewRead,
+    status_code=status.HTTP_201_CREATED,
+    summary="Review a product (logged in; once per product)",
+    responses={
+        **NOT_FOUND,
+        status.HTTP_401_UNAUTHORIZED: {"model": ErrorResponse, "description": "Not logged in"},
+        status.HTTP_409_CONFLICT: {"model": ErrorResponse, "description": "ALREADY_REVIEWED"},
+    },
+)
+def create_review(db: DbSession, user: CurrentUser, slug: Slug, body: ReviewCreate) -> ReviewRead:
+    review = catalog_service.create_review(db, slug, user, rating=body.rating, comment=body.comment)
+    return ReviewRead.model_validate(review)
 
 
 @router.get(
