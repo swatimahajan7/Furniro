@@ -1,7 +1,8 @@
 # Furniro
 
-A full-stack furniture e-commerce demo app (React + FastAPI) built from the Furniro Figma UI kit,
-for use as a target for manual and automated testing.
+A full-stack furniture e-commerce demo app (React + FastAPI) built from the Furniro Figma UI kit.
+Scope is the app itself: no automated tests are included, but every UI element carries a stable
+`data-testid` so tests can be added later.
 
 > **Status:** Phase 0 (foundation) is complete. The app currently serves a placeholder page with live API health.
 > See [PLAN.md](PLAN.md) §7 for the phased roadmap.
@@ -9,12 +10,11 @@ for use as a target for manual and automated testing.
 ## Documentation map
 | Doc | What it covers |
 |---|---|
-| [PLAN.md](PLAN.md) | Scope, features (FR-IDs), architecture, data model, phases, testing strategy, DoD, resolved decisions, bug toggles |
+| [PLAN.md](PLAN.md) | Scope, features (FR-IDs), architecture, data model, phases, testability (test IDs), DoD, resolved decisions |
 | [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md) | Design tokens, components, screen-by-screen notes, asset naming |
-| [docs/API_CONTRACT.md](docs/API_CONTRACT.md) | REST endpoints, payloads, error codes, test-support and bug-toggle endpoints |
-| [docs/BUG_CATALOGUE.md](docs/BUG_CATALOGUE.md) | Trainer-only answer key for the switchable deliberate defects |
-| [backend/GUIDELINES.md](backend/GUIDELINES.md) | Backend structure, layering, coding and error rules, DB, seed, testing |
-| [frontend/GUIDELINES.md](frontend/GUIDELINES.md) | Frontend structure, state strategy, styling, testids, a11y, testing |
+| [docs/API_CONTRACT.md](docs/API_CONTRACT.md) | REST endpoints, payloads, error codes |
+| [backend/GUIDELINES.md](backend/GUIDELINES.md) | Backend structure, layering, coding and error rules, DB, seed, OpenAPI contract |
+| [frontend/GUIDELINES.md](frontend/GUIDELINES.md) | Frontend structure, state strategy, styling, `data-testid` convention, a11y |
 | [docs/design/screens/](docs/design/screens/) | Renders of the 9 designed screens |
 
 ## Prerequisites
@@ -28,7 +28,7 @@ for use as a target for manual and automated testing.
 ```bash
 make install    # uv sync + npm ci
 make dev        # API on http://localhost:8100 (Swagger: /docs), web on http://localhost:5180
-make check      # everything CI runs: lint, typecheck, tests (with coverage gates), API-contract drift
+make check      # everything CI runs: lint, typecheck, frontend build, API-contract drift
 make help       # all targets
 ```
 Ports 8000 and 5173 are left free for other local projects. Override with `make dev API_PORT=8200 WEB_PORT=5190`.
@@ -36,7 +36,6 @@ Ports 8000 and 5173 are left free for other local projects. Override with `make 
 ### Production-like stack (Docker)
 ```bash
 make up            # PostgreSQL + API + nginx SPA → http://localhost:8080 (API on :8100)
-make up-training   # same, with APP_ENV=test and bug toggles available (all off by default)
 make down
 ```
 
@@ -52,4 +51,4 @@ Keep a copy in the repo root.
 `frontend/.npmrc` uses `registry.yarnpkg.com`, a public mirror of the npm registry, because `registry.npmjs.org`
 is unreachable on the primary dev network. Packages and checksums are identical.
 
-Planned test accounts (Phase 5): `demo@furniro.test` / `Demo@1234` and `empty@furniro.test` / `Demo@1234`.
+Planned demo accounts (Phase 5): `demo@furniro.test` / `Demo@1234` and `empty@furniro.test` / `Demo@1234`.

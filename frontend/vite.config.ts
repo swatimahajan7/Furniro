@@ -1,4 +1,3 @@
-/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
@@ -22,17 +21,5 @@ export default defineConfig(({ mode }) => {
       },
     },
     preview: { port: 4180, strictPort: true },
-    test: {
-      environment: 'jsdom',
-      setupFiles: ['./src/test/setup.ts'],
-      css: { modules: { classNameStrategy: 'non-scoped' } },
-      restoreMocks: true,
-      coverage: {
-        provider: 'v8',
-        include: ['src/**/*.{ts,tsx}'],
-        exclude: ['src/main.tsx', 'src/api/schema.d.ts', 'src/test/**', 'src/**/*.test.{ts,tsx}'],
-        thresholds: { lines: 75, functions: 75, branches: 70, statements: 75 },
-      },
-    },
   };
 });

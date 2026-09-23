@@ -1,6 +1,6 @@
 """Domain errors and the handlers that turn every failure into the standard error envelope.
 
-See docs/API_CONTRACT.md §1.3. Tests assert on `code`, never on `message`.
+See docs/API_CONTRACT.md §1.3. Clients should branch on `code`, never on `message`.
 """
 
 import logging

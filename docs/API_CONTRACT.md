@@ -54,8 +54,7 @@ A `page` beyond `total_pages` returns `200` with `items: []`. It is not an error
 `GET /meta/config`
 ```json
 { "currency": { "code": "USD", "symbol": "$", "minor_units": 2, "locale": "en-US" },
-  "page_size_options": [8, 16, 24, 32], "compare_limit": 3, "free_shipping_threshold_minor": null,
-  "bug_toggles_enabled": false, "active_bugs": [] }
+  "page_size_options": [8, 16, 24, 32], "compare_limit": 3, "free_shipping_threshold_minor": null }
 ```
 `GET /meta/locations` → `[{ "code": "LK", "name": "Sri Lanka", "provinces": [{ "code": "WP", "name": "Western Province" }, …] }, …]`
 
@@ -155,29 +154,9 @@ Rules:
 `POST /contact` `{ name (2..80), email, subject? (≤120), message (10..2000) }` → `201 { id, received_at }`
 `POST /newsletter/subscribe` `{ email }` → `201 { email, subscribed_at }`. A duplicate returns `409 ALREADY_SUBSCRIBED`.
 
-### 2.10 Test support (only when `APP_ENV=test`; otherwise 404)
-| Method | Path | Effect |
-|---|---|---|
-| POST | `/__test__/reset` | Drop all rows and re-seed the baseline. Returns `{ "ok": true, "seed_version": "…" }` |
-| POST | `/__test__/seed/{scenario}` | `empty-cart`, `cart-with-2-items`, `out-of-stock-item`, `user-with-orders`. Returns the IDs and tokens the test needs |
-| GET | `/__test__/last-email` | Last contact or newsletter payload, for assertions |
-
-### 2.11 Bug toggles (only when `BUG_TOGGLES_ENABLED=true`; otherwise 404)
-See PLAN.md §13. The catalogue of IDs is in `docs/BUG_CATALOGUE.md`.
-
-| Method | Path | Effect |
-|---|---|---|
-| GET | `/__bugs__` | `[{ id, layer: "api" \| "ui", title, active }]`. Titles are neutral, and symptoms are not revealed |
-| PUT | `/__bugs__/{id}` | Turn a toggle on globally → `204`. Unknown ID → `404 BUG_NOT_FOUND` |
-| DELETE | `/__bugs__/{id}` | Turn a toggle off globally → `204` |
-| POST | `/__bugs__/reset` | Turn every toggle off → `204`. `/__test__/reset` also does this |
-
-Per-request override: the `X-Bug-Toggles: BUG-SORT-PRICE,BUG-CART-TOTAL` header activates the listed
-toggles **for that request only**, on top of the global state. Use it for parallel test runs. The
-`/meta/config` response lists the UI toggles that are active (`active_bugs`) so the frontend can apply them.
-
 ## 3. Changelog
 | Date | Change |
 |---|---|
 | 2026-09-23 | Initial contract drafted from the design |
-| 2026-09-23 | Currency set to USD; added bug-toggle endpoints and `/meta/config` fields |
+| 2026-09-23 | Currency set to USD |
+| 2026-09-23 | Removed test-support (`/__test__/*`) and bug-toggle (`/__bugs__/*`) endpoints; tests are out of scope |

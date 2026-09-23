@@ -4,7 +4,10 @@ These are the rules, structure and strategies for `backend/`. Read them before w
 If a rule blocks you, change the rule here in the same PR and explain why. Do not quietly break it.
 
 Stack: **Python 3.12 · FastAPI · SQLAlchemy 2.0 (sync) · Alembic · Pydantic v2 · pydantic-settings ·
-PyJWT · bcrypt · pytest · ruff · mypy · uv**
+PyJWT · bcrypt · ruff · mypy · uv**
+
+> **No automated tests** are written for this project (PLAN.md D-5). Quality comes from strict typing,
+> linting, the OpenAPI contract check and manual verification through Swagger UI (`/docs`).
 
 ---
 
@@ -12,7 +15,7 @@ PyJWT · bcrypt · pytest · ruff · mypy · uv**
 
 ```
 backend/
-├── pyproject.toml            # deps + ruff/mypy/pytest config (single source)
+├── pyproject.toml            # deps + ruff/mypy config (single source)
 ├── openapi.json              # committed OpenAPI export: contract snapshot + FE type source
 ├── uv.lock
 ├── alembic.ini
@@ -43,25 +46,16 @@ backend/
 │   │   └── engagement.py     # Inspiration, ContactMessage, NewsletterSubscriber
 │   ├── schemas/              # Pydantic request/response models, mirroring models/
 │   ├── services/             # business logic, one module per domain, no FastAPI imports
-│   ├── bugs/                 # deliberate defect toggles (PLAN §13, docs/BUG_CATALOGUE.md)
-│   │   ├── registry.py       # BugId StrEnum + metadata (layer, title)
-│   │   └── state.py          # global in-memory state + per-request override (contextvar), is_active()
-│   ├── scripts/              # export_openapi.py (dev tooling, excluded from coverage)
+│   ├── scripts/              # export_openapi.py (dev tooling)
 │   ├── api/
 │   │   ├── deps.py           # get_db, get_current_user, get_optional_user, get_cart_id
 │   │   └── v1/
 │   │       ├── router.py     # includes every route module under /api/v1
-│   │       └── routes/       # products.py, cart.py, orders.py, auth.py, …, test_support.py, bugs.py
+│   │       └── routes/       # products.py, cart.py, orders.py, auth.py, …
 │   └── seed/
 │       ├── __main__.py       # `python -m app.seed [--reset]`
 │       ├── loader.py
-│       ├── scenarios.py      # named test scenarios
 │       └── data/             # products.json, blog.json, locations.json, users.json …
-└── tests/
-    ├── conftest.py           # app, db (transaction rollback), client, auth helpers
-    ├── factories.py          # small builder functions (make_product(...))
-    ├── unit/                 # services & pure functions, no HTTP
-    └── integration/          # one file per router: test_products_api.py …
 ```
 
 ## 2. Layering rules (strict)
@@ -118,17 +112,16 @@ routes (api/v1/routes)  →  services  →  models / Session
   - `RequestValidationError` becomes `422 VALIDATION_ERROR`, with `details` mapped to `{field, message}`.
   - `StarletteHTTPException` (404/405) becomes the envelope.
   - Any other `Exception` becomes `500 INTERNAL_ERROR`. The stack trace is logged and never returned.
-- Error `code`s are `UPPER_SNAKE` constants in `core/errors.py`. Tests assert on `code`, not on `message`.
+- Error `code`s are `UPPER_SNAKE` constants in `core/errors.py`. They are part of the public contract: clients branch on `code`, never on `message`.
 
 ## 5. Configuration and security
 - All config lives in `Settings` (`core/config.py`), read from the environment or `.env`. Code never reads `os.environ` directly.
-  - Keys: `APP_ENV` (`dev|test|prod`), `DATABASE_URL`, `JWT_SECRET`, `JWT_EXPIRES_MINUTES=1440`, `CORS_ORIGINS`, `MEDIA_DIR`, `SEED_ON_STARTUP`, `LOG_LEVEL`, `BUG_TOGGLES_ENABLED=false`.
+  - Keys: `APP_ENV` (`dev|prod`), `DATABASE_URL`, `JWT_SECRET`, `JWT_EXPIRES_MINUTES=1440`, `CORS_ORIGINS`, `MEDIA_DIR`, `SEED_ON_STARTUP`, `LOG_LEVEL`.
   - Currency is fixed in settings as `CURRENCY_CODE=USD`, `CURRENCY_SYMBOL=$`, `CURRENCY_LOCALE=en-US`, and exposed through `/meta/config`.
 - `JWT_SECRET` has no default when `APP_ENV=prod`. Startup fails if it is missing.
-- Passwords are hashed with bcrypt (cost 12, or 4 under `APP_ENV=test` for speed). Never log passwords, tokens or full request bodies from auth routes.
+- Passwords are hashed with bcrypt (cost 12). Never log passwords, tokens or full request bodies from auth routes.
 - CORS allows only the origins in `CORS_ORIGINS` (default `http://localhost:5180`).
-- `test_support` routes are **included in the router only when `APP_ENV=test`**. This is enforced by a unit test.
-- `bugs` routes are included only when `BUG_TOGGLES_ENABLED=true`. `Settings` validation **refuses to start** with `BUG_TOGGLES_ENABLED=true` and `APP_ENV=prod`. Both rules are enforced by unit tests.
+- There are no test-only or debug routes. Every route in the router is part of the public API.
 - SQL is always built with SQLAlchemy. Never format user input into SQL strings.
 - Rate limiting is out of scope. Leave a TODO in `main.py` so it is easy to add.
 
@@ -172,27 +165,12 @@ All tables have `id` (PK), `created_at` and `updated_at` (`TimestampMixin`) unle
   - Prices come from the design, rescaled to USD: Rp ÷ 10,000 and Rs. ÷ 100. For example, Syltherine is $250.00 (was $350.00, -30%), Muggo $15.00, Lolito $700.00 (was $1,400.00), and Asgaard sofa $2,500.00.
   - Asgaard sofa (SKU `SS001`, 5 reviews) and Outdoor Sofa Set, with full specs for `/compare`.
   - Blog categories with counts Crafts 2 / Design 8 / Handmade 7 / Interior 1 / Wood 6. The blog therefore has 24 posts, so the counts are true and pagination has 8 pages.
-- `SEED_VERSION` constant: bump it whenever seed data changes. `/__test__/reset` returns it so test suites can detect a mismatch.
-- Scenarios (`seed/scenarios.py`) layer on top of the baseline and return the handles tests need (cart_id, token, product IDs).
+- `SEED_VERSION` constant: bump it whenever seed data changes. `python -m app.seed --reset` restores the baseline at any time, which also gives future testers a known starting state.
 
-## 9. Testing strategy
-- **Framework:** pytest, `fastapi.testclient.TestClient` (backed by `httpx2`; Starlette deprecated plain `httpx`), pytest-cov. Warnings are errors (`filterwarnings = error`).
-- **Isolation:** each test runs inside a transaction that is rolled back (`conftest.db` fixture with a nested SAVEPOINT). The baseline seed is loaded once per session.
-- **Layout:** `tests/unit/test_<service>.py` for service logic, and `tests/integration/test_<router>_api.py` for HTTP behaviour.
-- **What every endpoint needs:** the happy path, validation failure (422 with the field in `details`), not found, the auth-required path (401) where relevant, and boundary values (page size limits, qty 0/1/10/11, compare 3/4).
-- **Naming:** `test_<unit>_<condition>_<expected>`, for example `test_add_item_same_variant_merges_quantity`.
-- **Assertions:** assert on the status code, the error `code`, and the exact JSON shape (via schema) for key endpoints.
-- **Coverage gate:** `--cov=app --cov-fail-under=85`.
-- **DB matrix in CI:** SQLite and PostgreSQL (service container).
-- **Contract:** `tests/test_openapi_snapshot.py` compares `app.openapi()` against the committed **`backend/openapi.json`**. That file is the single source for frontend type generation. Update it deliberately with `make openapi` (or `pytest --update-snapshot`).
-
-### 9.1 Bug toggles
-- Defect code goes **only** inside `if bugs.is_active(BugId.X):` blocks, placed next to the correct code. Never replace the correct path.
-- `is_active` checks the per-request override first (the `X-Bug-Toggles` header, parsed by middleware into a contextvar), then the global state.
-- Deterministic only. "Intermittent" defects use a module-level counter that `POST /__bugs__/reset` also clears.
-- Each toggle has a test in `tests/bugs/test_<bug_id>.py` asserting both the broken and the correct behaviour.
-- The normal test run uses an autouse fixture that asserts every toggle is off, so no defect leaks into the other tests.
-- `tests/bugs/test_catalogue_sync.py` fails if `BugId` and `docs/BUG_CATALOGUE.md` list different IDs.
+## 9. API contract snapshot
+- `backend/openapi.json` is the committed export of `app.openapi()` and the single source for frontend type generation.
+- After any intentional API change, run `make openapi` (re-exports it and regenerates `frontend/src/api/schema.d.ts`) and commit both files.
+- CI runs `make contract`, which fails if either file is stale.
 
 ## 10. Logging and observability
 - Logs are JSON lines in `prod` and pretty in `dev`. Every log line includes `request_id`, `method`, `path`, `status` and `duration_ms`.
@@ -205,15 +183,14 @@ uv sync                                   # install
 uv run uvicorn app.main:app --reload --port 8100   # dev server (or `make dev-backend`)
 uv run alembic upgrade head               # migrate
 uv run python -m app.seed --reset         # reseed
-uv run pytest -q                          # tests
 uv run ruff check . && uv run ruff format --check . && uv run mypy app
 uv run python -m app.scripts.export_openapi > openapi.json   # or `make openapi` (also regenerates FE types)
 ```
 
 ## 12. Checklist for adding an endpoint
 1. Add or extend the schema in `schemas/`.
-2. Add the service function in `services/` with a unit test.
+2. Add the service function in `services/`.
 3. Add a thin route in `api/v1/routes/`, with `response_model`, `summary`, `tags` and error `responses`.
-4. Add an integration test covering the happy path, validation, not-found and auth cases.
+4. Check it by hand in Swagger UI (`/docs`): the happy path, validation (422 with `details`), not found, and auth (401) where relevant.
 5. Add a migration if the models changed, and update the seed JSON and `SEED_VERSION` if data changed.
 6. Update `docs/API_CONTRACT.md`, the OpenAPI snapshot, and regenerate the FE types.

@@ -1,15 +1,14 @@
 # Furniro — Master Implementation Plan
 
 > A full-stack furniture e-commerce demo app built from the Furniro Figma UI kit
-> (`Furniro_Web_Design_UI_KIT.pdf`). It is built to be a **stable, testable target**
-> for manual, API and UI test automation.
+> (`Furniro_Web_Design_UI_KIT.pdf`). Scope is the **frontend and backend only**. Automated tests are
+> out of scope, but the UI carries stable `data-testid`s so tests can be added later.
 
 | Item | Value |
 |---|---|
 | Frontend | React 19 + TypeScript + Vite |
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
-| Database | SQLite (local/dev default) · PostgreSQL 16 (Docker / CI) |
-| E2E | Playwright (repo-level `e2e/`) |
+| Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
 | Status | Phase 0 (foundation) complete, 2026-09-23 · next: Phase 1 |
 
@@ -26,19 +25,15 @@ Related docs:
 ### Goals
 1. Build all **9 designed screens** closely to the design at 1440 px desktop, and make them responsive down to 360 px.
 2. Make the flows real, with no dead buttons: browse → filter/sort → product → cart → checkout → order, plus compare, wishlist, blog, contact and newsletter.
-3. Build a **test-friendly app**:
-   - deterministic seed data
-   - a reset endpoint
-   - stable `data-testid`s
-   - predictable error format
-   - an OpenAPI spec
-4. Keep the codebase clean enough to serve as a reference: typed, linted, tested and documented.
+3. Make the app **ready for future testing** without shipping any tests: a stable `data-testid` on every interactive element and repeated item (§8), plus normal good backend design that also helps testers (deterministic seed data, machine-readable error codes, `X-Request-Id`, OpenAPI docs).
+4. Keep the codebase clean enough to serve as a reference: typed, linted and documented.
 
 ### Non-goals
 - Real payments. "Direct Bank Transfer" and "Cash on Delivery" only record the chosen method.
 - Real email delivery. Contact and newsletter entries are stored in the DB and logged.
 - Admin UI. Catalog data comes from seed files. An admin API may come later.
 - Production-grade infrastructure such as a CDN, horizontal scaling or payment compliance.
+- **Automated tests of any kind** (unit, integration, component, E2E), test hooks/reset endpoints, and deliberate-defect ("bug toggle") features. See D-4 and D-5 in §12.
 
 ---
 
@@ -93,7 +88,7 @@ These are the defaults we will use. Change them here if you want something diffe
 
 ## 3. Feature scope (functional requirements)
 
-IDs are used in tests and PRs (for example, `FR-CART-03`).
+IDs are used in PRs and give future test cases something to trace to (for example, `FR-CART-03`).
 
 ### Catalog
 - **FR-CAT-01**: List products with pagination. Page size options are 8/16/24/32 (default 16). The "Showing X–Y of Z results" text must be accurate.
@@ -166,16 +161,15 @@ Key architectural decisions (ADR-lite):
 
 | # | Decision | Rationale |
 |---|---|---|
-| AD-1 | Monorepo: `backend/`, `frontend/`, `e2e/`, `docs/` | One version of the contract. E2E tests span both sides. |
+| AD-1 | Monorepo: `backend/`, `frontend/`, `docs/` | One version of the contract, changed in one place. |
 | AD-2 | **Contract-first**: FastAPI OpenAPI → `openapi-typescript` → `frontend/src/api/schema.d.ts` | FE types cannot drift from the API, and a CI check fails when they do. |
-| AD-3 | Server-side cart keyed by an anonymous UUID | Gives realistic API test scenarios (guest cart, merge on login). Totals are computed on the server. |
+| AD-3 | Server-side cart keyed by an anonymous UUID | Supports guest carts and merging on login. Totals are computed on the server. |
 | AD-4 | Money is stored as **integer minor units** (`price_minor`) | No float errors. Formatting happens only at the UI edge. |
-| AD-5 | Sync SQLAlchemy 2.0 + FastAPI `def` endpoints | Simpler to reason about and test. Load is trivial for a demo. |
+| AD-5 | Sync SQLAlchemy 2.0 + FastAPI `def` endpoints | Simpler to reason about. Load is trivial for a demo. |
 | AD-6 | SQLite by default, PostgreSQL in Docker/CI | Zero-setup local runs, with a production-like DB in CI. |
-| AD-7 | JWT bearer tokens (access only, 24 h) kept in localStorage | Simple for a demo and for test tooling. The trade-off is documented. |
+| AD-7 | JWT bearer tokens (access only, 24 h) kept in localStorage | Simple for a demo. The trade-off (XSS exposure vs. httpOnly cookies) is accepted. |
 | AD-8 | CSS Modules + CSS custom-property design tokens | Close fidelity to the design, no utility-class soup, and tokens live in one file. |
-| AD-9 | Test hooks exist only when `APP_ENV=test` | Reset and seed endpoints are never available outside test runs. |
-| AD-10 | Images served by the backend from `/media` | Seed data and images are versioned together. There is no external storage. |
+| AD-9 | Images served by the backend from `/media` | Seed data and images are versioned together. There is no external storage. |
 
 ---
 
@@ -221,8 +215,6 @@ The full request and response shapes are in [docs/API_CONTRACT.md](docs/API_CONT
 | Wishlist | `GET /wishlist` 🔒 · `PUT /wishlist/{product_id}` 🔒 · `DELETE /wishlist/{product_id}` 🔒 |
 | Blog | `GET /blog/posts` · `GET /blog/posts/{slug}` · `GET /blog/categories` · `GET /blog/posts/recent` |
 | Forms | `POST /contact` · `POST /newsletter/subscribe` |
-| Test only | `POST /__test__/reset` · `POST /__test__/seed/{scenario}` (only when `APP_ENV=test`) |
-| Bug toggles | `GET /__bugs__` · `PUT /__bugs__/{id}` · `DELETE /__bugs__/{id}` · `POST /__bugs__/reset` (only when `BUG_TOGGLES_ENABLED=true`) |
 
 ---
 
@@ -232,19 +224,21 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 
 ### Phase 0: Foundation (≈1 day)
 - [x] Own git repo inside `Furniro/` on branch `main`, with `.gitignore` and `.editorconfig`. The 158 MB design PDF is git-ignored because it is over GitHub's 100 MB limit and Git LFS is not installed. The screen renders and extracted assets are committed instead.
-- [ ] Initial commit, and optionally a remote (GitHub/GitLab).
-- [x] Backend skeleton: uv project (Python 3.12), FastAPI app factory, settings with prod guards, error envelope, request-id middleware and access log, `/api/v1/health` (DB ping), `/media` mount, ruff, mypy `--strict`, pytest with an 85 % coverage gate, and the OpenAPI snapshot test.
-- [x] Frontend skeleton: Vite 8 + React 19 + TS 5.9 (strict), ESLint 10 (type-checked), stylelint (tokens-only rule), Prettier, Vitest 5 + Testing Library with a coverage gate, `@/` alias, dev proxy, `tokens.css` (all DESIGN_SPEC §2 tokens), minimal `apiFetch`/`ApiError`, and a placeholder page showing live API health.
+- [x] Initial commit (`0507dc0`). A remote (GitHub/GitLab) is still to be added, so CI has not run yet.
+- [x] Backend skeleton: uv project (Python 3.12), FastAPI app factory, settings with prod guards, error envelope, request-id middleware and access log, `/api/v1/health` (DB ping), `/media` mount, ruff, mypy `--strict`, and the committed `backend/openapi.json` contract snapshot.
+- [x] Frontend skeleton: Vite 8 + React 19 + TS 5.9 (strict), ESLint 10 (type-checked), stylelint (tokens-only rule), Prettier, `@/` alias, dev proxy, `tokens.css` (all DESIGN_SPEC §2 tokens), minimal `apiFetch`/`ApiError`, and a placeholder page showing live API health (with `data-testid`s).
 - [x] **Asset extraction script** (`scripts/extract_design_assets.py` + `scripts/design_assets_map.json`): 468 embedded images → 53 unique → **48 WebP assets (3.1 MB)** in `backend/media/`, with transparency kept on product cut-outs. Logo mark redrawn as SVG in `frontend/public/logo-mark.svg`.
 - [x] Load fonts: Poppins (400/500/600/700) and Montserrat 700 through Fontsource (self-hosted, Latin subset).
-- [x] CI (GitHub Actions): backend on SQLite and PostgreSQL, frontend lint/type/test/build, and the `make contract` OpenAPI-drift job. It has not run yet because the repo has no remote; the same commands pass locally via `make check`.
+- [x] CI (GitHub Actions): backend lint + types, frontend lint/types/build, and the `make contract` OpenAPI-drift job. It has not run yet because the repo has no remote; the same commands pass locally via `make check`.
 - [x] `docker-compose.yml` (postgres + backend + nginx-served frontend) plus both Dockerfiles. Docker is not installed on the dev machine, so both images were built with Podman 3.4, and the backend container was smoke-tested (non-root, `/api/v1/health` 200, WebP media). The full `docker compose up` (with PostgreSQL) is still to be run on a Docker host.
-- [x] Root `Makefile` (`make help`) covering dev, lint, format, typecheck, test, check, openapi/contract, assets, and up/up-training/down.
+- [x] Root `Makefile` (`make help`) covering dev, lint, format, typecheck, build, check, openapi/contract, assets, and up/down.
 
 **Phase 0 notes (environment decisions):**
 - Local dev ports are **API :8100** and **web :5180** (preview :4180), because 8000/8001/5173/5174 are used by other local projects. Override with `make dev API_PORT=… WEB_PORT=…`. Inside Docker the API still listens on 8000; Compose publishes it on 8100 and the SPA on 8080.
 - `registry.npmjs.org` fails TLS on the dev network, so `frontend/.npmrc` points npm at `registry.yarnpkg.com`, a public mirror serving identical packages. The lockfile keeps standard npmjs URLs, so CI is unaffected.
 - `uv` 0.12 and Python 3.12 are installed per-user (`~/.local/bin`, `~/.local/share/uv`). System Python 3.10 is untouched.
+
+- 2026-09-23: test suites, test tooling (pytest, Vitest, Testing Library), coverage gates and CI test jobs were **removed** at the user's request (D-5). `make check` = lint + types + build + contract.
 
 **Exit criteria:** `make dev` starts both apps. `/api/v1/health` returns 200. The FE shows a placeholder page. CI is green.
 
@@ -252,19 +246,18 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 - [ ] DB session, base model, Alembic baseline migration.
 - [ ] Models: category, room, tag, product, product_image, product_spec, review, inspiration.
 - [ ] Deterministic seed command: `python -m app.seed --reset`.
-- [ ] Catalog endpoints with filtering, sorting and pagination, plus the error envelope and request-id middleware.
-- [ ] `/media` static mount, and `/meta/config` and `/meta/locations`.
-- [ ] Integration tests for every catalog endpoint, including boundaries (page 0, page beyond the last page, invalid sort).
+- [ ] Catalog endpoints with filtering, sorting and pagination (boundaries handled: page 0 → 422, page beyond the last → empty list, invalid sort → 422).
+- [ ] `/meta/config` and `/meta/locations`.
 
 **Exit criteria:** Swagger UI at `/docs` lists the catalog API. `GET /products?page=1&page_size=16` returns 16 of 32 items.
 
 ### Phase 2: Frontend shell and design system (≈2–3 days)
-- [ ] `tokens.css` (colours, type, spacing, radius, shadows) from DESIGN_SPEC §2.
 - [ ] Layout: `Header`, `Footer`, `PageBanner`, `FeatureStrip`, `Breadcrumb`, and a mobile nav drawer.
 - [ ] UI primitives: `Button` (primary / outline-primary / outline-dark / pill), `Input`, `Select`, `Textarea`, `Radio`, `Badge`, `Rating`, `QuantityStepper`, `Pagination`, `Tabs`, `Drawer`, `Toast`, `Spinner`, `Skeleton`, `EmptyState`.
 - [ ] Router with all routes (placeholder pages) and 404.
 - [ ] API client, generated types, TanStack Query provider, error boundary.
 - [ ] `/dev/ui` route, dev builds only: a gallery of every primitive, used as a visual reference.
+- [ ] `data-testid` support in every primitive and layout element, plus `src/lib/testIds.ts` helpers for dynamic IDs (frontend/GUIDELINES.md §6).
 
 **Exit criteria:** Every route renders with the correct header, banner and footer. The UI gallery matches the design tokens.
 
@@ -282,7 +275,6 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 - [ ] FE: cart store (cart id), cart query hooks, `CartDrawer`, `/cart` page, header badge.
 - [ ] Checkout form (React Hook Form + Zod) with dependent country/province selects and the payment method.
 - [ ] Order confirmation page.
-- [ ] Integration tests covering add/merge/update/remove and each checkout validation error.
 
 **Exit criteria:** The full guest purchase flow works end to end, and the cart is empty afterwards.
 
@@ -299,63 +291,35 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 
 **Exit criteria:** Every nav and footer link leads to a working page. The forms submit and show success and error states.
 
-### Phase 7: Hardening and test readiness (≈2–3 days)
+### Phase 7: Hardening (≈2 days)
 - [ ] Responsive pass at 360 / 768 / 1024 / 1440.
-- [ ] Accessibility pass: axe with zero serious violations, keyboard navigation, focus trap in the drawers.
+- [ ] Accessibility pass: keyboard navigation, focus trap in the drawers, labelled controls, AA contrast.
 - [ ] Every page has loading, error and empty states. Network failure shows a retry option.
-- [ ] Test hooks: `/__test__/reset` and seed scenarios (`empty-cart`, `cart-with-2-items`, `out-of-stock-item`, `user-with-orders`).
-- [ ] **Bug toggles** (≈2 days): flag service, `/__bugs__` API, hidden FE panel, and the defect catalogue in [docs/BUG_CATALOGUE.md](docs/BUG_CATALOGUE.md), with one test per toggle proving that it breaks the behaviour and that turning it off restores it. See §13.
-- [ ] Playwright suite: smoke tests and critical-path journeys (§8.3), with page objects.
+- [ ] `data-testid` audit: every interactive element and repeated item follows the convention (frontend/GUIDELINES.md §6), and the testid inventory in that section is current.
 - [ ] Performance: images lazy-loaded with width/height set, route-level code splitting, Lighthouse ≥ 90 for Performance, A11y and Best Practices.
-- [ ] Final README: setup, scripts, test accounts, and the test-hook reference.
+- [ ] Final README: setup, scripts and demo accounts.
 
-**Exit criteria:** The E2E suite passes in CI against Docker Compose (PostgreSQL), and the Lighthouse targets are met.
+**Exit criteria:** `docker compose up` runs the full stack on PostgreSQL, every screen works at all four widths, and the Lighthouse targets are met.
 
-**Rough total: 19–22 working days for one developer** (including bug toggles).
+**Rough total: 15–17 working days for one developer.**
 
 ---
 
-## 8. Testing strategy
+## 8. Testability (for future tests)
 
-### 8.1 Pyramid
-| Level | Backend | Frontend |
-|---|---|---|
-| Unit | pytest: services, pricing, validators (no HTTP) | Vitest: utils (`formatPrice`), hooks, stores |
-| Integration / component | pytest + `TestClient` against a real SQLite/PG DB, per-test transaction rollback | Vitest + Testing Library + MSW (mocked API) |
-| Contract | OpenAPI snapshot test and FE type-generation drift check | Same (CI job) |
-| E2E | — | Playwright against the real stack (`e2e/`) |
+Writing tests is **out of scope** (D-5). The app only has to make future testing easy:
 
-### 8.2 Coverage targets
-- Backend: ≥ 85 % line coverage (services ≥ 95 %).
-- Frontend: ≥ 75 % on `features/` and `lib/`. UI primitives are covered by component tests.
-
-### 8.3 Critical E2E journeys (must stay green)
-1. Guest: home → shop → sort by price → product → pick size and colour → add to cart → drawer → checkout → place order → confirmation.
-2. Cart: update quantity and remove item on `/cart`, and the totals recalculate.
-3. Checkout validation: empty submit shows every required-field error. An invalid email and invalid phone each show their own error.
-4. Auth: register → log in → like 2 products → wishlist shows 2 → log out.
-5. Guest cart merge: add items as a guest → log in → the items persist.
-6. Compare: add 3 products → a 4th is blocked with a message → remove one → add another.
-7. Blog: filter by category → paginate → open post.
-8. Contact and newsletter: success paths and duplicate subscription.
-
-### 8.4 Testability features built into the app
-- A stable `data-testid` on every interactive element and repeated item (convention in the FE guidelines).
-- Deterministic seed data, with fixed IDs, slugs and timestamps.
-- `POST /__test__/reset` gives each test a clean state. Seed scenarios give specific fixtures.
-- `?e2e=1` query flag or the `VITE_DISABLE_ANIMATIONS` env var turns off transitions and carousel autoplay.
-- Every error response carries a machine-readable `code`, and every response has an `X-Request-Id` header.
-- OpenAPI docs at `/docs` for API testing (Postman/pytest/REST Assured).
-- **Bug toggles**: switchable, deterministic defects for training and for checking that a test suite catches them (§13).
-
+- **`data-testid` on the UI.** Every interactive element (buttons, links that act like buttons, inputs, selects, forms), every repeated item (with a stable slug or ID qualifier, never an index), and key containers (page roots, drawers, modals, toasts). The naming convention is in [frontend/GUIDELINES.md §6](frontend/GUIDELINES.md). Test IDs are a public contract: once shipped, don't rename them casually.
+- **Accessible names and roles** stay correct, so future tests can also use role-based locators.
+- Normal backend design that testers benefit from anyway: deterministic seed data (fixed IDs, slugs, timestamps), a machine-readable `code` on every error, an `X-Request-Id` on every response, and OpenAPI docs at `/docs`.
 ---
 
 ## 9. Definition of Done (every task)
-- Code follows the relevant GUIDELINES.md, and lint, format and type-check pass.
-- Tests are added or updated at the right level, and CI is green.
+- Code follows the relevant GUIDELINES.md, and lint, format, type-check and build pass (CI is green).
+- New UI has `data-testid`s following frontend/GUIDELINES.md §6.
 - UI work matches the design screen (compared side by side with `docs/design/screens/*`). Any deviation is noted in the PR.
 - New or changed endpoints are reflected in `docs/API_CONTRACT.md`, and FE types are regenerated.
-- There are no `console.error`, unhandled promise rejections or Python warnings in the test output.
+- There are no `console.error` messages or unhandled promise rejections in the browser, and no Python warnings in the server log.
 - Docs are updated when rules, structure or decisions change.
 
 ---
@@ -369,7 +333,7 @@ Furniro/
 ├── CLAUDE.md                   ← AI-assistant entry point (imports guidelines)
 ├── Furniro_Web_Design_UI_KIT.pdf
 ├── docker-compose.yml
-├── Makefile                    ← dev, test, lint, seed, e2e shortcuts
+├── Makefile                    ← dev, lint, typecheck, build, contract, assets shortcuts
 ├── .github/workflows/ci.yml
 ├── docs/
 │   ├── DESIGN_SPEC.md
@@ -379,8 +343,7 @@ Furniro/
 ├── scripts/
 │   └── extract_design_assets.py
 ├── backend/                    ← see backend/GUIDELINES.md
-├── frontend/                   ← see frontend/GUIDELINES.md
-└── e2e/                        ← Playwright specs + page objects
+└── frontend/                   ← see frontend/GUIDELINES.md
 ```
 
 ---
@@ -389,11 +352,10 @@ Furniro/
 | Risk | Mitigation |
 |---|---|
 | The PDF is 158 MB and images are large (up to 4096 px) | One-time extraction script with WebP conversion. Media stays under about 15 MB in total. |
+| No automated tests, so regressions can slip through | Strict typing on both sides, the OpenAPI contract check, and a manual walkthrough of the affected screens before each phase sign-off. |
 | Undesigned screens drift in style | Build them only from existing tokens and primitives, and review them against the nearest designed screen. |
 | FE/BE contract drift | Generated types and a CI drift check (AD-2). |
-| Flaky E2E tests from animations or data | Reset endpoint, deterministic seed, animation kill-switch, role/testid locators, no fixed sleeps. |
-| SQLite vs PostgreSQL behaviour differences | CI runs the backend tests on PostgreSQL. Avoid DB-specific SQL. |
-| Bug-toggle code leaks into normal behaviour | All defect code sits behind one `bugs.is_active()` check, is off by default, and cannot be enabled when `APP_ENV=prod`. CI runs the full suite with every toggle off. |
+| SQLite vs PostgreSQL behaviour differences | Avoid DB-specific SQL; migrations must run on both. Run `make up` (PostgreSQL) before each phase sign-off. |
 
 ## 12. Resolved decisions
 | # | Question | Decision (2026-09-23) |
@@ -401,22 +363,7 @@ Furniro/
 | D-1 | Currency | **USD** (`$2,500.00`, `en-US`). Design prices are rescaled per §2.2. |
 | D-2 | Finish level of undesigned pages | **Functional and tidy**: working, built from existing tokens and components, with placeholder copy (§2.1). |
 | D-3 | Where the app runs | **Local + Docker Compose**: `make dev` for development, and `docker compose up` for a production-like stack with PostgreSQL. No hosted environment for now. |
-| D-4 | Bug toggles for testing practice | **Yes, off by default**. See §13 and [docs/BUG_CATALOGUE.md](docs/BUG_CATALOGUE.md). |
+| D-4 | Bug toggles for testing practice | ~~Yes, off by default~~ → **Dropped** (2026-09-23). No deliberate-defect feature and no `/__test__` hooks. |
+| D-5 | Automated tests | **None.** Build the frontend and backend only; the UI carries `data-testid`s so tests can be added later. Phase 0 test suites and tooling were removed. |
 
 New open questions go here, each with a default, until they are decided.
-
-## 13. Bug toggles (deliberate, switchable defects)
-
-**Purpose:** give testers known defects to find, and let trainers check whether a test suite catches regressions. The correct app is always the default.
-
-**Rules:**
-- Setting `BUG_TOGGLES_ENABLED` defaults to `false`. Startup **fails** if it is `true` while `APP_ENV=prod`. Docker Compose ships a `training` profile that turns it on.
-- Each toggle has a stable ID (for example `BUG-CART-TOTAL`), a layer (API or UI), a short symptom, and the FR-ID it breaks.
-- Scope of activation:
-  - **Global:** `PUT /__bugs__/{id}` changes the state for all clients. It is kept in memory and resets on restart.
-  - **Per request:** the `X-Bug-Toggles: BUG-A,BUG-B` header overrides global state for that request only, so parallel tests don't interfere.
-  - The FE reads the active UI toggles from `GET /meta/config` (`active_bugs`). A hidden panel at `/__bugs` (not linked anywhere) switches toggles when the feature is enabled.
-- Defects are **deterministic**. An "intermittent" bug fails on every Nth call using a counter, never `random`, so failures are reproducible.
-- Backend defect code sits only behind `bugs.is_active(BugId.X)` in services, and FE code only behind `useBug('BUG-…')`. A lint check keeps the IDs in the catalogue and the code in sync.
-- Every toggle has a regression test that turns it on, asserts the broken behaviour, turns it off, and asserts correct behaviour.
-- **Answer key:** `docs/BUG_CATALOGUE.md` lists what each toggle breaks. If testers will have repo access during an exercise, give them a build without that file, or keep the catalogue in a private location.

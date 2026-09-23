@@ -5,9 +5,9 @@ from typing import Annotated, Literal, Self
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
-DEV_JWT_SECRET = "dev-insecure-secret-change-me"  # noqa: S105 - dev/test default only
+DEV_JWT_SECRET = "dev-insecure-secret-change-me"  # noqa: S105 - dev-only default
 
-AppEnv = Literal["dev", "test", "prod"]
+AppEnv = Literal["dev", "prod"]
 
 
 class Settings(BaseSettings):
@@ -32,8 +32,6 @@ class Settings(BaseSettings):
     currency_symbol: str = "$"
     currency_locale: str = "en-US"
 
-    bug_toggles_enabled: bool = False
-
     @field_validator("cors_origins", mode="before")
     @classmethod
     def _split_origins(cls, value: object) -> object:
@@ -43,16 +41,9 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _guard_prod(self) -> Self:
-        if self.app_env == "prod":
-            if self.jwt_secret == DEV_JWT_SECRET:
-                raise ValueError("JWT_SECRET must be set when APP_ENV=prod")
-            if self.bug_toggles_enabled:
-                raise ValueError("BUG_TOGGLES_ENABLED is not allowed when APP_ENV=prod")
+        if self.app_env == "prod" and self.jwt_secret == DEV_JWT_SECRET:
+            raise ValueError("JWT_SECRET must be set when APP_ENV=prod")
         return self
-
-    @property
-    def is_test(self) -> bool:
-        return self.app_env == "test"
 
 
 @lru_cache

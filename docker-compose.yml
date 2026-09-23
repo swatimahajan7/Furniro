@@ -1,6 +1,5 @@
 # Production-like local stack: PostgreSQL + API + nginx-served SPA.
 #   make up            → http://localhost:8080  (API docs: http://localhost:8100/docs)
-#   make up-training   → same, with APP_ENV=test and bug toggles available (PLAN.md §13)
 name: furniro
 
 services:
@@ -25,7 +24,6 @@ services:
       DATABASE_URL: postgresql+psycopg://furniro:furniro@db:5432/furniro
       JWT_SECRET: ${JWT_SECRET:-compose-local-secret-change-me}
       CORS_ORIGINS: http://localhost:8080
-      BUG_TOGGLES_ENABLED: ${BUG_TOGGLES_ENABLED:-false}
       SEED_ON_STARTUP: "true"
     ports:
       - "8100:8000"

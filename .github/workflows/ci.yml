@@ -11,28 +11,11 @@ concurrency:
 
 jobs:
   backend:
-    name: Backend (${{ matrix.db }})
+    name: Backend (lint + types)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        db: [sqlite, postgres]
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: furniro
-          POSTGRES_PASSWORD: furniro
-          POSTGRES_DB: furniro_test
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U furniro"
-          --health-interval 5s --health-timeout 5s --health-retries 10
     defaults:
       run:
         working-directory: backend
-    env:
-      DATABASE_URL: ${{ matrix.db == 'postgres' && 'postgresql+psycopg://furniro:furniro@localhost:5432/furniro_test' || 'sqlite://' }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -42,10 +25,9 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run mypy
-      - run: uv run pytest
 
   frontend:
-    name: Frontend
+    name: Frontend (lint + types + build)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -61,7 +43,6 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run typecheck
-      - run: npm run test:coverage
       - run: npm run build
 
   contract:

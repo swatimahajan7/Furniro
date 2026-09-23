@@ -5,10 +5,13 @@ If a rule blocks you, change the rule here in the same PR and explain why.
 
 Stack: **React 19 · TypeScript (strict) · Vite · React Router 7 · TanStack Query 5 · Zustand ·
 React Hook Form + Zod · CSS Modules + CSS variables · lucide-react · Embla Carousel ·
-Vitest + Testing Library + MSW · Playwright (in `/e2e`)**
+ESLint · stylelint · Prettier**
 
-Version pins worth knowing: **TypeScript 5.9.x** (typescript-eslint and openapi-typescript do not support TS 7 yet) and
-**jsdom 29** (jsdom 30 needs Node ≥ 24.15). Node 24 is the target runtime.
+> **No automated tests** are written for this project (PLAN.md D-5). What the frontend owes future testers
+> is a complete, stable set of `data-testid`s (§6).
+
+Version pin worth knowing: **TypeScript 5.9.x** (typescript-eslint and openapi-typescript do not support TS 7 yet).
+Node 24 is the target runtime.
 
 Design references: [docs/DESIGN_SPEC.md](../docs/DESIGN_SPEC.md) and the screens in `docs/design/screens/`.
 API reference: [docs/API_CONTRACT.md](../docs/API_CONTRACT.md).
@@ -23,7 +26,7 @@ frontend/
 ├── package.json
 ├── vite.config.ts            # alias @ → src, dev proxy /api and /media → :8100
 ├── tsconfig.json             # strict, noUncheckedIndexedAccess
-├── .env.example              # VITE_API_BASE_URL, VITE_DISABLE_ANIMATIONS
+├── .env.example              # VITE_API_BASE_URL, VITE_API_PROXY_TARGET, WEB_PORT
 ├── .npmrc                    # registry mirror (registry.npmjs.org is blocked on the dev network)
 ├── public/                   # logo-mark.svg (favicon + brand mark)
 └── src/
@@ -62,8 +65,7 @@ frontend/
     │   ├── BlogPostPage.tsx  AboutPage.tsx  LoginPage.tsx  RegisterPage.tsx
     │   └── AccountPage.tsx  WishlistPage.tsx  HelpPage.tsx  NotFoundPage.tsx
     ├── hooks/                # cross-feature hooks (useMediaQuery, useDisclosure, useQueryParams)
-    ├── lib/                  # pure utils: formatPrice, formatDate, cn, storage (safe localStorage), bugs.ts (BUG_IDS + useBug)
-    └── test/                 # setup.ts, msw/handlers.ts, msw/fixtures/, renderWithProviders.tsx
+    ├── lib/                  # pure utils: formatPrice, formatDate, cn, storage (safe localStorage), testIds.ts (testid builders, §6)
 ```
 
 ### Import rules
@@ -85,7 +87,7 @@ frontend/
 ### 2.2 Components
 
 - Function components with named exports (`export function ProductCard`). Default exports are used only for lazy-loaded pages.
-- One component per file. The file name matches the component (`ProductCard.tsx` + `ProductCard.module.css` + `ProductCard.test.tsx`).
+- One component per file. The file name matches the component (`ProductCard.tsx` + `ProductCard.module.css`).
 - Props interfaces are named `<Component>Props`. Prefer explicit props over spreading `...rest`, except in UI primitives that wrap native elements. Those forward `ref` and native props.
 - Keep components under about 150 lines. Extract subcomponents or hooks when they grow past that.
 - Put data fetching in feature hooks (`useProducts`, `useCart`), never in `useEffect` inside components.
@@ -109,7 +111,6 @@ frontend/
 | Query key                 | `queryKeys.products.list(params)` |                             |
 | Event handler prop / impl | `onX` / `handleX`                 | `onRemove` / `handleRemove` |
 | Boolean                   | `is/has/can` prefix               | `isOpen`, `hasDiscount`     |
-| Test file                 | `*.test.tsx` next to the source   |                             |
 
 ## 3. State management strategy
 
@@ -157,46 +158,67 @@ Rules:
 | `/contact`, `/about`, `/help/:topic` | …                      |                                                                                                  |
 | `/login`, `/register`                | …                      | Support `?next=`                                                                                 |
 | `/account`, `/wishlist`              | …                      | Wrapped in `<RequireAuth>`                                                                       |
-| `/__bugs`                            | BugTogglesPage         | Registered only when `/meta/config` says `bug_toggles_enabled`. Not linked anywhere              |
 | `*`                                  | NotFoundPage           |                                                                                                  |
 
 - Every page is lazy-loaded, the router has an `errorElement`, and scroll resets to top on navigation (except for query-only changes on `/shop`).
 - Set page titles per route in the form `"Shop | Furniro"`.
 
-## 6. Testability rules (the app is a test target)
+## 6. Test IDs (`data-testid`)
 
-### 6.1 `data-testid` convention
+No tests are written in this project, but every screen must be **ready to be automated later**. That means
+stable, predictable `data-testid` attributes, plus correct roles and accessible names.
 
-- Format: `kebab-case`, structured as `<area>-<element>[-<qualifier>]`.
-- **Required on:**
-  - every button, link-that-acts-like-a-button, input, select and form
-  - every repeated item, which also gets a stable qualifier (slug or ID, never an index)
-  - key containers such as drawers, modals, toasts and page roots
-- Examples:
-  ```
-  header-cart-button   header-cart-count        header-search-button
-  page-shop            shop-sort-select         shop-page-size-select   shop-results-text
-  product-card-syltherine   product-card-syltherine-add-to-cart   product-card-syltherine-like
-  pdp-size-l   pdp-color-black   pdp-qty-increment   pdp-qty-value   pdp-add-to-cart
-  cart-drawer   cart-drawer-item-<itemId>-remove   cart-drawer-subtotal   cart-drawer-checkout
-  cart-row-<itemId>-qty   cart-totals-total   checkout-field-email   checkout-place-order
-  compare-add-select   compare-column-<slug>   toast-success   toast-error
-  ```
-- Testids are **a contract**. Changing one counts as a breaking change for the E2E suite, so update `e2e/` in the same PR.
-- Also keep accessible names and roles correct. Tests prefer `getByRole` and fall back to `getByTestId` when a role is ambiguous (for example, repeated cards).
+### 6.1 Where they are required
 
-### 6.2 Determinism
+- Every interactive element: buttons, links that act like buttons, inputs, selects, textareas, checkboxes, radios and forms.
+- Every item in a repeated list (product cards, cart rows, drawer items, blog posts, pagination pages, spec columns), with a **stable qualifier** (slug or ID, never an array index).
+- Every element that shows a value someone would want to check: prices, totals, counts, result text, badges and error messages.
+- Key containers: each page root (`page-<name>`), drawers, modals, toasts and empty/error/loading states.
 
-- `VITE_DISABLE_ANIMATIONS=true` or the `?e2e=1` query flag adds `data-e2e` on `<html>`, which zeroes transition and animation durations and stops carousel autoplay.
-- Do not use `Math.random()` or `Date.now()` in render output. Dates come from the API and are formatted with a fixed locale.
-- Toasts stay for 4 s and have a close button, so tests never race them.
+### 6.2 Naming convention
 
-### 6.3 Bug toggles (PLAN.md §13)
+- Format: `kebab-case`, structured as `<area>-<element>[-<qualifier>][-<part>]`.
+- `<area>` is the screen or component (`header`, `shop`, `product-card`, `pdp`, `cart-drawer`, `cart`, `checkout`, `compare`, `blog`, `contact`, `footer`, `auth`, `account`, `wishlist`).
+- Form fields: `<form>-field-<name>`, where `<name>` is the API field name converted to kebab-case (`first_name` → `checkout-field-first-name`). The field's error text is `<form>-error-<name>`.
+- State is **not** encoded in the ID. Use attributes that already exist (`aria-selected`, `aria-pressed`, `aria-expanded`, `disabled`, `aria-invalid`) or a `data-state` attribute.
+- Build dynamic IDs with the helpers in `src/lib/testIds.ts`, for example `testIds.productCard(slug).addToCart`, so spelling stays consistent.
 
-- `useBug('BUG-UI-…')` returns `true` when that ID is in `/meta/config` → `active_bugs`. It returns `false` whenever the config is missing.
-- Defect code is a small branch next to the correct code, for example `disabled={isPending && !bugDoubleSubmit}`. Never fork whole components.
-- The E2E suite has one spec per UI toggle in `e2e/bugs/`. Each spec proves the defect is visible when on and absent when off. The normal suites run with every toggle off.
-- `BUG_IDS` in `lib/bugs.ts` must match `docs/BUG_CATALOGUE.md`, and a unit test checks this.
+Examples:
+
+```
+page-home  page-shop  page-product  page-cart  page-checkout  page-compare  page-blog  page-contact
+header-logo  header-nav-shop  header-account-button  header-search-button  header-wishlist-button
+header-cart-button  header-cart-count
+shop-filter-button  shop-view-grid  shop-view-list  shop-results-text  shop-page-size-select  shop-sort-select
+pagination-page-2  pagination-next
+product-card-syltherine  product-card-syltherine-price  product-card-syltherine-badge
+product-card-syltherine-add-to-cart  product-card-syltherine-share  product-card-syltherine-compare
+product-card-syltherine-like
+pdp-title  pdp-price  pdp-thumbnail-2  pdp-size-l  pdp-color-black  pdp-qty-decrement  pdp-qty-value
+pdp-qty-increment  pdp-add-to-cart  pdp-compare  pdp-tab-reviews
+cart-drawer  cart-drawer-item-11  cart-drawer-item-11-remove  cart-drawer-subtotal  cart-drawer-view-cart
+cart-drawer-checkout  cart-drawer-comparison  cart-drawer-close
+cart-row-11  cart-row-11-qty  cart-row-11-subtotal  cart-row-11-remove  cart-totals-subtotal  cart-totals-total
+cart-checkout-button  cart-empty
+checkout-field-first-name  checkout-error-first-name  checkout-field-country  checkout-payment-cod
+checkout-summary-total  checkout-place-order
+compare-column-asgaard-sofa  compare-column-asgaard-sofa-remove  compare-add-select  compare-row-weight
+contact-field-email  contact-submit  footer-newsletter-email  footer-newsletter-subscribe
+toast-success  toast-error
+```
+
+### 6.3 Rules
+
+- Test IDs are a **public contract**. Keep them in production builds (never strip them), and do not rename one without a reason recorded in the PR.
+- Never use a test ID for styling or for app logic. Styles use CSS Module classes; logic uses props and state.
+- UI primitives in `components/ui` accept a `data-testid` prop and put it on the element a tester would interact with (the `<input>`, not its wrapper). Composite primitives derive child IDs from it, for example `<QuantityStepper data-testid="pdp-qty">` renders `pdp-qty-decrement`, `pdp-qty-value` and `pdp-qty-increment`.
+- IDs must be unique on the page. If a component can appear twice (for example a product card in both "Our Products" and "Related"), the slug qualifier keeps it unique within each list, and the list container gets its own ID (`home-products`, `pdp-related`).
+- Keep accessible names and roles correct as well, so future tests can use role-based locators and keep test IDs for ambiguous cases.
+- No `Math.random()` or `Date.now()` in rendered output, and toasts stay for 4 s with a close button, so the UI behaves predictably for testers.
+
+### 6.4 Per-screen checklist
+
+Before a screen is considered done, every item in its DESIGN_SPEC §4 section that a user can click, type into or read a value from has a test ID that follows §6.2. Record new area prefixes in the example list above.
 
 ## 7. Forms and validation
 
@@ -204,7 +226,7 @@ Rules:
 - Validate on submit first, then on change after the first submit (`mode: 'onSubmit', reValidateMode: 'onChange'`).
 - Each error message appears under its field with `id` + `aria-describedby`, and the field sets `aria-invalid`. Focus moves to the first invalid field.
 - The submit button shows loading and is disabled while pending. There is no double submit.
-- Copy for validation messages is kept in one place per form so tests can assert exact strings.
+- Copy for validation messages is kept in one place per form, so wording stays consistent (and future tests can rely on it).
 
 ## 8. Accessibility
 
@@ -213,7 +235,7 @@ Rules:
 - Images have meaningful `alt` text (from the API), and decorative images use `alt=""`.
 - Icon-only buttons have an `aria-label` (for example "Open cart, 2 items").
 - Colour contrast is AA. Note that `--color-text-muted` on white is borderline, so do not use it for body text below 14 px.
-- CI runs axe through `@axe-core/playwright` on every page in the smoke suite.
+- Check new screens manually with the browser's accessibility tree and a keyboard-only pass.
 
 ## 9. Performance
 
@@ -223,26 +245,7 @@ Rules:
 - Query `staleTime` is 60 s for the catalog, and `0` for the cart and orders.
 - Budget: initial JS ≤ 200 KB gzip. Lighthouse Performance, A11y and Best Practices are all ≥ 90.
 
-## 10. Testing strategy
-
-| Level     | Tool                           | Scope                                                       | Location                    |
-| --------- | ------------------------------ | ----------------------------------------------------------- | --------------------------- |
-| Unit      | Vitest                         | `lib/*`, stores, Zod schemas                                | `*.test.ts` next to source  |
-| Component | Vitest + Testing Library + MSW | UI primitives, feature components, pages with a mocked API  | `*.test.tsx` next to source |
-| E2E       | Playwright                     | Critical journeys against the real backend (`APP_ENV=test`) | `/e2e` (repo root)          |
-
-- Test user-visible behaviour. Do not test implementation details such as internal state or class names.
-- MSW handlers live in `src/test/msw/handlers.ts` and use fixtures typed with the generated API types, so fixtures break when the contract changes.
-- Wrap renders with `renderWithProviders()` (QueryClient with retries off, MemoryRouter, stores reset).
-- Coverage: at least 75 % lines on `src/features` and `src/lib`.
-- E2E rules:
-  - Use Page Object Models in `e2e/pages/`.
-  - Call `POST /__test__/reset` in `beforeEach` (or use a scenario).
-  - Never use fixed `waitForTimeout`.
-  - Every spec is independent.
-  - Browsers: Chromium, Firefox, WebKit, and one mobile viewport.
-
-## 11. Commands
+## 10. Commands
 
 ```bash
 npm install
@@ -250,17 +253,15 @@ npm run dev            # Vite on :5180, proxies /api and /media to :8100
 npm run build && npm run preview
 npm run lint           # eslint + stylelint
 npm run typecheck      # tsc --noEmit
-npm run test           # vitest
-npm run test:coverage
 npm run gen:api        # regenerate src/api/schema.d.ts from ../backend/openapi.json
 ```
 
-## 12. Checklist for building a screen
+## 11. Checklist for building a screen
 
 1. Open the matching `docs/design/screens/*.jpg` and its section in DESIGN_SPEC §4.
 2. List the components needed. Reuse `components/ui`, and add a primitive only if it is generic.
-3. Build the feature hooks against the generated types, using MSW fixtures first.
-4. Build the components with tokens only, mobile-first, and add `data-testid`s.
+3. Build the feature hooks against the generated types.
+4. Build the components with tokens only and mobile-first, adding `data-testid`s as you go (§6).
 5. Add the loading, error and empty states.
-6. Write component tests, then add or extend the E2E journey.
+6. Walk the screen manually against the testid checklist in §6.4 and fill in any gaps.
 7. Compare with the design side by side at 1440 and check 360/768/1024. Note any deviation in the PR.

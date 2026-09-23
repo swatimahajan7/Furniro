@@ -68,7 +68,7 @@ Letter-spacing 3 px for "New Arrival" (uppercase eyebrow).
 - Spacing scale (px): `4 8 12 16 20 24 32 40 48 56 64 80 96`, as `--space-1` … `--space-13`.
 - Radius: `--radius-sm 5px` (size chips, qty box), `--radius-md 10px` (inputs, pagination, image boxes), `--radius-lg 15px` (outline-dark buttons), `--radius-pill 50px` (drawer buttons, badges are circles).
 - Shadow: `--shadow-drawer 0 4px 24px rgba(0,0,0,.08)`, and `--shadow-card-hover` (subtle).
-- Motion: `--duration-fast 150ms`, `--duration-base 250ms`, `--ease-standard cubic-bezier(.2,0,0,1)`. All motion is disabled under `prefers-reduced-motion` or in e2e mode.
+- Motion: `--duration-fast 150ms`, `--duration-base 250ms`, `--ease-standard cubic-bezier(.2,0,0,1)`. All motion is disabled under `prefers-reduced-motion`.
 
 ## 3. Components
 

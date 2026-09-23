@@ -10,9 +10,8 @@ NPM      := cd $(FRONTEND) && npm run
 API_PORT ?= 8100
 WEB_PORT ?= 5180
 
-.PHONY: help install dev dev-backend dev-frontend lint format typecheck test test-backend \
-        test-frontend check openapi contract assets assets-extract assets-build \
-        up up-training down clean
+.PHONY: help install dev dev-backend dev-frontend lint format typecheck build check openapi \
+        contract assets assets-extract assets-build up down clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[33m%-16s\033[0m %s\n", $$1, $$2}'
@@ -22,7 +21,7 @@ install: ## Install backend (uv) and frontend (npm) dependencies
 	cd $(BACKEND) && uv sync
 	cd $(FRONTEND) && npm ci
 
-dev: ## Run backend (:$(API_PORT)) and frontend (:$(WEB_PORT)) together; Ctrl+C stops both
+dev: ## Run backend (:8100) and frontend (:5180) together; Ctrl+C stops both
 	@$(MAKE) -j2 --no-print-directory dev-backend dev-frontend
 
 dev-backend: ## Run the API with auto-reload (default :8100, Swagger at /docs)
@@ -47,15 +46,10 @@ typecheck: ## mypy (strict) + tsc
 	$(UV) mypy
 	$(NPM) typecheck
 
-test-backend: ## pytest with coverage gate (85%)
-	$(UV) pytest
+build: ## Production build of the frontend (includes tsc)
+	$(NPM) build
 
-test-frontend: ## Vitest with coverage gate
-	$(NPM) test:coverage
-
-test: test-backend test-frontend ## Run all unit/integration tests
-
-check: lint typecheck test contract ## Everything CI runs
+check: lint typecheck build contract ## Everything CI runs
 
 # ------------------------------------------------------------------ API contract
 openapi: ## Re-export backend/openapi.json and regenerate frontend API types
@@ -79,13 +73,10 @@ assets-build: ## Step 2: convert mapped images to WebP in backend/media/
 up: ## Production-like stack (PostgreSQL) → http://localhost:8080
 	docker compose up --build
 
-up-training: ## Same stack with test hooks + bug toggles available (all off by default)
-	APP_ENV=test BUG_TOGGLES_ENABLED=true docker compose up --build
-
 down: ## Stop the stack (keeps the database volume)
 	docker compose down
 
 clean: ## Remove caches and build output (keeps dependencies)
-	rm -rf $(BACKEND)/.pytest_cache $(BACKEND)/.mypy_cache $(BACKEND)/.ruff_cache $(BACKEND)/.coverage
-	rm -rf $(FRONTEND)/dist $(FRONTEND)/coverage
+	rm -rf $(BACKEND)/.mypy_cache $(BACKEND)/.ruff_cache
+	rm -rf $(FRONTEND)/dist
 	find $(BACKEND) -name __pycache__ -type d -prune -exec rm -rf {} +
