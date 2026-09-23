@@ -28,6 +28,12 @@ export const queryKeys = {
     mine: (userId: number | null, page: number) => ['orders', 'mine', userId, page] as const,
   },
   wishlist: (userId: number | null) => ['wishlist', userId] as const,
+  blog: {
+    posts: (params: QueryParams) => ['blog', 'posts', params] as const,
+    post: (slug: string) => ['blog', 'post', slug] as const,
+    recent: ['blog', 'recent'] as const,
+    categories: ['blog', 'categories'] as const,
+  },
   categories: ['categories'] as const,
   rooms: ['rooms'] as const,
   inspirations: ['inspirations'] as const,

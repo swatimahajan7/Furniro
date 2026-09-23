@@ -11,6 +11,12 @@ export const MAIN_NAV: NavItem[] = [
   { label: 'Contact', to: '/contact' },
 ];
 
+/**
+ * Footer "Links": the main nav plus Blog. The design has no link to the blog anywhere, so the
+ * footer carries one (PLAN.md §2.2).
+ */
+export const FOOTER_NAV: NavItem[] = [...MAIN_NAV, { label: 'Blog', to: '/blog' }];
+
 export const HELP_NAV: NavItem[] = [
   { label: 'Payment Options', to: '/help/payment-options' },
   { label: 'Returns', to: '/help/returns' },

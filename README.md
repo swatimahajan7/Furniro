@@ -5,8 +5,9 @@ Scope is the app itself: no automated tests are included, but every UI element c
 `data-testid` so tests can be added later.
 
 > **Status:** Phases 0–5 are complete: browse the catalog, add to the cart, check out (as a guest or logged in),
-> register and log in, like products, compare up to 3 products, review products and see your orders. Blog, contact
-> and newsletter arrive in Phase 6. Placing orders decrements stock; run `make seed-reset` to restore the baseline.
+> register and log in, like products, compare up to 3 products, review products, see your orders, read the blog,
+> send a contact message and subscribe to the newsletter. Phase 7 (hardening) is next. Placing orders decrements
+> stock; run `make seed-reset` to restore the baseline.
 
 ## Documentation map
 | Doc | What it covers |

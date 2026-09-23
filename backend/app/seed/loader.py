@@ -12,6 +12,8 @@ from sqlalchemy.orm import Session
 
 from app.db.base import Base
 from app.models import (
+    BlogCategory,
+    BlogPost,
     Category,
     Inspiration,
     Order,
@@ -29,7 +31,7 @@ from app.models.order import order_number_for
 from app.schemas.order import BillingIn, PaymentMethod
 
 # Bump whenever anything under app/seed/data changes (backend/GUIDELINES.md §8).
-SEED_VERSION = "2026.09.23-2"
+SEED_VERSION = "2026.09.23-3"
 
 DATA_DIR = Path(__file__).parent / "data"
 BASE_TIMESTAMP = datetime(2026, 1, 1, tzinfo=UTC)
@@ -154,6 +156,23 @@ class SeedAccounts(_Strict):
     wishlist: list[SeedWishlistItem]
 
 
+class SeedBlogPost(_Strict):
+    id: int
+    slug: str
+    title: str
+    excerpt: str = Field(max_length=500)
+    content: str
+    cover_url: str
+    author: str
+    category: str
+    published_at: datetime
+
+
+class SeedBlog(_Strict):
+    categories: list[SeedCategory]
+    posts: list[SeedBlogPost]
+
+
 def _load[T](name: str, schema: type[T]) -> T:
     raw = json.loads((DATA_DIR / name).read_text(encoding="utf-8"))
     return TypeAdapter(schema).validate_python(raw)
@@ -259,6 +278,7 @@ def load_baseline(session: Session) -> None:
     )
     session.add_all(Inspiration(**i.model_dump(), **stamped()) for i in inspirations)
     _load_accounts(session, by_slug)
+    _load_blog(session)
     session.flush()
     _sync_sequences(session)
 
@@ -312,6 +332,24 @@ def _load_accounts(session: Session, products: dict[str, Product]) -> None:
     session.add_all(
         WishlistItem(user_id=w.user_id, product_id=products[w.product].id, created_at=w.created_at)
         for w in accounts.wishlist
+    )
+
+
+def _load_blog(session: Session) -> None:
+    blog = _load("blog.json", SeedBlog)
+    categories = {
+        c.slug: BlogCategory(**c.model_dump(), created_at=BASE_TIMESTAMP, updated_at=BASE_TIMESTAMP)
+        for c in blog.categories
+    }
+    session.add_all(categories.values())
+    session.add_all(
+        BlogPost(
+            **p.model_dump(exclude={"category"}),
+            category=categories[p.category],
+            created_at=p.published_at,
+            updated_at=p.published_at,
+        )
+        for p in blog.posts
     )
 
 

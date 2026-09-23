@@ -5,7 +5,9 @@ from typing import Annotated, Literal, Self
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
-DEV_JWT_SECRET = "dev-insecure-secret-change-me"  # noqa: S105 - dev-only default
+# At least 32 bytes: HS256 keys shorter than the hash output trigger a PyJWT warning (RFC 7518).
+MIN_JWT_SECRET_BYTES = 32
+DEV_JWT_SECRET = "dev-insecure-secret-change-me-before-prod"  # noqa: S105 - dev-only default
 
 AppEnv = Literal["dev", "prod"]
 
@@ -43,6 +45,8 @@ class Settings(BaseSettings):
     def _guard_prod(self) -> Self:
         if self.app_env == "prod" and self.jwt_secret == DEV_JWT_SECRET:
             raise ValueError("JWT_SECRET must be set when APP_ENV=prod")
+        if self.app_env == "prod" and len(self.jwt_secret.encode()) < MIN_JWT_SECRET_BYTES:
+            raise ValueError(f"JWT_SECRET must be at least {MIN_JWT_SECRET_BYTES} bytes")
         return self
 
 

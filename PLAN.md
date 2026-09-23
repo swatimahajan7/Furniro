@@ -10,7 +10,7 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 5 (auth, wishlist and compare) complete, 2026-09-23 · next: Phase 6 |
+| Status | Phase 6 (content pages) complete, 2026-09-23 · next: Phase 7 |
 
 Related docs:
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
@@ -85,6 +85,8 @@ These are the defaults we will use. Change them here if you want something diffe
 | Syltherine shows `-30%`, but Rp 2.500.000 vs 3.500.000 is a 28.6 % discount | The badge is computed from the prices, so it shows **-29%**. The prices stay as designed. |
 | Cart page quantity is a plain number box | Built as the compact `- n +` stepper; each click is one server update and the server's stock limit is shown as a message. |
 | Shop list view and share icons are not designed | List view shows the card actions inline under the text (no hover overlay). Share links use letter marks (f, in, X) because Lucide has no brand icons. |
+| The blog has a designed screen but no link to it anywhere (header nav and footer show Home, Shop, About, Contact) | The footer's Links column adds **Blog** after Contact. The header nav stays as designed. |
+| Blog dates ("14 Oct 2022") and placeholder copy (lorem ipsum, a Vietnamese phone number) | Seed posts are dated in 2026 and use short furniture-care copy. The contact details (address, phones, hours) stay as designed, as placeholders. |
 | Free shipping "Order over 150 $" | Informational only. Shipping is always free, so total = subtotal. The text is shown as "Order over $150". |
 
 ---
@@ -316,8 +318,14 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** Log in → like → wishlist page; compare 3 products; guest cart merged after login.
 
 ### Phase 6: Content pages (≈1.5 days)
-- [ ] Backend: blog models, endpoints and seed; contact; newsletter.
-- [ ] FE: blog list with sidebar (search, categories, recent posts), blog post page, contact page, footer newsletter, About page, help pages.
+- [x] Backend: `blog_categories`, `blog_posts`, `contact_messages`, `newsletter_subscribers` (migration `…_blog_contact_and_newsletter`); `GET /blog/posts` (page, category, q), `/blog/posts/recent`, `/blog/posts/{slug}`, `/blog/categories`; `POST /contact` (stored, id logged); `POST /newsletter/subscribe` (case-insensitive duplicate → 409). Seed: 24 posts across 5 categories with the design's sidebar counts; the 5 newest are the design's titles (`SEED_VERSION 2026.09.23-3`).
+- [x] FE: blog list per design (3 per page, meta row, Read more, pagination) with sidebar (search, categories with counts and active state, 5 recent posts), all in the URL (`?page=&category=&q=`), filter summary with "Show all posts", empty and out-of-range states; blog post page (title as the page h1, cover, meta, Markdown-subset content, sidebar, not-found state); contact page per design (info column, form with the design's placeholders, validation, success state); footer newsletter wired to the API (success, "already subscribed", field errors); About page; three help pages with topic navigation. The temporary `ComingSoon` placeholder is gone.
+
+**Phase 6 notes:**
+- Verified: 25 API checks (listing, paging, filters, search escaping, recent, detail, categories, contact and newsletter validation and duplicates) on **SQLite and PostgreSQL 16** (migration round trip too), 25 browser checks (every header and footer link opens a real page, blog list/filters/search/pagination/article, contact, newsletter, About, help, checkout's privacy link, 390 px, duplicate test IDs), plus re-runs of every earlier API and browser suite. All pass from a clean `make seed-reset`, with no console errors.
+- Found and fixed: the design has no way to reach the blog (footer link added, §2.2); the checkout "privacy policy" link had no test ID; the dev and Compose JWT secrets were shorter than 32 bytes, so PyJWT logged `InsecureKeyLengthWarning` on every login (DoD: no Python warnings). Defaults are now longer, and prod refuses secrets under 32 bytes. Changing the dev secret logs out existing dev sessions once.
+- Alembic autogenerate wrote the app's `UtcDateTime` type into the migration (an import the migration doesn't have); `migrations/env.py` now renders it as `sa.DateTime(timezone=True)`.
+- New token `--text-post-title` (30/45) for blog card titles, added to DESIGN_SPEC §2.2 first.
 
 **Exit criteria:** Every nav and footer link leads to a working page. The forms submit and show success and error states.
 

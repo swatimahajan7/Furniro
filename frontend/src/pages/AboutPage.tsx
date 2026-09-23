@@ -1,9 +1,12 @@
-import { ComingSoon, PageShell } from '@/components/layout';
+import { PageShell } from '@/components/layout';
+import { AboutContent } from '@/features/content';
 
 export default function AboutPage() {
   return (
     <PageShell title="About" featureStrip>
-      <ComingSoon phase={6} what="The About page" />
+      <div className="container">
+        <AboutContent />
+      </div>
     </PageShell>
   );
 }

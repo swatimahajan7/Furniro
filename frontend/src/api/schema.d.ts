@@ -55,6 +55,74 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/blog/categories': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Categories with post counts */
+    get: operations['list_categories_api_v1_blog_categories_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/blog/posts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List blog posts, newest first */
+    get: operations['list_posts_api_v1_blog_posts_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/blog/posts/recent': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** The newest posts (sidebar) */
+    get: operations['recent_posts_api_v1_blog_posts_recent_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/blog/posts/{slug}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** One blog post with its content */
+    get: operations['get_post_api_v1_blog_posts__slug__get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/cart': {
     parameters: {
       query?: never;
@@ -143,6 +211,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/contact': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Send a message from the contact form */
+    post: operations['send_contact_message_api_v1_contact_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/health': {
     parameters: {
       query?: never;
@@ -205,6 +290,23 @@ export interface paths {
     get: operations['get_locations_api_v1_meta_locations_get'];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/newsletter/subscribe': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Subscribe an email to the newsletter */
+    post: operations['subscribe_api_v1_newsletter_subscribe_post'];
     delete?: never;
     options?: never;
     head?: never;
@@ -456,6 +558,62 @@ export interface components {
       /** Zip */
       zip: string;
     };
+    /** BlogCategoryRead */
+    BlogCategoryRead: {
+      /** Name */
+      name: string;
+      /** Post Count */
+      post_count: number;
+      /** Slug */
+      slug: string;
+    };
+    /** BlogCategoryRef */
+    BlogCategoryRef: {
+      /** Name */
+      name: string;
+      /** Slug */
+      slug: string;
+    };
+    /** BlogPostRead */
+    BlogPostRead: {
+      /** Author */
+      author: string;
+      category: components['schemas']['BlogCategoryRef'];
+      /** Content */
+      content: string;
+      /** Cover Url */
+      cover_url: string;
+      /** Excerpt */
+      excerpt: string;
+      /**
+       * Published At
+       * Format: date-time
+       */
+      published_at: string;
+      /** Slug */
+      slug: string;
+      /** Title */
+      title: string;
+    };
+    /** BlogPostSummary */
+    BlogPostSummary: {
+      /** Author */
+      author: string;
+      category: components['schemas']['BlogCategoryRef'];
+      /** Cover Url */
+      cover_url: string;
+      /** Excerpt */
+      excerpt: string;
+      /**
+       * Published At
+       * Format: date-time
+       */
+      published_at: string;
+      /** Slug */
+      slug: string;
+      /** Title */
+      title: string;
+    };
     /** CartItemAdd */
     CartItemAdd: {
       /**
@@ -569,6 +727,30 @@ export interface components {
        */
       values: (string | null)[];
     };
+    /** ContactCreate */
+    ContactCreate: {
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+      /** Message */
+      message: string;
+      /** Name */
+      name: string;
+      /** Subject */
+      subject?: string | null;
+    };
+    /** ContactReceipt */
+    ContactReceipt: {
+      /** Id */
+      id: number;
+      /**
+       * Received At
+       * Format: date-time
+       */
+      received_at: string;
+    };
     /** CountryRead */
     CountryRead: {
       /** Code */
@@ -664,6 +846,24 @@ export interface components {
       /** Page Size Options */
       page_size_options: number[];
     };
+    /** NewsletterSubscribe */
+    NewsletterSubscribe: {
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+    };
+    /** NewsletterSubscription */
+    NewsletterSubscription: {
+      /** Email */
+      email: string;
+      /**
+       * Subscribed At
+       * Format: date-time
+       */
+      subscribed_at: string;
+    };
     /** OrderCreate */
     OrderCreate: {
       billing: components['schemas']['BillingIn'];
@@ -733,6 +933,19 @@ export interface components {
       status: components['schemas']['OrderStatus'];
       /** Total Minor */
       total_minor: number;
+    };
+    /** Page[BlogPostSummary] */
+    Page_BlogPostSummary_: {
+      /** Items */
+      items: components['schemas']['BlogPostSummary'][];
+      /** Page */
+      page: number;
+      /** Page Size */
+      page_size: number;
+      /** Total */
+      total: number;
+      /** Total Pages */
+      total_pages: number;
     };
     /** Page[OrderSummary] */
     Page_OrderSummary_: {
@@ -1141,6 +1354,144 @@ export interface operations {
       };
     };
   };
+  list_categories_api_v1_blog_categories_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BlogCategoryRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  list_posts_api_v1_blog_posts_get: {
+    parameters: {
+      query?: {
+        /** @description 1-based page number */
+        page?: number;
+        /** @description Posts per page */
+        page_size?: number;
+        /** @description Category slug, e.g. wood */
+        category?: string | null;
+        /** @description Case-insensitive match on title and excerpt */
+        q?: string | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Page_BlogPostSummary_'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  recent_posts_api_v1_blog_posts_recent_get: {
+    parameters: {
+      query?: {
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BlogPostSummary'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  get_post_api_v1_blog_posts__slug__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        slug: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BlogPostRead'];
+        };
+      };
+      /** @description BLOG_POST_NOT_FOUND */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   get_cart_api_v1_cart_get: {
     parameters: {
       query?: never;
@@ -1475,6 +1826,39 @@ export interface operations {
       };
     };
   };
+  send_contact_message_api_v1_contact_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ContactCreate'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ContactReceipt'];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   get_health_api_v1_health_get: {
     parameters: {
       query?: never;
@@ -1587,6 +1971,48 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['CountryRead'][];
+        };
+      };
+      /** @description Validation error (code VALIDATION_ERROR) */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  subscribe_api_v1_newsletter_subscribe_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NewsletterSubscribe'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['NewsletterSubscription'];
+        };
+      };
+      /** @description ALREADY_SUBSCRIBED */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Validation error (code VALIDATION_ERROR) */

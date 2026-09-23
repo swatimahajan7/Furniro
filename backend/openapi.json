@@ -183,6 +183,138 @@
         "title": "BillingRead",
         "type": "object"
       },
+      "BlogCategoryRead": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "post_count": {
+            "title": "Post Count",
+            "type": "integer"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "post_count"
+        ],
+        "title": "BlogCategoryRead",
+        "type": "object"
+      },
+      "BlogCategoryRef": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name"
+        ],
+        "title": "BlogCategoryRef",
+        "type": "object"
+      },
+      "BlogPostRead": {
+        "properties": {
+          "author": {
+            "title": "Author",
+            "type": "string"
+          },
+          "category": {
+            "$ref": "#/components/schemas/BlogCategoryRef"
+          },
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "cover_url": {
+            "title": "Cover Url",
+            "type": "string"
+          },
+          "excerpt": {
+            "title": "Excerpt",
+            "type": "string"
+          },
+          "published_at": {
+            "format": "date-time",
+            "title": "Published At",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "excerpt",
+          "cover_url",
+          "author",
+          "category",
+          "published_at",
+          "content"
+        ],
+        "title": "BlogPostRead",
+        "type": "object"
+      },
+      "BlogPostSummary": {
+        "properties": {
+          "author": {
+            "title": "Author",
+            "type": "string"
+          },
+          "category": {
+            "$ref": "#/components/schemas/BlogCategoryRef"
+          },
+          "cover_url": {
+            "title": "Cover Url",
+            "type": "string"
+          },
+          "excerpt": {
+            "title": "Excerpt",
+            "type": "string"
+          },
+          "published_at": {
+            "format": "date-time",
+            "title": "Published At",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "excerpt",
+          "cover_url",
+          "author",
+          "category",
+          "published_at"
+        ],
+        "title": "BlogPostSummary",
+        "type": "object"
+      },
       "CartItemAdd": {
         "properties": {
           "color": {
@@ -474,6 +606,65 @@
         "title": "CompareRow",
         "type": "object"
       },
+      "ContactCreate": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "message": {
+            "maxLength": 2000,
+            "minLength": 10,
+            "title": "Message",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 2,
+            "title": "Name",
+            "type": "string"
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "message"
+        ],
+        "title": "ContactCreate",
+        "type": "object"
+      },
+      "ContactReceipt": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "received_at": {
+            "format": "date-time",
+            "title": "Received At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "received_at"
+        ],
+        "title": "ContactReceipt",
+        "type": "object"
+      },
       "CountryRead": {
         "properties": {
           "code": {
@@ -737,6 +928,39 @@
         "title": "MetaConfigRead",
         "type": "object"
       },
+      "NewsletterSubscribe": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "NewsletterSubscribe",
+        "type": "object"
+      },
+      "NewsletterSubscription": {
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "subscribed_at": {
+            "format": "date-time",
+            "title": "Subscribed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "subscribed_at"
+        ],
+        "title": "NewsletterSubscription",
+        "type": "object"
+      },
       "OrderCreate": {
         "properties": {
           "billing": {
@@ -915,6 +1139,42 @@
           "created_at"
         ],
         "title": "OrderSummary",
+        "type": "object"
+      },
+      "Page_BlogPostSummary_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BlogPostSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "total_pages": {
+            "title": "Total Pages",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "page_size",
+          "total",
+          "total_pages"
+        ],
+        "title": "Page[BlogPostSummary]",
         "type": "object"
       },
       "Page_OrderSummary_": {
@@ -1768,6 +2028,244 @@
         ]
       }
     },
+    "/api/v1/blog/categories": {
+      "get": {
+        "operationId": "list_categories_api_v1_blog_categories_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BlogCategoryRead"
+                  },
+                  "title": "Response List Categories Api V1 Blog Categories Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Categories with post counts",
+        "tags": [
+          "blog"
+        ]
+      }
+    },
+    "/api/v1/blog/posts": {
+      "get": {
+        "operationId": "list_posts_api_v1_blog_posts_get",
+        "parameters": [
+          {
+            "description": "1-based page number",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "description": "1-based page number",
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Posts per page",
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 3,
+              "description": "Posts per page",
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Category slug, e.g. wood",
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Category slug, e.g. wood",
+              "title": "Category"
+            }
+          },
+          {
+            "description": "Case-insensitive match on title and excerpt",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 100,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Case-insensitive match on title and excerpt",
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_BlogPostSummary_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "List blog posts, newest first",
+        "tags": [
+          "blog"
+        ]
+      }
+    },
+    "/api/v1/blog/posts/recent": {
+      "get": {
+        "operationId": "recent_posts_api_v1_blog_posts_recent_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "maximum": 10,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BlogPostSummary"
+                  },
+                  "title": "Response Recent Posts Api V1 Blog Posts Recent Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "The newest posts (sidebar)",
+        "tags": [
+          "blog"
+        ]
+      }
+    },
+    "/api/v1/blog/posts/{slug}": {
+      "get": {
+        "operationId": "get_post_api_v1_blog_posts__slug__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "examples": [
+                "modern-home-in-milan"
+              ],
+              "maxLength": 120,
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogPostRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "BLOG_POST_NOT_FOUND"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "One blog post with its content",
+        "tags": [
+          "blog"
+        ]
+      }
+    },
     "/api/v1/cart": {
       "delete": {
         "operationId": "clear_cart_api_v1_cart_delete",
@@ -2289,6 +2787,47 @@
         ]
       }
     },
+    "/api/v1/contact": {
+      "post": {
+        "operationId": "send_contact_message_api_v1_contact_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Send a message from the contact form",
+        "tags": [
+          "forms"
+        ]
+      }
+    },
     "/api/v1/health": {
       "get": {
         "operationId": "get_health_api_v1_health_get",
@@ -2428,6 +2967,57 @@
         "summary": "Countries and their provinces for the checkout form",
         "tags": [
           "meta"
+        ]
+      }
+    },
+    "/api/v1/newsletter/subscribe": {
+      "post": {
+        "operationId": "subscribe_api_v1_newsletter_subscribe_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterSubscribe"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsletterSubscription"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "ALREADY_SUBSCRIBED"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Subscribe an email to the newsletter",
+        "tags": [
+          "forms"
         ]
       }
     },

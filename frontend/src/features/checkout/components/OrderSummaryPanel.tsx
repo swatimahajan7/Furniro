@@ -94,7 +94,11 @@ export function OrderSummaryPanel({ cart, isSubmitting, formError }: OrderSummar
       <p className={styles.privacy}>
         Your personal data will be used to support your experience throughout this website, to
         manage access to your account, and for other purposes described in our{' '}
-        <Link to="/help/privacy-policy" className={styles.privacyLink}>
+        <Link
+          to="/help/privacy-policy"
+          className={styles.privacyLink}
+          data-testid="checkout-privacy-link"
+        >
           privacy policy
         </Link>
         .
