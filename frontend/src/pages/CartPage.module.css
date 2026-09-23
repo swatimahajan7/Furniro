@@ -1,0 +1,17 @@
+.page {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: start;
+}
+
+@media (width >= 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 393px;
+  }
+}

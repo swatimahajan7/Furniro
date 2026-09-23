@@ -21,7 +21,7 @@ export interface RadioGroupProps {
   showDescription?: 'always' | 'selected';
   error?: string;
   className?: string;
-  /** Base ID: each option gets `${base}-${value}`, the error text `${base}-error`. */
+  /** Base ID: each option gets `${base}-${value in kebab-case}`, the error text `${base}-error`. */
   'data-testid'?: string;
 }
 
@@ -60,7 +60,7 @@ export function RadioGroup({
               checked={checked}
               onChange={() => onChange(option.value)}
               className={styles.radioInput}
-              data-testid={testId ? `${testId}-${option.value}` : undefined}
+              data-testid={testId ? `${testId}-${option.value.replace(/_/g, '-')}` : undefined}
             />
             <label htmlFor={optionId} className={cn(styles.radioLabel, checked && styles.checked)}>
               {option.label}

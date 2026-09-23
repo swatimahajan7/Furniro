@@ -1,5 +1,6 @@
 import { env } from '@/lib/env';
 
+import { useSession } from './session';
 import type { ErrorResponse } from './types';
 
 /** A non-2xx API response, parsed from the error envelope (docs/API_CONTRACT.md §1.3). */
@@ -60,13 +61,15 @@ function isErrorResponse(body: unknown): body is ErrorResponse {
 }
 
 /**
- * The single way the app talks to the API. Phases 4–5 add the X-Cart-Id and Authorization
- * headers here (frontend/GUIDELINES.md §4). Components call feature hooks, never this directly.
+ * The single way the app talks to the API. Attaches `X-Cart-Id` from the session store (the
+ * Authorization header joins it in Phase 5). Components call feature hooks, never this directly.
  */
 export async function apiFetch<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
   const { query, body, headers, ...init } = options;
   const requestHeaders = new Headers(headers);
   requestHeaders.set('Accept', 'application/json');
+  const { cartId } = useSession.getState();
+  if (cartId && !requestHeaders.has('X-Cart-Id')) requestHeaders.set('X-Cart-Id', cartId);
   if (body !== undefined) requestHeaders.set('Content-Type', 'application/json');
 
   let response: Response;

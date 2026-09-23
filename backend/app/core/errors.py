@@ -29,6 +29,11 @@ INTERNAL_ERROR = "INTERNAL_ERROR"
 PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND"
 COMPARE_LIMIT_EXCEEDED = "COMPARE_LIMIT_EXCEEDED"
 INVALID_PRICE_RANGE = "INVALID_PRICE_RANGE"
+CART_NOT_FOUND = "CART_NOT_FOUND"
+CART_ITEM_NOT_FOUND = "CART_ITEM_NOT_FOUND"
+CART_EMPTY = "CART_EMPTY"
+INSUFFICIENT_STOCK = "INSUFFICIENT_STOCK"
+ORDER_NOT_FOUND = "ORDER_NOT_FOUND"
 
 _STATUS_CODES = {
     status.HTTP_400_BAD_REQUEST: BAD_REQUEST,
@@ -96,6 +101,13 @@ class NotFoundError(AppError):
 class ConflictError(AppError):
     status_code = status.HTTP_409_CONFLICT
     code = CONFLICT
+
+
+class UnprocessableError(AppError):
+    """Business-rule validation that Pydantic cannot express (e.g. a size the product lacks)."""
+
+    status_code = status.HTTP_422_UNPROCESSABLE_CONTENT
+    code = VALIDATION_ERROR
 
 
 def error_response(

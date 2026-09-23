@@ -10,7 +10,7 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 3 (catalog UI) complete, 2026-09-23 · next: Phase 4 |
+| Status | Phase 4 (cart, checkout and orders) complete, 2026-09-23 · next: Phase 5 |
 
 Related docs:
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
@@ -83,6 +83,7 @@ These are the defaults we will use. Change them here if you want something diffe
 | Muggo ("Small mug"), Pingky ("Cute bed set") and Potty ("Minimalist flower pot") cards show unrelated sofa photos | Use the matching mug, bedding and vase photos that are also in the PDF. The design's sofa photos become extra catalog products (`grey-sectional`, `nordic-sofa-set`, `cognac-leather-sofa`). |
 | Home "Show More" vs Related "Show More" | Home goes to `/shop`. Related loads 4 more related items in place. |
 | Syltherine shows `-30%`, but Rp 2.500.000 vs 3.500.000 is a 28.6 % discount | The badge is computed from the prices, so it shows **-29%**. The prices stay as designed. |
+| Cart page quantity is a plain number box | Built as the compact `- n +` stepper; each click is one server update and the server's stock limit is shown as a message. |
 | Shop list view and share icons are not designed | List view shows the card actions inline under the text (no hover overlay). Share links use letter marks (f, in, X) because Lucide has no brand icons. |
 | Free shipping "Order over 150 $" | Informational only. Shipping is always free, so total = subtotal. The text is shown as "Order over $150". |
 
@@ -289,11 +290,16 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** You can browse, filter, sort and paginate the whole catalog and open any product.
 
 ### Phase 4: Cart, checkout and orders (≈3 days)
-- [ ] Backend: cart, cart_item, order and order_item models, services and endpoints, with stock checks and price snapshots.
-- [ ] FE: cart store (cart id), cart query hooks, `CartDrawer`, `/cart` page, header badge.
-- [ ] Checkout form (React Hook Form + Zod) with dependent country/province selects and the payment method.
-- [ ] Order confirmation page.
+- [x] Backend: `carts`, `cart_items`, `orders`, `order_items` (migration `…_cart_and_orders`), cart and order services and endpoints: option validation, per-line cap `min(10, stock)`, line merging, live-price totals; orders validate billing and location, lock and recheck stock, snapshot lines, decrement stock, empty the cart, and number as `FUR-000001`; guest lookup by order number + email.
+- [x] FE: cart ID in a persisted session store (`api/session.ts`) sent as `X-Cart-Id` (a stale ID is dropped and a new cart made on the next add), cart hooks, `CartDrawer` (opens on Add to cart and from the header), header count badge, `/cart` page (table, stepper, remove, totals, empty state). Card Add to cart uses the first size/colour; the PDP sends the chosen options and quantity.
+- [x] Checkout form (React Hook Form + Zod mirroring the API rules) with dependent country → province selects, payment method with helper text, server field errors mapped onto inputs, stock/empty-cart errors shown in the form, double-submit guard, and redirect to `/cart` when empty.
+- [x] Order confirmation page: shows the order handed over by checkout, survives refresh via a tab-scoped email memory, and offers an email lookup form elsewhere.
 
+**Phase 4 notes:**
+- Verified: 37 API checks (every cart/order rule and error), 26 browser checks for the full guest journey (cards, PDP, drawer, cart page, reload, checkout validation, order, confirmation, lookup from another browser, stale cart recovery, double-submit guard, mobile), plus re-runs of the Phase 3 suite. All pass from a clean `make seed-reset`.
+- Found and fixed: a loading button used `disabled`, which dropped keyboard focus so the drawer could not return it; loading buttons now use `aria-disabled` (GUIDELINES §2.2). The dev server once cached an empty module mid-write; touching the files cleared it (tooling, not the app).
+- `ProductSummary` gained `sizes` and `colors` (additive) so cards can add with default options.
+- Placing orders really decrements stock, so run `make seed-reset` to return the catalog to its baseline.
 **Exit criteria:** The full guest purchase flow works end to end, and the cart is empty afterwards.
 
 ### Phase 5: Auth, wishlist and compare (≈2 days)

@@ -1,8 +1,10 @@
 import { createBrowserRouter, type RouteObject } from 'react-router';
 
-import { AppLayout, PageLoader } from '@/components/layout';
+import { PageLoader } from '@/components/layout';
 import NotFoundPage from '@/pages/NotFoundPage';
 import RouteErrorPage from '@/pages/RouteErrorPage';
+
+import { AppLayout } from './AppLayout';
 
 type PageModule = { default: React.ComponentType };
 

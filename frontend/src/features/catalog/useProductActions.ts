@@ -2,13 +2,25 @@ import { useCallback } from 'react';
 
 import type { ProductSummary } from '@/api/types';
 import { useToast } from '@/components/ui';
+import { useAddToCart, useCartDrawer } from '@/features/cart';
+import { errorMessage } from '@/lib/errors';
+
+export interface AddToCartOptions {
+  quantity?: number;
+  size?: string | null;
+  color?: string | null;
+}
+
+type CartProduct = Pick<ProductSummary, 'id' | 'name' | 'sizes' | 'colors'>;
 
 /**
- * Card and product-page actions in one place. Add to cart is wired in Phase 4, and compare
- * and like in Phase 5; until then they confirm with an info toast so no button is dead.
+ * Card and product-page actions in one place. Add to cart is real (and opens the cart drawer,
+ * FR-PDP-07); compare and like arrive in Phase 5 and confirm with an info toast until then.
  */
 export function useProductActions() {
   const toast = useToast();
+  const add = useAddToCart();
+  const openCart = useCartDrawer((state) => state.open);
 
   const share = useCallback(
     async (product: Pick<ProductSummary, 'slug' | 'name'>) => {
@@ -23,11 +35,22 @@ export function useProductActions() {
     [toast],
   );
 
+  /** Without explicit options the first size and colour are used, as on the product page. */
   const addToCart = useCallback(
-    (product: Pick<ProductSummary, 'name'>) => {
-      toast.info(`The cart opens in Phase 4. ${product.name} will be addable then.`);
+    async (product: CartProduct, options: AddToCartOptions = {}) => {
+      try {
+        await add.mutateAsync({
+          product_id: product.id,
+          quantity: options.quantity ?? 1,
+          size: options.size ?? product.sizes[0] ?? null,
+          color: options.color ?? product.colors[0]?.name ?? null,
+        });
+        openCart();
+      } catch (error) {
+        toast.error(errorMessage(error));
+      }
     },
-    [toast],
+    [add, openCart, toast],
   );
 
   const compare = useCallback(
@@ -44,5 +67,5 @@ export function useProductActions() {
     [toast],
   );
 
-  return { share, addToCart, compare, like };
+  return { share, addToCart, isAdding: add.isPending, compare, like };
 }

@@ -1,0 +1,41 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-9);
+  align-items: center;
+  padding: var(--space-5) var(--space-9) var(--space-12);
+  background-color: var(--color-cream);
+}
+
+.title {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  color: var(--color-black);
+}
+
+.rows {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: var(--space-7) var(--space-12);
+  align-items: baseline;
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  color: var(--color-black);
+}
+
+.subtotal {
+  font-weight: var(--weight-regular);
+  color: var(--color-text-subtle);
+  text-align: right;
+}
+
+.total {
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+  text-align: right;
+}
+
+.checkout {
+  min-width: 222px;
+  min-height: 59px;
+}

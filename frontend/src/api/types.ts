@@ -19,4 +19,12 @@ export type Category = Schemas['CategoryRead'];
 export type Room = Schemas['RoomRead'];
 export type Inspiration = Schemas['InspirationRead'];
 
+export type Cart = Schemas['CartRead'];
+export type CartItem = Schemas['CartItemRead'];
+export type CartItemAdd = Schemas['CartItemAdd'];
+export type Order = Schemas['OrderRead'];
+export type OrderItem = Schemas['OrderItemRead'];
+export type BillingIn = Schemas['BillingIn'];
+export type PaymentMethod = Schemas['PaymentMethod'];
+
 export type ErrorResponse = Schemas['ErrorResponse'];

@@ -91,8 +91,9 @@ export function ProductCard({ product, variant = 'grid' }: ProductCardProps) {
           variant="light"
           size="sm"
           className={styles.addToCart}
-          onClick={() => actions.addToCart(product)}
+          onClick={() => void actions.addToCart(product)}
           disabled={!product.in_stock}
+          isLoading={actions.isAdding}
           aria-label={`Add ${product.name} to cart`}
           data-testid={ids.addToCart}
         >

@@ -40,7 +40,7 @@ backend/
 │   │   ├── catalog.py        # Category, Room, Tag, Product, ProductImage, ProductSpec
 │   │   ├── review.py
 │   │   ├── user.py
-│   │   ├── cart.py           # Cart, CartItem
+│   │   ├── cart.py           # Cart, CartItem (MAX_LINE_QUANTITY)
 │   │   ├── order.py          # Order, OrderItem
 │   │   ├── wishlist.py
 │   │   ├── blog.py           # BlogCategory, BlogPost
@@ -140,10 +140,10 @@ All tables have `id` (PK), `created_at` and `updated_at` (`TimestampMixin`) unle
 | `product_specs` | product_id, group, label, value, position | ix(product_id, group) |
 | `reviews` | product_id, author_name, rating, comment (user_id? added in Phase 5) | ck(rating 1..5); uq(product_id, user_id) from Phase 5 |
 | `users` | email, password_hash, first_name, last_name | uq(lower(email)) |
-| `carts` | id **UUID**, user_id? | uq(user_id) (one active cart per user) |
-| `cart_items` | cart_id, product_id, quantity, size?, color? | uq(cart_id, product_id, size, color), ck(quantity 1..10) |
-| `orders` | order_number, user_id?, email, status, payment_method, billing (JSON), subtotal_minor, total_minor | uq(order_number) |
-| `order_items` | order_id, product_id?, product_name, size?, color?, quantity, unit_price_minor, line_total_minor | Snapshots only, never joined for price |
+| `carts` | id **UUID** (user_id added in Phase 5) | one active cart per user from Phase 5 |
+| `cart_items` | cart_id, product_id, quantity, size, color | uq(cart_id, product_id, size, color), ck(quantity 1..10). No option is stored as `""`, not NULL, so the unique constraint also holds for option-less products (NULLs never compare equal) |
+| `orders` | order_number (`FUR-` + zero-padded id, set after flush), email (lowercased lookup key), status, payment_method, billing (JSON snapshot), subtotal_minor, total_minor (user_id in Phase 5) | uq(order_number), ix(email) |
+| `order_items` | order_id, product_id? (SET NULL), product_slug, product_name, image_url, size, color, quantity, unit_price_minor, line_total_minor | Snapshots only, never joined for price |
 | `wishlist_items` | user_id, product_id | pk(both) |
 | `blog_categories` / `blog_posts` | slug, name / slug, title, excerpt, content, cover_url, author, category_id, published_at | uq(slug) |
 | `inspirations` | index_label, room, title, image_url, link, position | |

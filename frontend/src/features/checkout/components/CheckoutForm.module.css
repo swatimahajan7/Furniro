@@ -1,0 +1,13 @@
+.form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-11);
+  align-items: start;
+}
+
+@media (width >= 1024px) {
+  .form {
+    grid-template-columns: minmax(0, 453px) minmax(0, 533px);
+    justify-content: space-between;
+  }
+}
