@@ -17,10 +17,12 @@ export interface HeaderProps {
   cartCount: number;
   /** Opens the cart drawer. */
   onCartClick: () => void;
+  /** First name of the logged-in user, or null for guests (the account link then logs in). */
+  userName: string | null;
 }
 
 /** Sticky site header: logo · main nav · account/search/wishlist/cart (DESIGN_SPEC §3). */
-export function Header({ cartCount, onCartClick }: HeaderProps) {
+export function Header({ cartCount, onCartClick, userName }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -65,9 +67,10 @@ export function Header({ cartCount, onCartClick }: HeaderProps) {
 
         <div className={styles.actions}>
           <Link
-            to="/account"
+            to={userName ? '/account' : '/login'}
             className={cn(styles.iconButton, styles.hideOnMobile)}
-            aria-label="Account"
+            aria-label={userName ? `Account (${userName})` : 'Log in'}
+            data-state={userName ? 'logged-in' : 'guest'}
             data-testid="header-account-button"
           >
             <User size={ICON_SIZE} />

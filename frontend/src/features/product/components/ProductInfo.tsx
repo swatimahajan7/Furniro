@@ -1,10 +1,12 @@
-import { Plus } from 'lucide-react';
+import { Heart, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
 import type { ProductDetail } from '@/api/types';
 import { Button, QuantityStepper, Rating } from '@/components/ui';
 import { useProductActions } from '@/features/catalog';
+import { useIsLiked } from '@/features/wishlist';
+import { cn } from '@/lib/cn';
 import { formatPrice } from '@/lib/format';
 
 import { OptionPicker } from './OptionPicker';
@@ -23,6 +25,7 @@ export interface ProductInfoProps {
 /** The right-hand column of the product page (DESIGN_SPEC §4.3). */
 export function ProductInfo({ product, onShowReviews }: ProductInfoProps) {
   const actions = useProductActions();
+  const isLiked = useIsLiked(product.id);
   // First option preselected (FR-PDP-02).
   const [size, setSize] = useState(product.sizes[0] ?? '');
   const [color, setColor] = useState(product.colors[0]?.name ?? '');
@@ -110,7 +113,7 @@ export function ProductInfo({ product, onShowReviews }: ProductInfoProps) {
             void actions.addToCart(product, { quantity, size: size || null, color: color || null })
           }
           disabled={!product.in_stock}
-          isLoading={actions.isAdding}
+          isLoading={actions.addingId === product.id}
           data-testid="pdp-add-to-cart"
         >
           Add To Cart
@@ -123,6 +126,16 @@ export function ProductInfo({ product, onShowReviews }: ProductInfoProps) {
         >
           <Plus size={18} aria-hidden="true" /> Compare
         </Button>
+        <button
+          type="button"
+          className={cn(styles.like, isLiked && styles.liked)}
+          onClick={() => actions.like(product)}
+          aria-label={`Add ${product.name} to wishlist`}
+          aria-pressed={isLiked}
+          data-testid="pdp-like"
+        >
+          <Heart size={24} aria-hidden="true" />
+        </button>
       </div>
 
       <dl className={styles.meta} data-testid="pdp-meta">

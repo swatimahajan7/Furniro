@@ -5,6 +5,8 @@ from app.models.catalog import Category, Product, ProductImage, ProductSpec, Roo
 from app.models.engagement import Inspiration
 from app.models.order import Order, OrderItem
 from app.models.review import Review
+from app.models.user import User
+from app.models.wishlist import WishlistItem
 
 __all__ = [
     "Cart",
@@ -19,5 +21,7 @@ __all__ = [
     "Review",
     "Room",
     "Tag",
+    "User",
+    "WishlistItem",
     "product_tags",
 ]

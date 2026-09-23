@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 
 import { ApiError } from '@/api/client';
 import type { Cart } from '@/api/types';
+import { useCurrentUser } from '@/features/auth';
 import { markCartEmpty } from '@/features/cart';
 import { errorMessage } from '@/lib/errors';
 
@@ -32,9 +33,18 @@ export interface CheckoutFormProps {
 
 /** Billing form + order summary. Validates on submit, then on change (GUIDELINES §7). */
 export function CheckoutForm({ cart, onPlaced }: CheckoutFormProps) {
+  const user = useCurrentUser();
   const form = useForm<CheckoutValues>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: CHECKOUT_DEFAULTS,
+    // Logged in: prefill who they are (FR-CHK-05).
+    defaultValues: user
+      ? {
+          ...CHECKOUT_DEFAULTS,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+        }
+      : CHECKOUT_DEFAULTS,
     mode: 'onSubmit',
     reValidateMode: 'onChange',
   });

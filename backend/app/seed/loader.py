@@ -7,23 +7,29 @@ from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, TypeAdapter
-from sqlalchemy import func, select, text
+from sqlalchemy import Integer, func, select, text
 from sqlalchemy.orm import Session
 
 from app.db.base import Base
 from app.models import (
     Category,
     Inspiration,
+    Order,
+    OrderItem,
     Product,
     ProductImage,
     ProductSpec,
     Review,
     Room,
     Tag,
+    User,
+    WishlistItem,
 )
+from app.models.order import order_number_for
+from app.schemas.order import BillingIn, PaymentMethod
 
 # Bump whenever anything under app/seed/data changes (backend/GUIDELINES.md §8).
-SEED_VERSION = "2026.09.23-1"
+SEED_VERSION = "2026.09.23-2"
 
 DATA_DIR = Path(__file__).parent / "data"
 BASE_TIMESTAMP = datetime(2026, 1, 1, tzinfo=UTC)
@@ -109,6 +115,43 @@ class SeedInspiration(_Strict):
     image_url: str
     link: str
     position: int
+
+
+class SeedUser(_Strict):
+    id: int
+    email: str
+    password_hash: str  # precomputed bcrypt hash, so the seed stays byte-for-byte deterministic
+    first_name: str
+    last_name: str
+    created_at: datetime
+
+
+class SeedOrderItem(_Strict):
+    product: str
+    size: str | None
+    color: str | None
+    quantity: int = Field(ge=1, le=10)
+
+
+class SeedOrder(_Strict):
+    id: int
+    user_id: int
+    payment_method: PaymentMethod
+    billing: BillingIn
+    items: list[SeedOrderItem] = Field(min_length=1)
+    created_at: datetime
+
+
+class SeedWishlistItem(_Strict):
+    user_id: int
+    product: str
+    created_at: datetime
+
+
+class SeedAccounts(_Strict):
+    users: list[SeedUser]
+    orders: list[SeedOrder]
+    wishlist: list[SeedWishlistItem]
 
 
 def _load[T](name: str, schema: type[T]) -> T:
@@ -215,8 +258,61 @@ def load_baseline(session: Session) -> None:
         for r in reviews
     )
     session.add_all(Inspiration(**i.model_dump(), **stamped()) for i in inspirations)
+    _load_accounts(session, by_slug)
     session.flush()
     _sync_sequences(session)
+
+
+def _load_accounts(session: Session, products: dict[str, Product]) -> None:
+    """Demo users with past orders and a wishlist. Past orders do not touch product stock."""
+    accounts = _load("users.json", SeedAccounts)
+    # Orders and wishlist rows point at users/products by plain FK (no relationship), so the
+    # unit of work cannot order the INSERTs for us; flush the parents first.
+    session.flush()
+    session.add_all(
+        User(
+            **u.model_dump(exclude={"created_at"}), created_at=u.created_at, updated_at=u.created_at
+        )
+        for u in accounts.users
+    )
+    session.flush()
+    for o in accounts.orders:
+        items = [
+            OrderItem(
+                product_id=products[i.product].id,
+                product_slug=i.product,
+                product_name=products[i.product].name,
+                image_url=products[i.product].images[0].url,
+                size=i.size or "",
+                color=i.color or "",
+                quantity=i.quantity,
+                unit_price_minor=products[i.product].price_minor,
+                line_total_minor=products[i.product].price_minor * i.quantity,
+                created_at=o.created_at,
+                updated_at=o.created_at,
+            )
+            for i in o.items
+        ]
+        subtotal = sum(i.line_total_minor for i in items)
+        session.add(
+            Order(
+                id=o.id,
+                order_number=order_number_for(o.id),
+                user_id=o.user_id,
+                email=o.billing.email.lower(),
+                payment_method=o.payment_method.value,
+                billing=o.billing.model_dump(mode="json"),
+                subtotal_minor=subtotal,
+                total_minor=subtotal,
+                items=items,
+                created_at=o.created_at,
+                updated_at=o.created_at,
+            )
+        )
+    session.add_all(
+        WishlistItem(user_id=w.user_id, product_id=products[w.product].id, created_at=w.created_at)
+        for w in accounts.wishlist
+    )
 
 
 def _sync_sequences(session: Session) -> None:
@@ -224,7 +320,8 @@ def _sync_sequences(session: Session) -> None:
     if session.get_bind().dialect.name != "postgresql":
         return
     for table in Base.metadata.sorted_tables:
-        if "id" not in table.columns:
+        # Only integer keys have sequences (carts use UUIDs; wishlist_items has a composite key).
+        if "id" not in table.columns or not isinstance(table.columns["id"].type, Integer):
             continue
         session.execute(
             text(

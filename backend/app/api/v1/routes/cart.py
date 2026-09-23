@@ -2,7 +2,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Header, Path, status
 
-from app.api.deps import DbSession
+from app.api.deps import CurrentUser, DbSession, OptionalUser
 from app.core.errors import ErrorResponse
 from app.schemas.cart import CartItemAdd, CartItemUpdate, CartRead
 from app.services import cart as cart_service
@@ -29,17 +29,17 @@ STOCK_ERRORS: dict[int | str, dict[str, Any]] = {
     "",
     response_model=CartRead,
     status_code=status.HTTP_201_CREATED,
-    summary="Create an empty anonymous cart",
+    summary="Create a guest cart (logged in: returns your cart)",
 )
-def create_cart(db: DbSession) -> CartRead:
-    return cart_service.to_read(cart_service.create_cart(db))
+def create_cart(db: DbSession, user: OptionalUser) -> CartRead:
+    return cart_service.to_read(cart_service.create_cart(db, user))
 
 
 @router.get(
     "", response_model=CartRead, summary="The cart named by X-Cart-Id", responses=CART_ERRORS
 )
-def get_cart(db: DbSession, x_cart_id: CartIdHeader = None) -> CartRead:
-    cart = cart_service.get_cart(db, cart_service.parse_cart_id(x_cart_id))
+def get_cart(db: DbSession, user: OptionalUser, x_cart_id: CartIdHeader = None) -> CartRead:
+    cart = cart_service.get_cart(db, cart_service.resolve_cart_id(db, user, x_cart_id))
     return cart_service.to_read(cart)
 
 
@@ -49,10 +49,12 @@ def get_cart(db: DbSession, x_cart_id: CartIdHeader = None) -> CartRead:
     summary="Add a product (merges with an identical line)",
     responses=STOCK_ERRORS,
 )
-def add_item(db: DbSession, body: CartItemAdd, x_cart_id: CartIdHeader = None) -> CartRead:
+def add_item(
+    db: DbSession, user: OptionalUser, body: CartItemAdd, x_cart_id: CartIdHeader = None
+) -> CartRead:
     cart = cart_service.add_item(
         db,
-        cart_service.parse_cart_id(x_cart_id),
+        cart_service.resolve_cart_id(db, user, x_cart_id),
         product_id=body.product_id,
         quantity=body.quantity,
         size=body.size,
@@ -68,10 +70,14 @@ def add_item(db: DbSession, body: CartItemAdd, x_cart_id: CartIdHeader = None) -
     responses=STOCK_ERRORS,
 )
 def update_item(
-    db: DbSession, item_id: ItemId, body: CartItemUpdate, x_cart_id: CartIdHeader = None
+    db: DbSession,
+    user: OptionalUser,
+    item_id: ItemId,
+    body: CartItemUpdate,
+    x_cart_id: CartIdHeader = None,
 ) -> CartRead:
     cart = cart_service.update_item(
-        db, cart_service.parse_cart_id(x_cart_id), item_id, quantity=body.quantity
+        db, cart_service.resolve_cart_id(db, user, x_cart_id), item_id, quantity=body.quantity
     )
     return cart_service.to_read(cart)
 
@@ -79,12 +85,26 @@ def update_item(
 @router.delete(
     "/items/{item_id}", response_model=CartRead, summary="Remove a line", responses=CART_ERRORS
 )
-def remove_item(db: DbSession, item_id: ItemId, x_cart_id: CartIdHeader = None) -> CartRead:
-    cart = cart_service.remove_item(db, cart_service.parse_cart_id(x_cart_id), item_id)
+def remove_item(
+    db: DbSession, user: OptionalUser, item_id: ItemId, x_cart_id: CartIdHeader = None
+) -> CartRead:
+    cart = cart_service.remove_item(db, cart_service.resolve_cart_id(db, user, x_cart_id), item_id)
     return cart_service.to_read(cart)
 
 
 @router.delete("", response_model=CartRead, summary="Empty the cart", responses=CART_ERRORS)
-def clear_cart(db: DbSession, x_cart_id: CartIdHeader = None) -> CartRead:
-    cart = cart_service.clear_cart(db, cart_service.parse_cart_id(x_cart_id))
+def clear_cart(db: DbSession, user: OptionalUser, x_cart_id: CartIdHeader = None) -> CartRead:
+    cart = cart_service.clear_cart(db, cart_service.resolve_cart_id(db, user, x_cart_id))
     return cart_service.to_read(cart)
+
+
+@router.post(
+    "/merge",
+    response_model=CartRead,
+    summary="After login: move the X-Cart-Id guest cart into your cart",
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {"model": ErrorResponse, "description": "Not logged in"}
+    },
+)
+def merge_cart(db: DbSession, user: CurrentUser, x_cart_id: CartIdHeader = None) -> CartRead:
+    return cart_service.to_read(cart_service.merge_guest_cart(db, user, x_cart_id))

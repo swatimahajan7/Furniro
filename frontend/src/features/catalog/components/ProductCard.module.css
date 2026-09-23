@@ -161,6 +161,12 @@
   color: var(--color-primary);
 }
 
+/* Wishlisted: a filled heart (DESIGN_SPEC §4.4). */
+.liked svg {
+  fill: var(--color-sale);
+  stroke: var(--color-sale);
+}
+
 /* Touch screens have no hover: show the actions as a bar over the top of the image. */
 @media (hover: none) {
   .overlay {

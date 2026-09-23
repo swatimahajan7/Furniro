@@ -5,6 +5,7 @@ import { ApiError } from '@/api/client';
 import type { Order } from '@/api/types';
 import { PageLoader, PageShell } from '@/components/layout';
 import { ErrorState } from '@/components/ui';
+import { useIsLoggedIn } from '@/features/auth';
 import { OrderDetails, OrderLookupForm, recallOrderEmail, useOrder } from '@/features/checkout';
 
 import styles from './OrderConfirmationPage.module.css';
@@ -17,6 +18,8 @@ export default function OrderConfirmationPage() {
   const fromCheckout = handedOver?.order_number === orderNumber ? handedOver : undefined;
 
   const [email, setEmail] = useState(() => recallOrderEmail(orderNumber));
+  // The owner needs no email; the lookup form appears if the order is not theirs.
+  const isLoggedIn = useIsLoggedIn();
   const lookup = useOrder(orderNumber, fromCheckout ? null : email);
   const order = fromCheckout ?? lookup.data;
   const notFound = lookup.error instanceof ApiError && lookup.error.status === 404;
@@ -24,7 +27,7 @@ export default function OrderConfirmationPage() {
   let content;
   if (order) {
     content = <OrderDetails order={order} />;
-  } else if (!email || notFound) {
+  } else if ((!email && !isLoggedIn) || notFound) {
     content = (
       <OrderLookupForm
         orderNumber={orderNumber}

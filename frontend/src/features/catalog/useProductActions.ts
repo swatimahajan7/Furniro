@@ -3,6 +3,8 @@ import { useCallback } from 'react';
 import type { ProductSummary } from '@/api/types';
 import { useToast } from '@/components/ui';
 import { useAddToCart, useCartDrawer } from '@/features/cart';
+import { COMPARE_LIMIT, useCompareStore } from '@/features/compare';
+import { useToggleLike } from '@/features/wishlist';
 import { errorMessage } from '@/lib/errors';
 
 export interface AddToCartOptions {
@@ -14,8 +16,8 @@ export interface AddToCartOptions {
 type CartProduct = Pick<ProductSummary, 'id' | 'name' | 'sizes' | 'colors'>;
 
 /**
- * Card and product-page actions in one place. Add to cart is real (and opens the cart drawer,
- * FR-PDP-07); compare and like arrive in Phase 5 and confirm with an info toast until then.
+ * Card, product-page and comparison actions in one place: add to cart (opens the cart drawer,
+ * FR-PDP-07), share, compare (FR-CMP-01) and like (FR-WISH-01).
  */
 export function useProductActions() {
   const toast = useToast();
@@ -53,19 +55,26 @@ export function useProductActions() {
     [add, openCart, toast],
   );
 
+  const addToCompare = useCompareStore((state) => state.add);
   const compare = useCallback(
-    (product: Pick<ProductSummary, 'name'>) => {
-      toast.info(`Product comparison arrives in Phase 5 (${product.name}).`);
+    (product: Pick<ProductSummary, 'id' | 'name'>) => {
+      const result = addToCompare(product.id);
+      if (result === 'added') toast.success(`${product.name} added to the comparison`);
+      else if (result === 'exists') toast.info(`${product.name} is already in the comparison`);
+      else toast.error(`You can compare up to ${COMPARE_LIMIT} products. Remove one first.`);
     },
-    [toast],
+    [addToCompare, toast],
   );
 
-  const like = useCallback(
-    (product: Pick<ProductSummary, 'name'>) => {
-      toast.info(`Wishlists arrive in Phase 5 (${product.name}).`);
-    },
-    [toast],
-  );
+  const like = useToggleLike();
 
-  return { share, addToCart, isAdding: add.isPending, compare, like };
+  return {
+    share,
+    addToCart,
+    isAdding: add.isPending,
+    /** The product whose add is in flight, so only its button shows a spinner. */
+    addingId: add.isPending ? add.variables.product_id : null,
+    compare,
+    like,
+  };
 }

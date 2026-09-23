@@ -1,4 +1,7 @@
-"""Server-side carts (docs/API_CONTRACT.md §2.5). Totals always use current product prices."""
+"""Server-side carts (docs/API_CONTRACT.md §2.5). Totals always use current product prices.
+
+Guests use the cart named by `X-Cart-Id`; a logged-in user always uses their own cart.
+"""
 
 import uuid
 
@@ -15,7 +18,7 @@ from app.core.errors import (
     NotFoundError,
     UnprocessableError,
 )
-from app.models import Cart, CartItem, Product
+from app.models import Cart, CartItem, Product, User
 from app.models.cart import MAX_LINE_QUANTITY
 from app.schemas.cart import CartItemRead, CartRead
 from app.schemas.catalog import ProductSummary
@@ -29,11 +32,77 @@ def parse_cart_id(raw: str | None) -> uuid.UUID:
         raise NotFoundError("Cart not found", code=CART_NOT_FOUND) from None
 
 
-def create_cart(session: Session) -> Cart:
+def create_cart(session: Session, user: User | None = None) -> Cart:
+    """A new guest cart, or (when logged in) the user's cart, created on first use."""
+    if user is not None:
+        return get_cart(session, user_cart_id(session, user))
     cart = Cart()
     session.add(cart)
     session.commit()
     return get_cart(session, cart.id)
+
+
+def user_cart_id(session: Session, user: User) -> uuid.UUID:
+    cart_id = session.scalar(select(Cart.id).where(Cart.user_id == user.id))
+    if cart_id is not None:
+        return cart_id
+    cart = Cart(user_id=user.id)
+    session.add(cart)
+    session.commit()
+    return cart.id
+
+
+def resolve_cart_id(session: Session, user: User | None, header: str | None) -> uuid.UUID:
+    """Which cart a request acts on: the user's own when logged in, else the X-Cart-Id one."""
+    if user is not None:
+        return user_cart_id(session, user)
+    cart_id = parse_cart_id(header)
+    # A user's cart is reachable only with their token, never by its ID alone (e.g. after logout).
+    if session.scalar(select(Cart.user_id).where(Cart.id == cart_id)) is not None:
+        raise NotFoundError("Cart not found", code=CART_NOT_FOUND)
+    return cart_id
+
+
+def merge_guest_cart(session: Session, user: User, header: str | None) -> Cart:
+    """Move the guest cart's lines into the user's cart (on login), then delete the guest cart.
+
+    Matching lines add up but are clamped to min(10, stock) instead of failing, because a login
+    should never error over quantities. An unknown or missing guest cart is simply ignored.
+    """
+    target = get_cart(session, user_cart_id(session, user))
+    try:
+        guest = get_cart(session, parse_cart_id(header))
+    except NotFoundError:
+        return target
+    if guest.id == target.id or guest.user_id is not None:
+        return target
+
+    for item in list(guest.items):
+        line = next(
+            (
+                existing
+                for existing in target.items
+                if existing.product_id == item.product_id
+                and existing.size == item.size
+                and existing.color == item.color
+            ),
+            None,
+        )
+        cap = line_cap(item.product)
+        if line:
+            line.quantity = min(line.quantity + item.quantity, max(cap, line.quantity))
+        elif cap > 0:
+            target.items.append(
+                CartItem(
+                    product_id=item.product_id,
+                    quantity=min(item.quantity, cap),
+                    size=item.size,
+                    color=item.color,
+                )
+            )
+    session.delete(guest)
+    session.commit()
+    return get_cart(session, target.id)
 
 
 def get_cart(session: Session, cart_id: uuid.UUID) -> Cart:

@@ -1,0 +1,89 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: 820px;
+  padding: var(--space-6);
+  margin: 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-black);
+}
+
+.prompt {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.prompt a {
+  font-weight: var(--weight-medium);
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.stars {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: var(--space-2);
+  font-weight: var(--weight-medium);
+  color: var(--color-black);
+}
+
+.starRow {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.star {
+  display: inline-flex;
+  padding: var(--space-1);
+  color: var(--color-input-border);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.star:hover,
+.starOn {
+  color: var(--color-rating);
+}
+
+.starOn svg {
+  fill: var(--color-rating);
+}
+
+/* The radio itself is visually hidden, so show its focus ring on the star. */
+.star:has(input:focus-visible) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.error {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+.formError {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+  background-color: var(--color-cream-light);
+  border-left: 3px solid var(--color-danger);
+}
+
+.submit {
+  align-self: flex-start;
+}

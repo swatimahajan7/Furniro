@@ -117,6 +117,11 @@ class ReviewRead(Schema):
     created_at: datetime
 
 
+class ReviewCreate(Schema):
+    rating: int = Field(ge=1, le=5)
+    comment: str = Field(min_length=10, max_length=1000)
+
+
 class InspirationRead(Schema):
     id: int
     index: str = Field(validation_alias="index_label", examples=["01"])

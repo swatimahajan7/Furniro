@@ -10,7 +10,7 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 4 (cart, checkout and orders) complete, 2026-09-23 · next: Phase 5 |
+| Status | Phase 5 (auth, wishlist and compare) complete, 2026-09-23 · next: Phase 6 |
 
 Related docs:
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
@@ -303,9 +303,15 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** The full guest purchase flow works end to end, and the cart is empty afterwards.
 
 ### Phase 5: Auth, wishlist and compare (≈2 days)
-- [ ] Backend: users, password hashing, JWT, `/auth/*`, wishlist, cart merge on login, `GET /orders` for the user, posting reviews.
-- [ ] FE: login and register pages, auth store, protected routes with return-to redirect, `/account`, `/wishlist`, Like on cards and the PDP, review form.
-- [ ] Compare: Zustand-persisted compare list (max 3), `/compare` page, "Add A Product" dropdown, and the Comparison button in the drawer.
+- [x] Backend: `users` and `wishlist_items` plus `user_id` on carts, orders and reviews (migration `…_users_wishlist_and_ownership`); bcrypt (cost 12) and HS256 JWT (24 h); `/auth/register|login|me`; wishlist (idempotent PUT/DELETE); cart merge on login (lines clamped to the stock cap); a user's cart follows their token; `GET /orders` and owner access to `GET /orders/{n}` without email; posting reviews (one per user per product, rating average recomputed). Seed: demo and empty accounts, 2 past orders, 3 liked products (`SEED_VERSION 2026.09.23-2`).
+- [x] FE: login and register pages (`?next=` return, demo-account hint), session store with token + user, `Authorization` header, session-expiry handling (toast + back to login), `RequireAuth` on `/account` and `/wishlist`, account page (profile, paginated order history, log out), wishlist page, Like on cards and a heart on the PDP (optimistic, `aria-pressed`; guests go to login and come back), review form (star radios) with a login prompt for guests, checkout prefilled from the user, order page for the owner without email lookup.
+- [x] Compare: persisted compare list (max 3, toasts for duplicate/full), `/compare` page per design (columns, spec groups with "—" for gaps, remove, "Add A Product" dropdown of products not yet compared, Add To Cart per column, empty/error states), and the drawer's Comparison button.
+
+**Phase 5 notes:**
+- Verified: 42 API checks (auth, merge, ownership, orders, wishlist, reviews) and 37 browser checks (guards, login/register validation, guest cart + Like → login → back with the cart merged, wishlist, account, owner order view, checkout prefill, reviews, logout, session expiry, compare flows, 390 px), plus re-runs of the Phase 2–4 suites. All pass from a clean `make seed-reset`, with no console errors.
+- Found and fixed: guests could open a **user's** cart by its UUID (e.g. after logout); guest requests now only reach unowned carts. SQLite returned timestamps without a time zone, so the API sent times without `Z`; a `UtcDateTime` column type fixes every table without a migration. email-validator rejects the reserved `.test` domain used by the demo accounts; the app opts that one domain back in. Posting the first review on a product lost its "thank you" message because the form re-mounted; the form now sits in one stable position. Seeding on **PostgreSQL** had failed since Phase 4 (the sequence reset also hit the UUID `carts.id`); it now skips non-integer keys. The migration round trip (downgrade → upgrade) and the Phase 1, 4 and 5 API checks pass on PostgreSQL 16 (temporary Podman container) as well as SQLite.
+- Contract change: `GET /orders/{n}` no longer requires `email` (owners use their token); a guest without it gets `404 ORDER_NOT_FOUND` instead of 422.
+- Additions beyond the design (undesigned, built from existing tokens): a heart button next to "+ Compare" on the PDP (DESIGN_SPEC §4.4 says the heart turns red when wishlisted), a remove (×) button on each comparison column, and a demo-account hint on the login page.
 
 **Exit criteria:** Log in → like → wishlist page; compare 3 products; guest cart merged after login.
 

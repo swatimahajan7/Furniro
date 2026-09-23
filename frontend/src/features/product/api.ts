@@ -1,8 +1,8 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { ApiError, apiFetch } from '@/api/client';
 import { queryKeys } from '@/api/queryKeys';
-import type { ProductDetail, RelatedProducts, ReviewPage } from '@/api/types';
+import type { ProductDetail, RelatedProducts, Review, ReviewCreate, ReviewPage } from '@/api/types';
 
 export const RELATED_PAGE_SIZE = 4;
 export const REVIEWS_PAGE_SIZE = 5;
@@ -46,5 +46,16 @@ export function useReviews(slug: string, enabled: boolean) {
     initialPageParam: 1,
     getNextPageParam: (last) => (last.page < last.total_pages ? last.page + 1 : undefined),
     enabled: enabled && slug !== '',
+  });
+}
+
+/** Post a review (logged in, once per product). Refreshes the list and the product's rating. */
+export function useCreateReview(slug: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (body: ReviewCreate) =>
+      apiFetch<Review>(`/products/${encodeURIComponent(slug)}/reviews`, { method: 'POST', body }),
+    // Rating and review count show on the page, on cards and in comparisons.
+    onSuccess: () => client.invalidateQueries({ queryKey: queryKeys.products.all }),
   });
 }

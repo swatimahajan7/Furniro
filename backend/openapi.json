@@ -679,6 +679,27 @@
         "title": "InspirationRead",
         "type": "object"
       },
+      "LoginIn": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 72,
+            "minLength": 1,
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginIn",
+        "type": "object"
+      },
       "MetaConfigRead": {
         "properties": {
           "compare_limit": {
@@ -856,6 +877,81 @@
         ],
         "title": "OrderStatus",
         "type": "string"
+      },
+      "OrderSummary": {
+        "description": "One row of \"My orders\".",
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "item_count": {
+            "description": "Total units",
+            "title": "Item Count",
+            "type": "integer"
+          },
+          "order_number": {
+            "title": "Order Number",
+            "type": "string"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OrderStatus"
+          },
+          "total_minor": {
+            "title": "Total Minor",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "order_number",
+          "status",
+          "payment_method",
+          "item_count",
+          "total_minor",
+          "created_at"
+        ],
+        "title": "OrderSummary",
+        "type": "object"
+      },
+      "Page_OrderSummary_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OrderSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "page_size": {
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "total_pages": {
+            "title": "Total Pages",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "page_size",
+          "total",
+          "total_pages"
+        ],
+        "title": "Page[OrderSummary]",
+        "type": "object"
       },
       "Page_ProductSummary_": {
         "properties": {
@@ -1275,6 +1371,42 @@
         "title": "ProvinceRead",
         "type": "object"
       },
+      "RegisterIn": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "maxLength": 50,
+            "minLength": 1,
+            "title": "Last Name",
+            "type": "string"
+          },
+          "password": {
+            "description": "At least 8 characters with at least one letter and one digit",
+            "maxLength": 72,
+            "minLength": 8,
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "first_name",
+          "last_name"
+        ],
+        "title": "RegisterIn",
+        "type": "object"
+      },
       "RelatedProducts": {
         "properties": {
           "has_more": {
@@ -1294,6 +1426,28 @@
           "has_more"
         ],
         "title": "RelatedProducts",
+        "type": "object"
+      },
+      "ReviewCreate": {
+        "properties": {
+          "comment": {
+            "maxLength": 1000,
+            "minLength": 10,
+            "title": "Comment",
+            "type": "string"
+          },
+          "rating": {
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Rating",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rating",
+          "comment"
+        ],
+        "title": "ReviewCreate",
         "type": "object"
       },
       "ReviewRead": {
@@ -1393,6 +1547,70 @@
         ],
         "title": "SpecRead",
         "type": "object"
+      },
+      "TokenRead": {
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "token_type": {
+            "const": "bearer",
+            "default": "bearer",
+            "title": "Token Type",
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserRead"
+          }
+        },
+        "required": [
+          "access_token",
+          "user"
+        ],
+        "title": "TokenRead",
+        "type": "object"
+      },
+      "UserRead": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "first_name",
+          "last_name",
+          "created_at"
+        ],
+        "title": "UserRead",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "description": "Access token from POST /auth/login",
+        "scheme": "bearer",
+        "type": "http"
       }
     }
   },
@@ -1402,6 +1620,154 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "INVALID_CREDENTIALS"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Log in with email and password",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "The logged-in user",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "EMAIL_ALREADY_REGISTERED"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "summary": "Create an account and log in",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
     "/api/v1/cart": {
       "delete": {
         "operationId": "clear_cart_api_v1_cart_delete",
@@ -1457,6 +1823,11 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Empty the cart",
         "tags": [
           "cart"
@@ -1516,6 +1887,11 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "The cart named by X-Cart-Id",
         "tags": [
           "cart"
@@ -1545,7 +1921,12 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
-        "summary": "Create an empty anonymous cart",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create a guest cart (logged in: returns your cart)",
         "tags": [
           "cart"
         ]
@@ -1626,6 +2007,11 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Add a product (merges with an identical line)",
         "tags": [
           "cart"
@@ -1697,6 +2083,11 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Remove a line",
         "tags": [
           "cart"
@@ -1786,7 +2177,78 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Change a line's quantity",
+        "tags": [
+          "cart"
+        ]
+      }
+    },
+    "/api/v1/cart/merge": {
+      "post": {
+        "operationId": "merge_cart_api_v1_cart_merge_post",
+        "parameters": [
+          {
+            "description": "Cart UUID returned by POST /cart",
+            "in": "header",
+            "name": "X-Cart-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Cart UUID returned by POST /cart",
+              "title": "X-Cart-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "After login: move the X-Cart-Id guest cart into your cart",
         "tags": [
           "cart"
         ]
@@ -1970,6 +2432,75 @@
       }
     },
     "/api/v1/orders": {
+      "get": {
+        "operationId": "list_orders_api_v1_orders_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_OrderSummary_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "My orders, newest first",
+        "tags": [
+          "orders"
+        ]
+      },
       "post": {
         "operationId": "place_order_api_v1_orders_post",
         "parameters": [
@@ -2052,7 +2583,12 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
-        "summary": "Place an order from the cart (guest checkout)",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Place an order from the cart (guest or logged in)",
         "tags": [
           "orders"
         ]
@@ -2076,15 +2612,22 @@
             }
           },
           {
-            "description": "The billing email of the order",
+            "description": "The billing email; not needed for your own orders when logged in",
             "in": "query",
             "name": "email",
-            "required": true,
+            "required": false,
             "schema": {
-              "description": "The billing email of the order",
-              "format": "email",
-              "title": "Email",
-              "type": "string"
+              "anyOf": [
+                {
+                  "format": "email",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The billing email; not needed for your own orders when logged in",
+              "title": "Email"
             }
           }
         ],
@@ -2120,7 +2663,12 @@
             "description": "Validation error (code VALIDATION_ERROR)"
           }
         },
-        "summary": "Look up an order with the email used at checkout",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "An order: yours when logged in, otherwise with the checkout email",
         "tags": [
           "orders"
         ]
@@ -2632,6 +3180,95 @@
         "tags": [
           "catalog"
         ]
+      },
+      "post": {
+        "operationId": "create_review_api_v1_products__slug__reviews_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "examples": [
+                "asgaard-sofa"
+              ],
+              "maxLength": 120,
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "ALREADY_REVIEWED"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Review a product (logged in; once per product)",
+        "tags": [
+          "catalog"
+        ]
       }
     },
     "/api/v1/rooms": {
@@ -2666,6 +3303,166 @@
         "summary": "Rooms (Browse The Range)",
         "tags": [
           "catalog"
+        ]
+      }
+    },
+    "/api/v1/wishlist": {
+      "get": {
+        "operationId": "list_wishlist_api_v1_wishlist_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSummary"
+                  },
+                  "title": "Response List Wishlist Api V1 Wishlist Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "My liked products, newest first",
+        "tags": [
+          "wishlist"
+        ]
+      }
+    },
+    "/api/v1/wishlist/{product_id}": {
+      "delete": {
+        "operationId": "remove_from_wishlist_api_v1_wishlist__product_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "product_id",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "title": "Product Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Unlike a product (idempotent)",
+        "tags": [
+          "wishlist"
+        ]
+      },
+      "put": {
+        "operationId": "add_to_wishlist_api_v1_wishlist__product_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "product_id",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "title": "Product Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not logged in"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "PRODUCT_NOT_FOUND"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error (code VALIDATION_ERROR)"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Like a product (idempotent)",
+        "tags": [
+          "wishlist"
         ]
       }
     }

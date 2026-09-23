@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/format';
 
 import { useReviews } from '../api';
 
+import { ReviewForm } from './ReviewForm';
 import styles from './ReviewList.module.css';
 
 export interface ReviewListProps {
@@ -13,7 +14,17 @@ export interface ReviewListProps {
   active: boolean;
 }
 
+/** The review form sits above every state, so posting the first review keeps its "thanks". */
 export function ReviewList({ slug, active }: ReviewListProps) {
+  return (
+    <div className={styles.wrap}>
+      <ReviewForm slug={slug} />
+      <Reviews slug={slug} active={active} />
+    </div>
+  );
+}
+
+function Reviews({ slug, active }: ReviewListProps) {
   const reviews = useReviews(slug, active);
 
   if (reviews.isPending) {
@@ -35,14 +46,14 @@ export function ReviewList({ slug, active }: ReviewListProps) {
       <EmptyState
         icon={MessageSquare}
         title="No reviews yet"
-        message="Be the first to share what you think once accounts arrive."
+        message="Be the first to share what you think."
         data-testid="pdp-reviews-empty"
       />
     );
   }
 
   return (
-    <div className={styles.wrap}>
+    <>
       <ul className={styles.list} data-testid="pdp-reviews" data-count={items.length}>
         {items.map((review) => (
           <li key={review.id} className={styles.review} data-testid={`pdp-review-${review.id}`}>
@@ -68,6 +79,6 @@ export function ReviewList({ slug, active }: ReviewListProps) {
           Load more reviews
         </Button>
       )}
-    </div>
+    </>
   );
 }
