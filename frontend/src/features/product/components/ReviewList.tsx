@@ -1,11 +1,11 @@
 import { MessageSquare } from 'lucide-react';
+import { lazy, Suspense } from 'react';
 
 import { Button, EmptyState, ErrorState, Rating, Skeleton } from '@/components/ui';
 import { formatDate } from '@/lib/format';
 
 import { useReviews } from '../api';
 
-import { ReviewForm } from './ReviewForm';
 import styles from './ReviewList.module.css';
 
 export interface ReviewListProps {
@@ -14,11 +14,19 @@ export interface ReviewListProps {
   active: boolean;
 }
 
+// The form (and zod with it) loads only when the Reviews tab is opened, keeping it off the
+// product page's critical path.
+const ReviewForm = lazy(() => import('./ReviewForm').then((m) => ({ default: m.ReviewForm })));
+
 /** The review form sits above every state, so posting the first review keeps its "thanks". */
 export function ReviewList({ slug, active }: ReviewListProps) {
   return (
     <div className={styles.wrap}>
-      <ReviewForm slug={slug} />
+      {active && (
+        <Suspense fallback={null}>
+          <ReviewForm slug={slug} />
+        </Suspense>
+      )}
       <Reviews slug={slug} active={active} />
     </div>
   );

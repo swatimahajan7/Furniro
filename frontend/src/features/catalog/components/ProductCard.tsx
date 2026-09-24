@@ -7,6 +7,7 @@ import { useIsLiked } from '@/features/wishlist';
 import { cn } from '@/lib/cn';
 import { formatPrice } from '@/lib/format';
 import { testIds } from '@/lib/testIds';
+import { mediaSrcSet } from '@/lib/images';
 
 import { useProductActions } from '../useProductActions';
 
@@ -37,6 +38,8 @@ export function ProductCard({ product, variant = 'grid' }: ProductCardProps) {
         {product.image_url ? (
           <img
             src={product.image_url}
+            srcSet={mediaSrcSet(product.image_url)}
+            sizes="(min-width: 1024px) 285px, (min-width: 768px) 33vw, (min-width: 480px) 50vw, 100vw"
             alt=""
             loading="lazy"
             width={285}

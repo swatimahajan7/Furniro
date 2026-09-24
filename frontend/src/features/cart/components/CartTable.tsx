@@ -6,6 +6,7 @@ import { QuantityStepper, useToast } from '@/components/ui';
 import { errorMessage } from '@/lib/errors';
 import { formatPrice } from '@/lib/format';
 import { testIds } from '@/lib/testIds';
+import { mediaSrcSet } from '@/lib/images';
 
 import { useRemoveCartItem, useUpdateCartItem } from '../api';
 import { lineOptions } from '../lineOptions';
@@ -44,10 +45,18 @@ export function CartTable({ cart }: { cart: Cart }) {
           return (
             <tr key={item.id} className={styles.row} data-testid={ids.root}>
               <td className={styles.product}>
-                <Link to={`/product/${item.product.slug}`} className={styles.thumb}>
+                <Link
+                  to={`/product/${item.product.slug}`}
+                  className={styles.thumb}
+                  // Same target as the name link next to it: skip it for keyboard and screen readers.
+                  tabIndex={-1}
+                  aria-hidden="true"
+                >
                   {item.product.image_url && (
                     <img
                       src={item.product.image_url}
+                      srcSet={mediaSrcSet(item.product.image_url)}
+                      sizes="108px"
                       alt=""
                       width={108}
                       height={108}
@@ -56,7 +65,11 @@ export function CartTable({ cart }: { cart: Cart }) {
                   )}
                 </Link>
                 <div>
-                  <Link to={`/product/${item.product.slug}`} className={styles.name}>
+                  <Link
+                    to={`/product/${item.product.slug}`}
+                    className={styles.name}
+                    data-testid={ids.link}
+                  >
                     {item.product.name}
                   </Link>
                   {options && <p className={styles.options}>{options}</p>}

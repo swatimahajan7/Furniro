@@ -5,6 +5,7 @@ backend only**: do not write automated tests (unit, integration, component or E2
 The UI carries `data-testid`s so tests can be added later (PLAN.md §8, D-5).
 
 - Plan, scope, phases and decisions: @PLAN.md
+- Business requirements (FR/BR/NFR IDs, acceptance criteria): `docs/BRD.md`
 - Design tokens and screen spec: @docs/DESIGN_SPEC.md
 - REST contract: @docs/API_CONTRACT.md
 - Backend rules: `backend/GUIDELINES.md` (loaded through `backend/CLAUDE.md`)

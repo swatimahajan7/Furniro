@@ -53,7 +53,10 @@ export function LoginForm({ next, onSuccess }: LoginFormProps) {
         Log in
       </h2>
       <p className={styles.hint} data-testid="login-demo-hint">
-        Demo account: <strong>demo@furniro.test</strong> / <strong>Demo@1234</strong>
+        Demo account
+        <span className={styles.hintCredentials}>
+          <strong>demo@furniro.test</strong> / <strong>Demo@1234</strong>
+        </span>
       </p>
       <Input
         label="Email address"

@@ -9,9 +9,10 @@ NPM      := cd $(FRONTEND) && npm run
 
 API_PORT ?= 8100
 WEB_PORT ?= 5180
+COMPOSE ?= docker compose
 
 .PHONY: help install dev dev-backend dev-frontend migrate seed seed-reset lint format typecheck \
-        build check openapi contract assets assets-extract assets-build up down clean
+        build check openapi contract assets assets-extract assets-build assets-variants up down clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[33m%-16s\033[0m %s\n", $$1, $$2}'
@@ -84,15 +85,18 @@ assets: assets-extract assets-build ## Extract images from the design PDF into b
 assets-extract: ## Step 1: pull unique images + contact sheets into .design-extract/
 	uv run scripts/extract_design_assets.py extract
 
-assets-build: ## Step 2: convert mapped images to WebP in backend/media/
+assets-build: ## Step 2: convert mapped images to WebP in backend/media/ (+ responsive variants)
 	uv run scripts/extract_design_assets.py build
 
+assets-variants: ## Regenerate only the responsive copies (240–960w; no PDF needed)
+	uv run scripts/extract_design_assets.py variants
+
 # ------------------------------------------------------------------ containers
-up: ## Production-like stack (PostgreSQL) → http://localhost:8080
-	docker compose up --build
+up: ## Production-like stack (PostgreSQL) → http://localhost:8080 (COMPOSE="..." to use another Compose tool)
+	$(COMPOSE) up --build
 
 down: ## Stop the stack (keeps the database volume)
-	docker compose down
+	$(COMPOSE) down
 
 clean: ## Remove caches and build output (keeps dependencies)
 	rm -rf $(BACKEND)/.mypy_cache $(BACKEND)/.ruff_cache

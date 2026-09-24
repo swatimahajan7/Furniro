@@ -1,3 +1,18 @@
+/*
+ * A local font shaped like Poppins, used until the web font arrives, so the swap barely moves
+ * text (no layout shift). size-adjust is the measured Poppins/Arial width ratio at weight 400;
+ * the overrides are Poppins' metrics (ascent 1050, descent 350, line gap 100 per 1000) / 1.10.
+ */
+@font-face {
+  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- names the face; not a usage */
+  font-family: 'Poppins Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Helvetica');
+  size-adjust: 110%;
+  ascent-override: 95.45%;
+  descent-override: 31.82%;
+  line-gap-override: 9.09%;
+}
+
 body {
   font-family: var(--font-body);
   font-size: var(--text-md);

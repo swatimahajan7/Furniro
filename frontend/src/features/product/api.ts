@@ -1,4 +1,10 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { ApiError, apiFetch } from '@/api/client';
 import { queryKeys } from '@/api/queryKeys';
@@ -7,13 +13,17 @@ import type { ProductDetail, RelatedProducts, Review, ReviewCreate, ReviewPage }
 export const RELATED_PAGE_SIZE = 4;
 export const REVIEWS_PAGE_SIZE = 5;
 
-export function useProduct(slug: string) {
-  return useQuery({
+/** Shared by `useProduct` and the route loader that starts the request early (app/router.tsx). */
+export const productQuery = (slug: string) =>
+  queryOptions({
     queryKey: queryKeys.products.detail(slug),
     queryFn: ({ signal }) =>
       apiFetch<ProductDetail>(`/products/${encodeURIComponent(slug)}`, { signal }),
     enabled: slug !== '',
   });
+
+export function useProduct(slug: string) {
+  return useQuery(productQuery(slug));
 }
 
 export const isNotFound = (error: unknown) => error instanceof ApiError && error.status === 404;

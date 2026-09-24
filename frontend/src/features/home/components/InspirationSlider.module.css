@@ -1,6 +1,6 @@
 .section {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-9);
   align-items: center;
   padding: var(--space-12) var(--container-pad);

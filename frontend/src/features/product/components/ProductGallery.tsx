@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 import type { ProductDetail } from '@/api/types';
 import { cn } from '@/lib/cn';
+import { mediaSrcSet } from '@/lib/images';
+
+import { MAIN_IMAGE_SIZES } from '../preloadImage';
 
 import styles from './ProductGallery.module.css';
 
@@ -31,7 +34,15 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 aria-pressed={index === selected}
                 data-testid={`pdp-thumbnail-${index + 1}`}
               >
-                <img src={image.url} alt="" width={76} height={80} className={styles.thumbImage} />
+                <img
+                  src={image.url}
+                  srcSet={mediaSrcSet(image.url)}
+                  sizes="76px"
+                  alt=""
+                  width={76}
+                  height={80}
+                  className={styles.thumbImage}
+                />
               </button>
             </li>
           ))}
@@ -41,9 +52,13 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
         {current ? (
           <img
             src={current.url}
+            srcSet={mediaSrcSet(current.url)}
+            sizes={MAIN_IMAGE_SIZES}
             alt={current.alt || productName}
             width={423}
             height={500}
+            // The page's largest image (LCP): fetch it before the thumbnails.
+            fetchPriority="high"
             className={styles.mainImage}
             data-testid="pdp-main-image"
             data-index={selected + 1}

@@ -17,6 +17,9 @@ RUN uv sync --locked --no-dev
 
 COPY app ./app
 COPY media ./media
+# The app runs migrations on startup (SEED_ON_STARTUP), so the image needs Alembic's files too.
+COPY alembic.ini ./
+COPY migrations ./migrations
 
 RUN useradd --create-home --uid 10001 furniro && chown -R furniro /app
 USER furniro

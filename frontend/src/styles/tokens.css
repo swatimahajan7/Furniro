@@ -12,9 +12,11 @@
   --color-card: #f4f5f7;
   --color-text: #3a3a3a;
   --color-text-body: #333;
-  --color-text-muted: #898989;
-  --color-text-subtle: #9f9f9f;
-  --color-text-strike: #b0b0b0;
+
+  /* Darkened from the design (#898989, #9F9F9F, #B0B0B0) to pass WCAG AA; DESIGN_SPEC §2.1. */
+  --color-text-muted: #6e6e6e;
+  --color-text-subtle: #6e6e6e;
+  --color-text-strike: #707070;
   --color-sale: #e97171;
   --color-new: #2ec1ac;
   --color-rating: #ffc700;
@@ -26,11 +28,11 @@
   --color-white: #fff;
   --color-black: #000;
   --color-success: #2ec1ac;
-  --color-danger: #e97171;
+  --color-danger: #d82121; /* error text; AA on white and cream (DESIGN_SPEC §2.1) */
   --color-focus-ring: #b88e2f;
 
   /* ---- Typography ---- */
-  --font-body: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Poppins', 'Poppins Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-logo: 'Montserrat', 'Poppins', system-ui, sans-serif;
 
   --text-logo: 34px;

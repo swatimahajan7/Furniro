@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, queryOptions, useQuery } from '@tanstack/react-query';
 
 import { apiFetch } from '@/api/client';
 import { queryKeys } from '@/api/queryKeys';
@@ -15,13 +15,17 @@ export function useBlogPosts({ page, category, q }: BlogParams) {
   });
 }
 
-export function useBlogPost(slug: string) {
-  return useQuery({
+/** Shared by `useBlogPost` and the route loader that starts the request early (app/router.tsx). */
+export const blogPostQuery = (slug: string) =>
+  queryOptions({
     queryKey: queryKeys.blog.post(slug),
     queryFn: ({ signal }) =>
       apiFetch<BlogPost>(`/blog/posts/${encodeURIComponent(slug)}`, { signal }),
     enabled: slug !== '',
   });
+
+export function useBlogPost(slug: string) {
+  return useQuery(blogPostQuery(slug));
 }
 
 export function useBlogCategories() {

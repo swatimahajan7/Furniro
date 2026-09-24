@@ -1,10 +1,13 @@
-import { createBrowserRouter, type RouteObject } from 'react-router';
+import { createBrowserRouter, type LoaderFunctionArgs, type RouteObject } from 'react-router';
 
 import { PageLoader } from '@/components/layout';
+import { blogPostQuery } from '@/features/blog';
+import { preloadMainImage, productQuery } from '@/features/product';
 import NotFoundPage from '@/pages/NotFoundPage';
 import RouteErrorPage from '@/pages/RouteErrorPage';
 
 import { AppLayout } from './AppLayout';
+import { queryClient } from './queryClient';
 
 type PageModule = { default: React.ComponentType };
 
@@ -13,16 +16,40 @@ const page = (load: () => Promise<PageModule>): Pick<RouteObject, 'lazy'> => ({
   lazy: async () => ({ Component: (await load()).default }),
 });
 
+/**
+ * Start a page's main request while its code chunk downloads, instead of after it renders
+ * (a request waterfall). Never awaited, so navigation is not blocked; errors surface in the page.
+ */
+const prefetchProduct = ({ params }: LoaderFunctionArgs) => {
+  if (params.slug) {
+    // Also start the main image (the page's LCP) the moment the data lands.
+    queryClient.fetchQuery(productQuery(params.slug)).then(preloadMainImage, () => undefined);
+  }
+  return null;
+};
+const prefetchBlogPost = ({ params }: LoaderFunctionArgs) => {
+  if (params.slug) void queryClient.prefetchQuery(blogPostQuery(params.slug));
+  return null;
+};
+
 const routes: RouteObject[] = [
   { index: true, ...page(() => import('@/pages/HomePage')) },
   { path: 'shop', ...page(() => import('@/pages/ShopPage')) },
-  { path: 'product/:slug', ...page(() => import('@/pages/ProductPage')) },
+  {
+    path: 'product/:slug',
+    loader: prefetchProduct,
+    ...page(() => import('@/pages/ProductPage')),
+  },
   { path: 'compare', ...page(() => import('@/pages/ComparePage')) },
   { path: 'cart', ...page(() => import('@/pages/CartPage')) },
   { path: 'checkout', ...page(() => import('@/pages/CheckoutPage')) },
   { path: 'order/:orderNumber', ...page(() => import('@/pages/OrderConfirmationPage')) },
   { path: 'blog', ...page(() => import('@/pages/BlogPage')) },
-  { path: 'blog/:slug', ...page(() => import('@/pages/BlogPostPage')) },
+  {
+    path: 'blog/:slug',
+    loader: prefetchBlogPost,
+    ...page(() => import('@/pages/BlogPostPage')),
+  },
   { path: 'contact', ...page(() => import('@/pages/ContactPage')) },
   { path: 'about', ...page(() => import('@/pages/AboutPage')) },
   { path: 'help/:topic', ...page(() => import('@/pages/HelpPage')) },

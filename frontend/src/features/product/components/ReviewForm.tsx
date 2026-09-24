@@ -70,9 +70,9 @@ export function ReviewForm({ slug }: { slug: string }) {
       aria-labelledby="review-form-title"
       data-testid="review-form"
     >
-      <h3 id="review-form-title" className={styles.title}>
+      <h2 id="review-form-title" className={styles.title}>
         Write a review
-      </h3>
+      </h2>
       <Controller
         control={form.control}
         name="rating"

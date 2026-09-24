@@ -1,6 +1,7 @@
 import { ButtonLink } from '@/components/ui';
 
 import styles from './Hero.module.css';
+import { mediaSrcSet } from '@/lib/images';
 
 /** Home hero: full-width photo with the "New Arrival" card (DESIGN_SPEC §4.1). Holds the page h1. */
 export function Hero() {
@@ -9,6 +10,8 @@ export function Hero() {
       <img
         className={styles.image}
         src="/media/banners/hero-home.webp"
+        srcSet={mediaSrcSet('/media/banners/hero-home.webp')}
+        sizes="100vw"
         alt="A bright room with a rattan chair, a potted palm and a white sideboard"
         width={1600}
         height={1120}

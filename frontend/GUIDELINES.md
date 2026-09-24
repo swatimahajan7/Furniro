@@ -24,15 +24,17 @@ API reference: [docs/API_CONTRACT.md](../docs/API_CONTRACT.md).
 frontend/
 ├── index.html
 ├── package.json
-├── vite.config.ts            # alias @ → src, dev proxy /api and /media → :8100
+├── vite.config.ts            # alias @ → src; dev server and `vite preview` proxy /api and /media → :8100
 ├── tsconfig.json             # strict, noUncheckedIndexedAccess
 ├── .env.example              # VITE_API_BASE_URL, VITE_API_PROXY_TARGET, WEB_PORT
 ├── .npmrc                    # registry mirror (registry.npmjs.org is blocked on the dev network)
-├── public/                   # logo-mark.svg (favicon + brand mark)
+├── package.json              # "sideEffects": ["**/*.css"] lets Rollup drop unused barrel exports (§9)
+├── public/                   # logo-mark.svg (favicon + brand mark), robots.txt
 └── src/
     ├── main.tsx              # createRoot + <AppProviders><RouterProvider/></AppProviders>
     ├── app/
-    │   ├── router.tsx        # all routes (route.lazy per page), error boundaries, /dev/ui in dev only
+    │   ├── router.tsx        # all routes (route.lazy per page), prefetch loaders (§9), error boundaries,
+    │   │                     # /dev/ui in dev only
     │   ├── AppLayout.tsx     # root layout; lives here (not components/) because it wires features
     │   │                     # (cart badge + CartDrawer) into Header/Footer
     │   ├── AppErrorBoundary.tsx  # last-resort boundary outside the router
@@ -61,7 +63,7 @@ frontend/
     │   ├── product/          # api.ts (useProduct, useRelatedProducts, useReviews), components/ (ProductDetailView,
     │   │                     # ProductGallery, ProductInfo, OptionPicker, ShareLinks, ProductTabs, SpecTable,
     │   │                     # ReviewList, ReviewForm, StarInput, RelatedProducts, ProductDetailSkeleton),
-    │   │                     # schema.ts (review form), useCreateReview
+    │   │                     # schema.ts (review form), useCreateReview, productQuery, preloadImage.ts
     │   ├── cart/             # api.ts (useCart, useAddToCart, useUpdateCartItem, useRemoveCartItem;
     │   │                     # auto-creates/replaces the cart), cartDrawerStore.ts, lineOptions.ts,
     │   │                     # components/ (CartDrawer, CartTable, CartTotals)
@@ -89,7 +91,8 @@ frontend/
     │   ├── BlogPostPage.tsx  AboutPage.tsx  LoginPage.tsx  RegisterPage.tsx
     │   └── AccountPage.tsx  WishlistPage.tsx  HelpPage.tsx  NotFoundPage.tsx
     ├── hooks/                # cross-feature hooks (useMediaQuery, useDisclosure, useQueryParams)
-    ├── lib/                  # pure utils: format.ts (formatPrice, formatDate), cn, env, testIds.ts (§6), storage (later)
+    ├── lib/                  # pure utils: format.ts (formatPrice, formatDate), cn, env, testIds.ts (§6), storage,
+    │                         # errors.ts, formErrors.ts (API details → form fields), images.ts (mediaSrcSet)
 ```
 
 ### Import rules
@@ -116,7 +119,7 @@ frontend/
 - Keep components under about 150 lines. Extract subcomponents or hooks when they grow past that.
 - Put data fetching in feature hooks (`useProducts`, `useCart`), never in `useEffect` inside components.
 - Buttons in a loading state stay focusable: `Button isLoading` sets `aria-disabled` + `aria-busy` and ignores clicks/submits instead of using `disabled` (which drops keyboard focus, e.g. breaking focus return from the cart drawer). Use `disabled` only for truly unavailable actions.
-- Every async UI has a **loading, error and empty state**. Use `Skeleton`, `ErrorState` (with retry) and `EmptyState` from `components/ui`.
+- Every async UI has a **loading, error and empty state**. Use `Skeleton`, `ErrorState` (with retry) and `EmptyState` from `components/ui`. A section inside a page (a sidebar box, one Home section) uses `<ErrorState compact>`: small icon, no heading. Each query that fills part of a page handles its own error, so one failing request never leaves a blank area.
 
 ### 2.3 Styling
 
@@ -212,19 +215,18 @@ stable, predictable `data-testid` attributes, plus correct roles and accessible 
 - `<area>` is the screen or component (`header`, `shop`, `product-card`, `pdp`, `cart-drawer`, `cart`, `checkout`, `order`, `compare`, `blog`, `contact`, `footer`, `login`, `register`, `review`, `account`, `wishlist`, `about`, `help`).
 - Form fields: `<form>-field-<name>`, where `<name>` is the API field name converted to kebab-case (`first_name` → `checkout-field-first-name`). The field's error text is `<form>-error-<name>`.
 - State is **not** encoded in the ID. Use attributes that already exist (`aria-selected`, `aria-pressed`, `aria-expanded`, `disabled`, `aria-invalid`) or a `data-state` attribute. Examples: Like buttons use `aria-pressed`; `header-account-button` has `data-state="guest" | "logged-in"`.
-- Build dynamic IDs with the helpers in `src/lib/testIds.ts`, for example `testIds.productCard(slug).addToCart`, so spelling stays consistent.
+- Build dynamic IDs with the helpers in `src/lib/testIds.ts`, for example `testIds.productCard(slug).addToCart`, so spelling stays consistent. Labels become IDs through `kebab()`, which turns spaces and underscores into hyphens ("Payment Options" → `footer-link-payment-options`).
 
 Examples:
 
 ```
 page-home  page-shop  page-product  page-product-not-found  page-cart  page-checkout  page-compare  page-blog
 home-hero  home-buy-now  home-browse-range  home-room-living  home-products  home-show-more
-home-inspirations  inspiration-slide-1  inspiration-link-1  inspiration-prev  inspiration-next  inspiration-dot-1
+home-inspirations  home-rooms-error  home-inspirations-error  blog-categories-error  inspiration-slide-1  inspiration-link-1  inspiration-prev  inspiration-next  inspiration-dot-1
 home-explore-more  home-gallery
 header-logo  header-nav-shop  header-account-button  header-search-button  header-wishlist-button
 header-cart-button  header-cart-count
 shop-filter-button  shop-view-grid  shop-view-list  shop-results-text  shop-page-size-select  shop-sort-select
-pagination-page-2  pagination-next
 shop-toolbar  shop-filter-count  shop-view-grid  shop-products  shop-pagination-page-2  shop-pagination-next
 shop-search-summary  shop-search-clear  shop-empty  shop-clear-filters  shop-page-out-of-range  shop-error
 filter-drawer  filter-category-sofas  filter-room-dining  filter-field-min-price  filter-error-min-price
@@ -234,10 +236,10 @@ product-card-syltherine-price  product-card-syltherine-badge
 product-card-syltherine-add-to-cart  product-card-syltherine-share  product-card-syltherine-compare
 product-card-syltherine-like
 pdp-title  pdp-price  pdp-thumbnail-2  pdp-size-l  pdp-color-black  pdp-qty-decrement  pdp-qty-value
-pdp-qty-increment  pdp-add-to-cart  pdp-compare  pdp-tab-reviews
-cart-drawer  cart-drawer-item-11  cart-drawer-item-11-remove  cart-drawer-subtotal  cart-drawer-view-cart
+pdp-qty-increment  pdp-add-to-cart  pdp-compare  pdp-tabs-tab-reviews
+cart-drawer  cart-drawer-item-11  cart-drawer-item-11-link  cart-drawer-item-11-remove  cart-drawer-subtotal  cart-drawer-view-cart
 cart-drawer-checkout  cart-drawer-comparison  cart-drawer-close
-cart-row-11  cart-row-11-qty  cart-row-11-subtotal  cart-row-11-remove  cart-totals-subtotal  cart-totals-total
+cart-row-11  cart-row-11-link  cart-row-11-qty  cart-row-11-subtotal  cart-row-11-remove  cart-totals-subtotal  cart-totals-total
 cart-checkout-button  cart-empty
 checkout-field-first-name  checkout-error-first-name  checkout-field-country  checkout-payment-cod
 checkout-summary-total  checkout-place-order
@@ -260,7 +262,7 @@ wishlist-products  wishlist-count  wishlist-empty  pdp-like  review-form  review
 review-error-rating  review-field-comment  review-submit  review-success  review-form-error  review-login-link
 compare-table  compare-column-grifo-name  compare-column-grifo-price  compare-column-grifo-add-to-cart
 compare-group-dimensions  compare-add-select  compare-view-more  compare-full  compare-empty  compare-error
-contact-field-email  contact-submit  footer-newsletter-email  footer-newsletter-subscribe
+contact-field-email  contact-submit  footer-newsletter-email  footer-newsletter-subscribe  footer-link-payment-options
 blog-posts  blog-post-going-all-in-with-millennial-design  blog-post-<slug>-link  blog-post-<slug>-meta-category
 blog-post-<slug>-read-more  blog-pagination-page-2  blog-search-field-q  blog-search-submit  blog-category-wood
 blog-category-wood-count  blog-recent-modern-home-in-milan  blog-filter-summary  blog-clear-filters  blog-empty
@@ -300,16 +302,37 @@ Before a screen is considered done, every item in its DESIGN_SPEC §4 section th
 - Everything is keyboard-operable. Drawers and modals trap focus, close on Esc, and return focus to their trigger.
 - Images have meaningful `alt` text (from the API), and decorative images use `alt=""`.
 - Icon-only buttons have an `aria-label` (for example "Open cart, 2 items").
-- Colour contrast is AA. Note that `--color-text-muted` on white is borderline, so do not use it for body text below 14 px.
+- Colour contrast is AA for all text tokens except the brand exception: `--color-primary` (gold) and the `--color-sale`/`--color-new` badges are 3.0:1 or lower by design (DESIGN_SPEC §2.1, PLAN.md §2.2). Don't put new small text in those colours.
+- Where text wraps must not depend on its exact width (see §9, layout shift): give such text its own line on narrow screens.
 - Check new screens manually with the browser's accessibility tree and a keyboard-only pass.
 
 ## 9. Performance
 
-- Pages are lazy-loaded routes. Embla is lazy-loaded with the home page only.
-- Images use `loading="lazy"` below the fold, explicit `width` and `height`, and WebP from `/media`.
-- Fonts are self-hosted through `@fontsource/poppins` and `@fontsource/montserrat` (Latin subset only, `font-display: swap`), imported in `main.tsx`.
+Targets: initial JS ≤ 200 KB gzipped (now 84 KB), and Lighthouse Performance, Accessibility and Best Practices ≥ 90
+on mobile and desktop. Measure against a production build (`npm run build && npm run preview`, or the Compose
+stack), never the dev server.
+
+- **Code splitting.** Pages are lazy routes. `package.json` declares `"sideEffects": ["**/*.css"]`, so importing one
+  thing from a feature's `index.ts` does not pull in the rest of that feature (this kept zod and react-hook-form out of
+  the first load). Module top-level code must therefore be free of side effects; CSS imports are the exception.
+- **Heavy, rarely used UI loads on demand.** For example, the review form (and zod) is `React.lazy` and mounts only
+  when the Reviews tab opens.
+- **No request waterfalls on key pages.** A route whose page needs one main request gets a `loader` in
+  `app/router.tsx` that starts it (`queryClient.prefetchQuery(productQuery(slug))`) while the page chunk downloads.
+  Loaders never await, so navigation is not blocked. The product loader also preloads the main image
+  (`preloadMainImage`), because it is the page's LCP element.
+- **Images.** Every `/media` image has 240/480/640/960 px copies (`make assets-variants`). Every `<img>` sets
+  `srcSet={mediaSrcSet(url)}`, a `sizes` that matches its layout, and `width`/`height`. Images below the fold use
+  `loading="lazy"`; the page's largest image uses `fetchPriority="high"` and is never lazy.
+- **No layout shift.**
+  - `<main>` is at least one viewport tall, so the footer never starts on screen and then jumps down.
+  - "Poppins Fallback" (`styles/global.css`) is a local font sized to Poppins' metrics, so the web-font swap does not
+    reflow text.
+  - Skeletons match the size of what they replace.
+  - Text whose line wrapping could change with a few pixels of width gets a layout that always wraps the same way.
+- **Fonts** are self-hosted through `@fontsource/poppins` and `@fontsource/montserrat` (Latin subset only,
+  `font-display: swap`), imported in `main.tsx`.
 - Query `staleTime` is 60 s for the catalog, and `0` for the cart and orders.
-- Budget: initial JS ≤ 200 KB gzip. Lighthouse Performance, A11y and Best Practices are all ≥ 90.
 
 ## 10. Commands
 

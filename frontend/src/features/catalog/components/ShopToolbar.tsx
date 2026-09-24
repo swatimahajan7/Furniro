@@ -12,7 +12,8 @@ import styles from './ShopToolbar.module.css';
 export interface ShopToolbarProps {
   params: ShopParams;
   /** Paging info from the response on screen (not the URL), so the text always matches the grid. */
-  pageInfo: Pick<ProductPage, 'page' | 'page_size' | 'total'> | undefined;
+  /** The loaded page, undefined while loading, or 'error' when it failed. */
+  pageInfo: Pick<ProductPage, 'page' | 'page_size' | 'total'> | 'error' | undefined;
   activeFilterCount: number;
   onChange: (changes: Partial<ShopParams>) => void;
   onOpenFilters: () => void;
@@ -21,6 +22,7 @@ export interface ShopToolbarProps {
 const results = (n: number) => `${n} result${n === 1 ? '' : 's'}`;
 
 function resultsText(info: ShopToolbarProps['pageInfo']) {
+  if (info === 'error') return 'Results unavailable';
   if (!info) return 'Loading results…';
   const { page, page_size: pageSize, total } = info;
   if (total === 0) return 'Showing 0 results';

@@ -10,9 +10,10 @@
 | Backend | Python 3.12 + FastAPI + SQLAlchemy 2 + Alembic |
 | Database | SQLite (local/dev default) · PostgreSQL 16 (Docker) |
 | Design source | `Furniro_Web_Design_UI_KIT.pdf` → screens in `docs/design/screens/` |
-| Status | Phase 6 (content pages) complete, 2026-09-23 · next: Phase 7 |
+| Status | **All phases complete** (Phase 7 hardening, 2026-09-24) |
 
 Related docs:
+- [docs/BRD.md](docs/BRD.md): business requirements (objectives, scope, roles, requirements, business rules, acceptance criteria)
 - [docs/DESIGN_SPEC.md](docs/DESIGN_SPEC.md): design tokens and a screen-by-screen UI spec
 - [docs/API_CONTRACT.md](docs/API_CONTRACT.md): REST contract shared by both sides
 - [backend/GUIDELINES.md](backend/GUIDELINES.md): backend rules, structure and strategies
@@ -87,6 +88,7 @@ These are the defaults we will use. Change them here if you want something diffe
 | Shop list view and share icons are not designed | List view shows the card actions inline under the text (no hover overlay). Share links use letter marks (f, in, X) because Lucide has no brand icons. |
 | The blog has a designed screen but no link to it anywhere (header nav and footer show Home, Shop, About, Contact) | The footer's Links column adds **Blog** after Contact. The header nav stays as designed. |
 | Blog dates ("14 Oct 2022") and placeholder copy (lorem ipsum, a Vietnamese phone number) | Seed posts are dated in 2026 and use short furniture-care copy. The contact details (address, phones, hours) stay as designed, as placeholders. |
+| The design's grey text (`#898989`, `#9F9F9F`, `#B0B0B0`) and brand colours fail WCAG AA contrast (4.5:1) | Decided 2026-09-24 (option "neutrals only"): the three grey text tokens become `#6E6E6E` / `#6E6E6E` / `#707070`, which pass on every background and look almost the same. **Brand gold `#B88E2F` and the sale/New badge colours stay as designed** and are a known AA exception (3.0:1 and 2.2:1); DESIGN_SPEC §2.1 lists the AA-passing alternatives. |
 | Free shipping "Order over 150 $" | Informational only. Shipping is always free, so total = subtotal. The text is shown as "Order over $150". |
 
 ---
@@ -330,12 +332,19 @@ Each phase ends with a **demoable increment** and must meet the Definition of Do
 **Exit criteria:** Every nav and footer link leads to a working page. The forms submit and show success and error states.
 
 ### Phase 7: Hardening (≈2 days)
-- [ ] Responsive pass at 360 / 768 / 1024 / 1440.
-- [ ] Accessibility pass: keyboard navigation, focus trap in the drawers, labelled controls, AA contrast.
-- [ ] Every page has loading, error and empty states. Network failure shows a retry option.
-- [ ] `data-testid` audit: every interactive element and repeated item follows the convention (frontend/GUIDELINES.md §6), and the testid inventory in that section is current.
-- [ ] Performance: images lazy-loaded with width/height set, route-level code splitting, Lighthouse ≥ 90 for Performance, A11y and Best Practices.
-- [ ] Final README: setup, scripts and demo accounts.
+- [x] Responsive pass at 360 / 768 / 1024 / 1440: 33 routes and states (open drawers, filled cart, checkout errors, compare with 3 products, logged-in pages, mobile menu) have no horizontal overflow at any width. Fixed the product page overflowing by 8 px at 360 px, and hardened every `1fr` grid column to `minmax(0, 1fr)` so long content can't widen a page.
+- [x] Accessibility pass: axe (WCAG 2.1 A/AA + best practice) on every state at 360 and 1440 px, and a keyboard walk (every focus stop visible, with a ring, never inside a hidden overlay). Fixed: carousel slides were `li role="group"` inside a `ul`, cart thumbnails were unnamed tab stops, card and review headings skipped a level. AA contrast: grey text tokens and the error red darkened (DESIGN_SPEC §2.1); **brand gold and the badge colours stay as designed, a known exception** (§2.2, decided 2026-09-24).
+- [x] Loading, error and empty states everywhere: with the API unreachable, every data-driven page and section (including Home's rooms and inspirations and the blog sidebar) shows an error with Retry, and nothing crashes. `ErrorState` gained a `compact` variant for sections; the Shop toolbar says "Results unavailable" instead of loading forever.
+- [x] `data-testid` audit: 637 IDs across all states; every interactive element has one, all are kebab-case, none duplicate. Fixed: `kebab()` kept spaces (`footer-link-payment options` → **renamed** `footer-link-payment-options`, `footer-link-privacy-policies`); added `cart-row-<id>-link`, `cart-drawer-item-<id>-link`. The GUIDELINES §6.2 inventory was corrected (`pdp-tabs-tab-reviews`; generic `pagination-*` removed) and extended.
+- [x] Performance: Lighthouse ≥ 90 on 12 pages × mobile/desktop against the production nginx stack (mobile Performance 90–95, desktop 99–100; Accessibility 96–100; Best Practices 100). See the notes for what it took.
+- [x] Final README: setup, everyday commands, demo accounts, production stack, assets.
+
+**Phase 7 notes:**
+- Performance work, in order of impact: `"sideEffects": ["**/*.css"]` in `frontend/package.json` lets Rollup drop unused barrel exports, which took zod and react-hook-form out of the first load (initial JS 115 → 84 KB gzipped); 240/480/640/960 px WebP copies of every image plus `srcset`/`sizes` on every `<img>` (`lib/images.ts`, `make assets-variants`; media is now 7.7 MB); a metric-matched "Poppins Fallback" font face and a viewport-tall `<main>`, which removed the layout shifts (product page CLS 0.19 → 0); route loaders that start the product/blog-post request and preload the product's main image while the page code downloads; the review form (and zod) loaded only when the Reviews tab opens; `robots.txt`; descriptive "Read more" link text. Two mobile layouts whose line wrapping depended on the exact text width (Shop toolbar results text, login demo hint) now always wrap the same way.
+- The mobile product page is the tightest result (90). Its limit is the app shell download under Lighthouse's slow-4G, 4×-CPU emulation.
+- **Found and fixed: the backend Docker image could not start** (since Phase 1): it did not contain `alembic.ini` and `migrations/`, so the startup migration failed. `vite preview` now proxies `/api` and `/media` like the dev server. nginx now gzips text assets and sends `no-cache` for the HTML shell. Compose host ports are configurable (`FURNIRO_WEB_PORT`, `FURNIRO_API_PORT`), and `make up`/`make down` take `COMPOSE=…`.
+- Exit criterion "docker compose up": Docker is not installed on the dev machine, and `podman-compose` 1.5 with Podman 3.4 cannot run the file (no service-name DNS on its default network, and `depends_on: condition` is ignored). Both images were built with `podman-compose build` and run in a Podman pod with the Compose file's environment (`db`/`backend` mapped to localhost): PostgreSQL migrated and seeded, prod mode, no warnings, and the Phase 5/6 API checks (42 + 25) and browser checks (37 + 25) passed through nginx. `docker compose up` itself still needs a run on a Docker host.
+- Regression: every earlier browser suite (Phases 2–6) passes on the dev server from a clean seed.
 
 **Exit criteria:** `docker compose up` runs the full stack on PostgreSQL, every screen works at all four widths, and the Lighthouse targets are met.
 
@@ -374,6 +383,7 @@ Furniro/
 ├── Makefile                    ← dev, lint, typecheck, build, contract, assets shortcuts
 ├── .github/workflows/ci.yml
 ├── docs/
+│   ├── BRD.md
 │   ├── DESIGN_SPEC.md
 │   ├── API_CONTRACT.md
 │   ├── adr/                    ← one file per significant decision after kickoff
