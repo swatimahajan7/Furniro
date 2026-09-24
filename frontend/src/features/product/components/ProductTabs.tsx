@@ -4,6 +4,7 @@ import { Tabs } from '@/components/ui';
 import styles from './ProductTabs.module.css';
 import { ReviewList } from './ReviewList';
 import { SpecTable } from './SpecTable';
+import { mediaSrcSet } from '@/lib/images';
 
 export type ProductTabId = 'description' | 'info' | 'reviews';
 
@@ -39,6 +40,8 @@ export function ProductTabs({ product, value, onChange }: ProductTabsProps) {
                     <div key={image.url} className={styles.imageBox}>
                       <img
                         src={image.url}
+                        srcSet={mediaSrcSet(image.url)}
+                        sizes="(min-width: 1024px) 605px, 100vw"
                         alt={image.alt}
                         loading="lazy"
                         className={styles.image}

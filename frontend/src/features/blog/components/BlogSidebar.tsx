@@ -2,7 +2,7 @@ import { Search } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
 
-import { Skeleton } from '@/components/ui';
+import { ErrorState, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { formatDate } from '@/lib/format';
 import { testIds } from '@/lib/testIds';
@@ -11,6 +11,7 @@ import { useBlogCategories, useRecentPosts } from '../api';
 import { blogHref } from '../blogParams';
 
 import styles from './Blog.module.css';
+import { mediaSrcSet } from '@/lib/images';
 
 export interface BlogSidebarProps {
   /** The category being shown, highlighted in the list. */
@@ -67,6 +68,13 @@ export function BlogSidebar({ activeCategory = null, query = null }: BlogSidebar
         </h2>
         {categories.isPending ? (
           <Skeleton height={180} rounded />
+        ) : categories.isError ? (
+          <ErrorState
+            compact
+            message="We could not load the categories."
+            onRetry={() => void categories.refetch()}
+            data-testid="blog-categories-error"
+          />
         ) : (
           <ul className={styles.categories} data-testid="blog-categories">
             {(categories.data ?? []).map((category) => {
@@ -100,6 +108,13 @@ export function BlogSidebar({ activeCategory = null, query = null }: BlogSidebar
         </h2>
         {recent.isPending ? (
           <Skeleton height={400} rounded />
+        ) : recent.isError ? (
+          <ErrorState
+            compact
+            message="We could not load the recent posts."
+            onRetry={() => void recent.refetch()}
+            data-testid="blog-recent-error"
+          />
         ) : (
           <ul className={styles.recent} data-testid="blog-recent">
             {(recent.data ?? []).map((post) => (
@@ -111,6 +126,8 @@ export function BlogSidebar({ activeCategory = null, query = null }: BlogSidebar
                 >
                   <img
                     src={post.cover_url}
+                    srcSet={mediaSrcSet(post.cover_url)}
+                    sizes="80px"
                     alt=""
                     width={80}
                     height={80}

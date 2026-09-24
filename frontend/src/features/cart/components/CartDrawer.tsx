@@ -11,6 +11,7 @@ import { useCartDrawer } from '../cartDrawerStore';
 import { lineOptions } from '../lineOptions';
 
 import styles from './CartDrawer.module.css';
+import { mediaSrcSet } from '@/lib/images';
 
 /** The slide-in "Shopping Cart" (DESIGN_SPEC §3 CartDrawer, screen 04). Mounted once in AppLayout. */
 export function CartDrawer() {
@@ -107,10 +108,19 @@ export function CartDrawer() {
             const options = lineOptions(item);
             return (
               <li key={item.id} className={styles.item} data-testid={ids.root}>
-                <Link to={`/product/${item.product.slug}`} onClick={close} className={styles.thumb}>
+                <Link
+                  to={`/product/${item.product.slug}`}
+                  onClick={close}
+                  className={styles.thumb}
+                  // Same target as the name link next to it: skip it for keyboard and screen readers.
+                  tabIndex={-1}
+                  aria-hidden="true"
+                >
                   {item.product.image_url && (
                     <img
                       src={item.product.image_url}
+                      srcSet={mediaSrcSet(item.product.image_url)}
+                      sizes="105px"
                       alt=""
                       width={105}
                       height={105}
@@ -123,6 +133,7 @@ export function CartDrawer() {
                     to={`/product/${item.product.slug}`}
                     onClick={close}
                     className={styles.name}
+                    data-testid={ids.link}
                   >
                     {item.product.name}
                   </Link>

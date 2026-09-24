@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 
 import type { BlogPostSummary } from '@/api/types';
 import { testIds } from '@/lib/testIds';
+import { mediaSrcSet } from '@/lib/images';
 
 import styles from './Blog.module.css';
 import { PostMeta } from './PostMeta';
@@ -15,6 +16,8 @@ export function PostCard({ post }: { post: BlogPostSummary }) {
       <Link to={href} className={styles.cover} tabIndex={-1} aria-hidden="true">
         <img
           src={post.cover_url}
+          srcSet={mediaSrcSet(post.cover_url)}
+          sizes="(min-width: 1024px) 817px, 100vw"
           alt=""
           width={817}
           height={500}
@@ -29,13 +32,8 @@ export function PostCard({ post }: { post: BlogPostSummary }) {
         </Link>
       </h2>
       <p className={styles.excerpt}>{post.excerpt}</p>
-      <Link
-        to={href}
-        className={styles.readMore}
-        aria-label={`Read more: ${post.title}`}
-        data-testid={ids.readMore}
-      >
-        Read more
+      <Link to={href} className={styles.readMore} data-testid={ids.readMore}>
+        Read more<span className="visuallyHidden">: {post.title}</span>
       </Link>
     </article>
   );

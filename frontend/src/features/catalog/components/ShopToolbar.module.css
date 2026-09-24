@@ -95,6 +95,12 @@
     display: none;
   }
 
+  /* Its own row, so whether it wraps never depends on the exact text width (a web-font swap
+     would otherwise move it and everything below: layout shift). */
+  .results {
+    flex-basis: 100%;
+  }
+
   .right {
     width: 100%;
   }

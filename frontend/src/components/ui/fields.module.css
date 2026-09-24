@@ -122,7 +122,7 @@
 
 .radio {
   display: grid;
-  grid-template-columns: 18px 1fr;
+  grid-template-columns: 18px minmax(0, 1fr);
   column-gap: var(--space-4);
   align-items: center;
 }

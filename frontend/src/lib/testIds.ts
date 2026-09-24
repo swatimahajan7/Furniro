@@ -4,10 +4,11 @@
  * so the spelling stays consistent across components.
  */
 
-/** API field name → kebab-case ("first_name" → "first-name"). */
+/** API field name or label → kebab-case ("first_name" → "first-name", "Payment Options" → "payment-options"). */
 const kebab = (value: string | number) =>
   String(value)
-    .replace(/_/g, '-')
+    .trim()
+    .replace(/[_\s]+/g, '-')
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
     .toLowerCase();
 
@@ -46,11 +47,13 @@ export const testIds = {
 
   cartDrawerItem: (id: number) => ({
     root: `cart-drawer-item-${id}`,
+    link: `cart-drawer-item-${id}-link`,
     remove: `cart-drawer-item-${id}-remove`,
   }),
 
   cartRow: (id: number) => ({
     root: `cart-row-${id}`,
+    link: `cart-row-${id}-link`,
     qty: `cart-row-${id}-qty`,
     subtotal: `cart-row-${id}-subtotal`,
     remove: `cart-row-${id}-remove`,

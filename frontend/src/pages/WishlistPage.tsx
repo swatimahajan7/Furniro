@@ -32,6 +32,7 @@ function Wishlist() {
   const count = wishlist.data?.length ?? 0;
   return (
     <>
+      <h2 className="visuallyHidden">Saved products</h2>
       {wishlist.data && (
         <p className={styles.count} data-testid="wishlist-count">
           {count} saved product{count === 1 ? '' : 's'}

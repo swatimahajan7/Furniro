@@ -61,3 +61,8 @@
   background-color: var(--color-cream);
   border-radius: var(--radius-md);
 }
+
+/* The credentials get their own line, so the hint's height never depends on text width. */
+.hintCredentials {
+  display: block;
+}

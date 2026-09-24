@@ -160,6 +160,7 @@ Every timestamp column uses `UtcDateTime` (`db/base.py`), a `DateTime(timezone=T
 - Never edit a migration that has been merged. Write a new one.
 - Migrations never import app code. `migrations/env.py` has a `render_item` hook that writes app column types (such as `UtcDateTime`) as plain `sa.DateTime(timezone=True)`; add a case there for any new custom type.
 - `SEED_ON_STARTUP=true` (dev default) runs migrations and then seeds if the DB is empty.
+- The Docker image must contain everything that startup needs: `app/`, `media/`, `alembic.ini` and `migrations/`. After touching the Dockerfile or startup, build the image and start it against PostgreSQL (PLAN.md Phase 7 notes).
 
 ## 8. Seed data strategy
 - The seed is **deterministic**: fixed IDs, slugs, timestamps (`2026-01-01T00:00:00Z` + offsets) and review authors. It uses no `random` and no `faker` at runtime.

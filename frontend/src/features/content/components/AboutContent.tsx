@@ -1,6 +1,7 @@
 import { ButtonLink } from '@/components/ui';
 
 import styles from './Content.module.css';
+import { mediaSrcSet } from '@/lib/images';
 
 const VALUES = [
   {
@@ -31,6 +32,8 @@ export function AboutContent() {
       >
         <img
           src="/media/rooms/living.webp"
+          srcSet={mediaSrcSet('/media/rooms/living.webp')}
+          sizes="(min-width: 1024px) 600px, 100vw"
           alt="A bright living room furnished by Furniro"
           width={600}
           height={480}

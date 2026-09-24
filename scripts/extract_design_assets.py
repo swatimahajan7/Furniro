@@ -12,7 +12,12 @@ Two steps (see docs/DESIGN_SPEC.md §5):
 
   uv run scripts/extract_design_assets.py build
       Converts every image listed in scripts/design_assets_map.json to WebP
-      (max 1600 px long edge, quality 80) at backend/media/<target>.webp.
+      (max 1600 px long edge, quality 80) at backend/media/<target>.webp, then runs `variants`.
+
+  uv run scripts/extract_design_assets.py variants
+      Writes <name>-{240,480,640,960}w.webp next to every image in backend/media, for
+      responsive `srcset`s. An image narrower than a variant is copied at its own size, so the
+      frontend can always assume both variants exist. Needs only backend/media, not the PDF.
 
 The map is committed; the PDF and .design-extract/ are not (see .gitignore).
 """
@@ -168,16 +173,45 @@ def build() -> None:
     print(f"{len(mapping)} assets, {total / 1024 / 1024:.1f} MB total → {MEDIA.relative_to(ROOT)}")
 
 
+VARIANT_WIDTHS = (240, 480, 640, 960)
+
+
+def is_variant(path: Path) -> bool:
+    return any(path.stem.endswith(f"-{width}w") for width in VARIANT_WIDTHS)
+
+
+def variants() -> None:
+    """Responsive copies of every media image (frontend/src/lib/images.ts builds the srcset)."""
+    written = 0
+    total = 0
+    for source in sorted(MEDIA.rglob("*.webp")):
+        if is_variant(source):
+            continue
+        original = Image.open(source)
+        for width in VARIANT_WIDTHS:
+            out = source.with_name(f"{source.stem}-{width}w.webp")
+            image = original.copy()
+            if image.width > width:
+                image = image.resize((width, round(image.height * width / image.width)), Image.Resampling.LANCZOS)
+            image.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+            written += 1
+            total += out.stat().st_size
+    print(f"{written} variants, {total / 1024 / 1024:.1f} MB total → {MEDIA.relative_to(ROOT)}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument("command", choices=["extract", "build"])
+    parser.add_argument("command", choices=["extract", "build", "variants"])
     parser.add_argument("--pdf", type=Path, default=PDF)
     args = parser.parse_args()
     WORK.mkdir(exist_ok=True)
     if args.command == "extract":
         extract(args.pdf)
-    else:
+    elif args.command == "build":
         build()
+        variants()
+    else:
+        variants()
 
 
 if __name__ == "__main__":

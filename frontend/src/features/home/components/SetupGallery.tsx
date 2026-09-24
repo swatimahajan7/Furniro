@@ -1,4 +1,5 @@
 import styles from './SetupGallery.module.css';
+import { mediaSrcSet } from '@/lib/images';
 
 /** Static photos from the design (`backend/media/gallery`), in design order. */
 const PHOTOS = [
@@ -26,6 +27,8 @@ export function SetupGallery() {
           <li key={photo.file} className={styles.item}>
             <img
               src={`/media/gallery/${photo.file}.webp`}
+              srcSet={mediaSrcSet(`/media/gallery/${photo.file}.webp`)}
+              sizes="(min-width: 1024px) 25vw, 50vw"
               alt={photo.alt}
               width={photo.w}
               height={photo.h}

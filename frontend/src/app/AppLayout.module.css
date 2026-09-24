@@ -1,5 +1,7 @@
+/* At least a screen tall, so the footer never starts inside the first viewport and jumps down
+   when the page's data arrives (layout shift). */
 .main {
-  min-height: 60vh;
+  min-height: calc(100vh - var(--header-height));
 }
 
 .main:focus {

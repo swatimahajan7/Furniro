@@ -33,11 +33,12 @@ known Furniro kit palette. Confirm any value in Figma when pixel accuracy matter
 | `--color-card` | `#F4F5F7` | Product card body |
 | `--color-text` | `#3A3A3A` | Headings, product names |
 | `--color-text-body` | `#333333` | Body |
-| `--color-text-muted` | `#898989` | Card subtitle, meta labels, footer address |
-| `--color-text-subtle` | `#9F9F9F` | Inactive tabs, placeholders, footer headings |
-| `--color-text-strike` | `#B0B0B0` | Struck-through old price |
+| `--color-text-muted` | `#6E6E6E` (design `#898989`) | Card subtitle, meta labels, footer address |
+| `--color-text-subtle` | `#6E6E6E` (design `#9F9F9F`) | Inactive tabs, placeholders, footer headings |
+| `--color-text-strike` | `#707070` (design `#B0B0B0`) | Struck-through old price |
 | `--color-sale` | `#E97171` | `-30%` badge |
 | `--color-new` | `#2EC1AC` | `New` badge |
+| `--color-danger` | `#D82121` | Form error text and alerts (undesigned; darkest-needed red that passes AA on white and cream) |
 | `--color-rating` | `#FFC700` | Stars |
 | `--color-border` | `#D9D9D9` | Dividers, footer rule |
 | `--color-input-border` | `#9F9F9F` | Inputs, selects, outline buttons |
@@ -46,6 +47,14 @@ known Furniro kit palette. Confirm any value in Figma when pixel accuracy matter
 | `--color-banner-veil` | `rgba(255,255,255,.45)` | White wash over the blurred page-banner photo |
 | `--color-swatch-1..3` | `#816DFA` · `#000000` · `#B88E2F` | PDP colour swatches (seed values) |
 | `--color-white` / `--color-black` | `#FFFFFF` / `#000000` | |
+
+**Contrast (decided 2026-09-24, PLAN.md §2.2).** The design's grey text colours fail WCAG AA (4.5:1), so the three
+grey text tokens are darkened to the lightest greys that pass on every background they sit on (white, `--color-card`,
+`--color-cream`, `--color-cream-light`). The change is barely visible. The brand colours stay as designed and are a
+**known AA exception**: `--color-primary` is 3.0:1 against white (gold text, and white text on gold buttons), and
+the badge colours give 3.0:1 (`--color-sale`) and 2.2:1 (`--color-new`) behind white text. The AA-passing
+alternatives, if the exception is ever lifted, are `#8A6A23`, `#DF3333` and `#1F8476`. `--color-input-border`
+(`#9F9F9F`) is not text and is unchanged.
 
 ### 2.2 Typography
 Font family: **Poppins** (400, 500, 600, 700). Logo wordmark: **Montserrat 700**.
@@ -162,5 +171,9 @@ backend/media/
                   laptop-cafe, laptop-plant, cafe-table
 ```
 (All files are `.webp`.) The PDF has only about 20 distinct product photos, so the 32 seed products reuse images, as the design itself does.
+
+**Responsive copies.** Next to every image, `make assets-variants` writes `<name>-240w`, `-480w`, `-640w` and `-960w`
+(an image narrower than a width is copied at its own size, so all four always exist). The frontend builds each
+`srcset` from them (`frontend/src/lib/images.ts`). With them, `backend/media/` is 7.7 MB.
 
 **Brand mark:** `frontend/public/logo-mark.svg` is traced from the kit, so it is approximate. Replace it with the original vector from Figma when that is available.

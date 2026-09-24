@@ -1,9 +1,10 @@
 import { Link } from 'react-router';
 
-import { Skeleton } from '@/components/ui';
+import { ErrorState, Skeleton } from '@/components/ui';
 import { useRooms } from '@/features/catalog';
 
 import styles from './BrowseRange.module.css';
+import { mediaSrcSet } from '@/lib/images';
 
 /** "Browse The Range": one tile per room, linking to the Shop filtered by that room. */
 export function BrowseRange() {
@@ -19,6 +20,14 @@ export function BrowseRange() {
         Browse The Range
       </h2>
       <p className={styles.subtitle}>Find the right pieces for every room in your home.</p>
+      {rooms.isError && (
+        <ErrorState
+          compact
+          message="We could not load the rooms."
+          onRetry={() => void rooms.refetch()}
+          data-testid="home-rooms-error"
+        />
+      )}
       <ul className={styles.tiles}>
         {rooms.isPending
           ? [1, 2, 3].map((n) => (
@@ -35,6 +44,8 @@ export function BrowseRange() {
                 >
                   <img
                     src={room.image_url}
+                    srcSet={mediaSrcSet(room.image_url)}
+                    sizes="(min-width: 1024px) 381px, (min-width: 768px) 33vw, 100vw"
                     alt=""
                     loading="lazy"
                     width={381}

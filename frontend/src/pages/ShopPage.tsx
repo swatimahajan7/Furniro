@@ -112,13 +112,17 @@ export default function ShopPage() {
       <div ref={resultsRef} className={styles.anchor}>
         <ShopToolbar
           params={params}
-          pageInfo={data}
+          pageInfo={products.isError && !data ? 'error' : data}
           activeFilterCount={activeFilters}
           onChange={update}
           onOpenFilters={() => setFiltersOpen(true)}
         />
       </div>
-      <section className={`container ${styles.results}`} aria-label="Products">
+      <section className={`container ${styles.results}`} aria-labelledby="shop-results-title">
+        {/* Cards use h3, so the list needs an h2 above it (the banner is the h1). */}
+        <h2 id="shop-results-title" className="visuallyHidden">
+          Products
+        </h2>
         {params.q && (
           <p className={styles.search} data-testid="shop-search-summary">
             Results for “{params.q}”

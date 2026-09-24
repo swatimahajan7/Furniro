@@ -5,6 +5,7 @@ import type { ProductSummary } from '@/api/types';
 import { Rating } from '@/components/ui';
 import { formatPrice } from '@/lib/format';
 import { testIds } from '@/lib/testIds';
+import { mediaSrcSet } from '@/lib/images';
 
 import styles from './CompareTable.module.css';
 
@@ -20,7 +21,15 @@ export function CompareColumnHead({ product, onRemove }: CompareColumnHeadProps)
     <th scope="col" className={styles.product} data-testid={ids.root}>
       <div className={styles.media}>
         {product.image_url ? (
-          <img src={product.image_url} alt="" width={280} height={177} className={styles.image} />
+          <img
+            src={product.image_url}
+            srcSet={mediaSrcSet(product.image_url)}
+            sizes="(min-width: 1024px) 280px, 240px"
+            alt=""
+            width={280}
+            height={177}
+            className={styles.image}
+          />
         ) : (
           <ImageOff size={32} aria-hidden="true" />
         )}

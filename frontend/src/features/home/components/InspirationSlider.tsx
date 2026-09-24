@@ -3,9 +3,10 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ButtonLink, Skeleton } from '@/components/ui';
+import { ButtonLink, ErrorState, Skeleton } from '@/components/ui';
 import { useInspirations } from '@/features/catalog';
 import { cn } from '@/lib/cn';
+import { mediaSrcSet } from '@/lib/images';
 
 import styles from './InspirationSlider.module.css';
 
@@ -60,14 +61,21 @@ export function InspirationSlider() {
             <Skeleton height={582} rounded />
             <Skeleton height={486} rounded />
           </div>
+        ) : inspirations.isError ? (
+          <ErrorState
+            compact
+            message="We could not load the room inspirations."
+            onRetry={() => void inspirations.refetch()}
+            data-testid="home-inspirations-error"
+          />
         ) : (
           <>
             <div className={styles.viewport} ref={emblaRef}>
-              <ul className={styles.track}>
+              <div className={styles.track}>
                 {slides.map((slide, index) => {
                   const isActive = index === selected;
                   return (
-                    <li
+                    <div
                       key={slide.id}
                       className={cn(styles.slide, isActive && styles.active)}
                       role="group"
@@ -76,7 +84,14 @@ export function InspirationSlider() {
                       data-testid={`inspiration-slide-${slide.id}`}
                       data-active={isActive}
                     >
-                      <img src={slide.image_url} alt="" loading="lazy" className={styles.image} />
+                      <img
+                        src={slide.image_url}
+                        srcSet={mediaSrcSet(slide.image_url)}
+                        sizes="(min-width: 1024px) 404px, 80vw"
+                        alt=""
+                        loading="lazy"
+                        className={styles.image}
+                      />
                       {isActive && (
                         <div className={styles.info}>
                           <div className={styles.infoText}>
@@ -95,10 +110,10 @@ export function InspirationSlider() {
                           </Link>
                         </div>
                       )}
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
 
             <button
