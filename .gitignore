@@ -35,3 +35,8 @@ npm-debug.log*
 
 # Temporary PDF extraction output (see scripts/extract_design_assets.py)
 .design-extract/
+
+# VM deployment (deploy/podman): secrets, generated runtime env, database dumps
+deploy/podman/furniro.env
+deploy/podman/.runtime.env
+deploy/podman/backups/

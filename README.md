@@ -17,6 +17,7 @@ Scope is the app itself: no automated tests are included, but every UI element c
 | [docs/API_CONTRACT.md](docs/API_CONTRACT.md) | REST endpoints, payloads, error codes |
 | [backend/GUIDELINES.md](backend/GUIDELINES.md) | Backend structure, layering, coding and error rules, DB, seed, OpenAPI contract |
 | [frontend/GUIDELINES.md](frontend/GUIDELINES.md) | Frontend structure, state, styling, `data-testid` convention, accessibility, performance |
+| [deploy/README.md](deploy/README.md) | Deploying on a VM with Podman (ports 5180 and 8100) |
 | [docs/design/screens/](docs/design/screens/) | Renders of the 9 designed screens |
 
 ## Prerequisites
@@ -65,8 +66,12 @@ The API migrates and seeds PostgreSQL on first start. Host ports can be moved wi
 `FURNIRO_API_PORT`, for example to run beside `make dev`. `make up COMPOSE="…"` runs another Compose tool.
 
 `podman-compose` 1.5 with Podman 3.4 cannot run this file: it gives the containers no service-name DNS and ignores
-`depends_on: condition: service_healthy`. On such a machine, the two images (`make up` builds them) run fine in a
-Podman pod; the Phase 7 notes in PLAN.md show how they were verified that way.
+`depends_on: condition: service_healthy`. With Podman, use the VM deployment below instead.
+
+## Deploying on a VM
+[deploy/README.md](deploy/README.md) runs the same images as one Podman pod on a VM, with the site on port **5180**
+and the API on port **8100**. In short: `cd deploy/podman && ./furniro.sh init`, set `PUBLIC_URL`, then
+`./furniro.sh build && ./furniro.sh up && ./furniro.sh autostart`.
 
 ## Design assets
 `backend/media/` is committed: 48 WebP images plus 240/480/640/960 px copies of each for responsive `srcset`s.

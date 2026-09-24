@@ -159,7 +159,7 @@ Every timestamp column uses `UtcDateTime` (`db/base.py`), a `DateTime(timezone=T
 - Migrations must work on **both SQLite and PostgreSQL**. Use `render_as_batch=True` for SQLite ALTERs, and avoid PG-only types (use `JSON`, not `JSONB`).
 - Never edit a migration that has been merged. Write a new one.
 - Migrations never import app code. `migrations/env.py` has a `render_item` hook that writes app column types (such as `UtcDateTime`) as plain `sa.DateTime(timezone=True)`; add a case there for any new custom type.
-- `SEED_ON_STARTUP=true` (dev default) runs migrations and then seeds if the DB is empty.
+- `SEED_ON_STARTUP=true` (dev default) waits up to 60 s for the database (`DB_WAIT_SECONDS` in `main.py`; containers may start before PostgreSQL is ready), then runs migrations and seeds if the DB is empty.
 - The Docker image must contain everything that startup needs: `app/`, `media/`, `alembic.ini` and `migrations/`. After touching the Dockerfile or startup, build the image and start it against PostgreSQL (PLAN.md Phase 7 notes).
 
 ## 8. Seed data strategy

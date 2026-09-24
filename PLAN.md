@@ -413,5 +413,6 @@ Furniro/
 | D-3 | Where the app runs | **Local + Docker Compose**: `make dev` for development, and `docker compose up` for a production-like stack with PostgreSQL. No hosted environment for now. |
 | D-4 | Bug toggles for testing practice | ~~Yes, off by default~~ → **Dropped** (2026-09-23). No deliberate-defect feature and no `/__test__` hooks. |
 | D-5 | Automated tests | **None.** Build the frontend and backend only; the UI carries `data-testid`s so tests can be added later. Phase 0 test suites and tooling were removed. |
+| D-6 | Deploying to the user's VM (2026-09-24) | **Podman pod** via `deploy/podman/furniro.sh` (guide: `deploy/README.md`), because the VM runs Podman and podman-compose on Podman 3.x has no service-name DNS. Publishes only **5180** (site) and **8100** (API), which are free on the VM next to its existing app; PostgreSQL stays inside the pod. Plain HTTP on the VM address. Secrets live in the git-ignored `deploy/podman/furniro.env`; systemd units (`autostart`) restart it after a reboot. The API now waits up to 60 s for PostgreSQL on startup, so containers can start in any order. |
 
 New open questions go here, each with a default, until they are decided.

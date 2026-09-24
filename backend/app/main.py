@@ -1,11 +1,14 @@
 import logging
 import mimetypes
+import time
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy import text
+from sqlalchemy.exc import OperationalError
 
 from app import __version__
 from app.api.v1.router import API_V1_PREFIX, api_router
@@ -13,7 +16,7 @@ from app.core.config import Settings, get_settings
 from app.core.errors import register_exception_handlers
 from app.core.logging import REQUEST_ID_HEADER, RequestContextMiddleware, configure_logging
 from app.db.migrate import upgrade_to_head
-from app.db.session import get_sessionmaker
+from app.db.session import get_engine, get_sessionmaker
 from app.seed.loader import run_seed
 
 # Some OS mime tables lack WebP, which makes StaticFiles serve application/octet-stream.
@@ -22,8 +25,28 @@ mimetypes.add_type("image/webp", ".webp")
 logger = logging.getLogger(__name__)
 
 
+# When every container starts at once (e.g. after a reboot), PostgreSQL may still be starting.
+DB_WAIT_SECONDS = 60
+
+
+def _wait_for_database() -> None:
+    """Retry the first connection for up to DB_WAIT_SECONDS instead of failing startup."""
+    deadline = time.monotonic() + DB_WAIT_SECONDS
+    while True:
+        try:
+            with get_engine().connect() as connection:
+                connection.execute(text("SELECT 1"))
+            return
+        except OperationalError:
+            if time.monotonic() >= deadline:
+                raise
+            logger.info("database not reachable yet; retrying in 2 s")
+            time.sleep(2)
+
+
 def _prepare_database() -> None:
     """SEED_ON_STARTUP: apply migrations, then load the baseline seed if the database is empty."""
+    _wait_for_database()
     upgrade_to_head()
     with get_sessionmaker()() as session:
         run_seed(session, reset=False)
